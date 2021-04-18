@@ -8,9 +8,5 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 
-### IntelliJ IDEA ###
-.idea/
-*.iml
-
 ### MacOS ###
 .DS_Store
