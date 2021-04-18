@@ -21,6 +21,8 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
+    - name: Lint
+      run: mvn -B checkstyle:check
     - name: Compile
       run: mvn -B compile test-compile
     - name: Test
