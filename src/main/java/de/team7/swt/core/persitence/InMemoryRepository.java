@@ -2,13 +2,9 @@ package de.team7.swt.core.persitence;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.util.Assert;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +17,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static de.team7.swt.core.persitence.IdUtils.getAccessorDeep;
+import static de.team7.swt.core.persitence.IdUtils.getId;
+import static de.team7.swt.core.persitence.IdUtils.setId;
 
 /**
  * An in-memory implementation of Spring's {@literal CrudRepository} which stores entities in a {@literal HashMap}.
@@ -55,101 +55,6 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
 
         store.put(id, entity);
         return entity;
-    }
-
-    @SuppressWarnings("unchecked")
-    private ID getId(Object entity) {
-        try {
-            Field idField = getIdField(entity);
-            if (null != idField) {
-                return (ID) idField.get(entity);
-            }
-
-            Method idGetter = getIdGetter(entity);
-            if (null != idGetter) {
-                return (ID) idGetter.invoke(entity);
-            }
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(
-                String.format("Couldn't get id accessor from entity [%s]", entity.getClass().getCanonicalName()), e
-            );
-        }
-
-        throw new IllegalArgumentException(String.format(
-            "Entity [%s] has neither field nor method annotated with @Id", entity.getClass().getCanonicalName()
-        ));
-    }
-
-    private void setId(Object entity, ID id) {
-        try {
-            Field idField = getIdField(entity);
-            if (null != idField) {
-                idField.set(entity, id);
-                return;
-            }
-
-            Method idGetter = getIdGetter(entity);
-            if (null != idGetter) {
-                Method idSetter = getIdSetter(entity, id);
-                idSetter.invoke(entity, id);
-            }
-        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            throw new RuntimeException(
-                String.format("Couldn't set id in entity [%s]", entity.getClass().getCanonicalName()), e
-            );
-        }
-    }
-
-    private Field getIdField(Object entity) {
-        return getAccessorDeep(
-            entity,
-            Class::getDeclaredFields,
-            this::hasIdAnnotation
-        );
-    }
-
-    private Method getIdGetter(Object entity) {
-        return getAccessorDeep(
-            entity,
-            Class::getDeclaredMethods,
-            this::hasIdAnnotation
-        );
-    }
-
-    private boolean hasIdAnnotation(AccessibleObject accessible) {
-        return Objects.nonNull(accessible.getAnnotation(Id.class));
-    }
-
-    private <M extends AccessibleObject> M getAccessorDeep(Object entity, Function<Class<?>, M[]> accessor,
-                                                           Predicate<M> accessorMatcher) {
-        for (Class<?> entityClass = entity.getClass(); null != entityClass; entityClass = entityClass.getSuperclass()) {
-            M member = getAccessor(entityClass, accessor, accessorMatcher);
-            if (null != member) {
-                return member;
-            }
-        }
-
-        return null;
-    }
-
-    private <M extends AccessibleObject> M getAccessor(Class<?> entityClass, Function<Class<?>, M[]> accessors,
-                                                       Predicate<M> accessorMatcher) {
-        for (M member : accessors.apply(entityClass)) {
-            if (accessorMatcher.test(member)) {
-                member.setAccessible(true);
-                return member;
-            }
-        }
-
-        return null;
-    }
-
-    private Method getIdSetter(Object entity, ID id) throws NoSuchMethodException {
-        Method idGetter = getIdGetter(entity);
-        String setterName = idGetter.getName().replaceFirst("^get", "set");
-        Method setter = entity.getClass().getMethod(setterName, id.getClass());
-        setter.setAccessible(true);
-        return setter;
     }
 
     /**
