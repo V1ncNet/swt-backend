@@ -70,7 +70,7 @@ class InMemoryRepositoryTest {
         Entity saved = repository.save(entity);
 
         assertNotNull(saved);
-        assertNotNull(saved.getId());
+        assertEquals(1, saved.getId());
     }
 
     @Test
@@ -120,7 +120,7 @@ class InMemoryRepositoryTest {
         assertNotNull(saved);
         assertEquals(2, saved.size());
         assertEquals(ID, saved.get(0).getId());
-        assertNotNull(saved.get(1).getId());
+        assertEquals(ID + 1, saved.get(1).getId());
     }
 
     @Test
@@ -420,6 +420,38 @@ class InMemoryRepositoryTest {
 
         assertNotNull(retrieved);
         assertTrue(retrieved.isEmpty());
+    }
+
+    @Test
+    void saveMultipleNullIds_shouldAutoIncrementId() {
+        List<Entity> entities = Arrays.asList(new Entity(), new Entity(), new Entity());
+
+        repository.saveAll(entities);
+        List<Integer> savedIds = repository.findAll()
+            .stream()
+            .map(Entity::getId)
+            .sorted()
+            .collect(Collectors.toList());
+
+        assertEquals(3, savedIds.size());
+        assertEquals(1, savedIds.get(0));
+        assertEquals(2, savedIds.get(1));
+        assertEquals(3, savedIds.get(2));
+    }
+
+    @Test
+    void saveOnceThenDeleteThenSaveTwice_shouldAutoIncrementIds() {
+        Entity once = new Entity();
+
+        once = repository.save(once);
+        repository.delete(once);
+
+        Entity twice = new Entity();
+
+        twice = repository.save(twice);
+
+        assertNotNull(twice);
+        assertEquals(2, twice.getId());
     }
 
     @Data
