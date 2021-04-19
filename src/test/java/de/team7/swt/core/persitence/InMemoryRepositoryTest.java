@@ -5,10 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.annotation.Id;
@@ -18,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,13 +32,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class InMemoryRepositoryTest {
 
-    private static final EntityId ID = EntityId.next();
+    private static final int ID = 42;
+    private static final UnaryOperator<Integer> incrementer = previous -> {
+        if (null == previous) {
+            return 1;
+        }
 
-    InMemoryRepository<Entity, EntityId> repository;
+        return ++previous;
+    };
+
+    InMemoryRepository<Entity, Integer> repository;
 
     @BeforeEach
     void setUp() {
-        repository = new InMemoryRepository<>(previous -> EntityId.next());
+        repository = new InMemoryRepository<>(incrementer);
     }
 
     @Test
@@ -70,8 +75,8 @@ class InMemoryRepositoryTest {
 
     @Test
     void saveNullIdViaMethodAccessor_shouldStoreEntity() {
-        InMemoryRepository<EntityIdGetterAccessor, EntityId> repository =
-            new InMemoryRepository<>(previous -> EntityId.next());
+        InMemoryRepository<EntityIdGetterAccessor, Integer> repository =
+            new InMemoryRepository<>(incrementer);
         EntityIdGetterAccessor entity = new EntityIdGetterAccessor();
 
         EntityIdGetterAccessor saved = repository.save(entity);
@@ -82,7 +87,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void missingIdAccessor_shouldThrowException() {
-        InMemoryRepository<Object, EntityId> repository = new InMemoryRepository<>(previous -> EntityId.next());
+        InMemoryRepository<Object, Integer> repository = new InMemoryRepository<>(incrementer);
         Object entity = new Object();
 
         assertThrows(IllegalArgumentException.class, () -> repository.save(entity));
@@ -160,7 +165,7 @@ class InMemoryRepositoryTest {
         Entity entity = new Entity(ID);
 
         repository.save(entity);
-        boolean exist = repository.existsById(EntityId.next());
+        boolean exist = repository.existsById(1337);
 
         assertFalse(exist);
     }
@@ -201,7 +206,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void emptyRepositoryThenListById_shouldThrowException() {
-        List<EntityId> ids = Collections.singletonList(ID);
+        List<Integer> ids = Collections.singletonList(ID);
 
         assertThrows(NoResultException.class, () -> repository.findAllById(ids));
     }
@@ -212,12 +217,12 @@ class InMemoryRepositoryTest {
 
         repository.saveAll(entities);
 
-        assertThrows(NoResultException.class, () -> repository.findAllById(Arrays.asList(ID, EntityId.next())));
+        assertThrows(NoResultException.class, () -> repository.findAllById(Arrays.asList(ID, 1337)));
     }
 
     @Test
     void saveMultipleThenListById_shouldRetrieveMultiple() {
-        EntityId ID1 = EntityId.next();
+        int ID1 = 1337;
         List<Entity> entities = Arrays.asList(new Entity(ID), new Entity(ID1));
 
         repository.saveAll(entities);
@@ -270,8 +275,8 @@ class InMemoryRepositoryTest {
 
     @Test
     void deleteNewEntity_shouldDoNothing() {
-        InMemoryRepository<EntityIdGetterAccessor, EntityId> repository =
-            new InMemoryRepository<>(previous -> EntityId.next());
+        InMemoryRepository<EntityIdGetterAccessor, Integer> repository =
+            new InMemoryRepository<>(incrementer);
         EntityIdGetterAccessor entity = new EntityIdGetterAccessor();
 
         repository.delete(entity);
@@ -279,7 +284,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void saveOnceThenDeleteOther_shouldDoNothing() {
-        EntityId ID2 = EntityId.next();
+        int ID2 = 1337;
         Entity entity = new Entity(ID);
 
         repository.save(entity);
@@ -312,8 +317,8 @@ class InMemoryRepositoryTest {
     @Test
     void saveMultipleThenDelete_shouldDeleteMultiple() {
         Entity e1 = new Entity(ID);
-        Entity e2 = new Entity(EntityId.next());
-        Entity e3 = new Entity(EntityId.next());
+        Entity e2 = new Entity(1337);
+        Entity e3 = new Entity(420);
 
         repository.saveAll(Arrays.asList(e1, e2, e3));
         repository.deleteAll(Arrays.asList(e1, e2));
@@ -324,7 +329,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void saveMultipleThenDeleteAll_shouldClearRepository() {
-        List<Entity> entities = Arrays.asList(new Entity(EntityId.next()), new Entity(EntityId.next()));
+        List<Entity> entities = Arrays.asList(new Entity(1337), new Entity(420));
 
         repository.saveAll(entities);
         repository.deleteAll();
@@ -375,7 +380,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void saveDuplicateThenRetrieveUnique_shouldThrowException() {
-        List<Entity> entities = Arrays.asList(new Entity(EntityId.next(), "foo"), new Entity(EntityId.next(), "foo"));
+        List<Entity> entities = Arrays.asList(new Entity(420, "foo"), new Entity(1337, "foo"));
 
         repository.saveAll(entities);
 
@@ -417,18 +422,6 @@ class InMemoryRepositoryTest {
         assertTrue(retrieved.isEmpty());
     }
 
-    @Value
-    static class EntityId {
-
-        @NonNull
-        UUID value;
-
-        static EntityId next() {
-            UUID value = UUID.randomUUID();
-            return new EntityId(value);
-        }
-    }
-
     @Data
     @NoArgsConstructor(force = true)
     @RequiredArgsConstructor
@@ -437,7 +430,7 @@ class InMemoryRepositoryTest {
 
         @Id
         @Nullable
-        private final EntityId id;
+        private final Integer id;
         private String name;
     }
 
@@ -450,15 +443,15 @@ class InMemoryRepositoryTest {
 
         private int quantity;
 
-        public SubEntity(EntityId id) {
+        public SubEntity(Integer id) {
             this(id, null, 0);
         }
 
-        public SubEntity(EntityId id, String name) {
+        public SubEntity(Integer id, String name) {
             this(id, name, 0);
         }
 
-        public SubEntity(EntityId id, String name, int quantity) {
+        public SubEntity(Integer id, String name, int quantity) {
             super(id, name);
             this.quantity = quantity;
         }
@@ -470,6 +463,6 @@ class InMemoryRepositoryTest {
     static class EntityIdGetterAccessor {
 
         @Getter(onMethod_ = @Id)
-        private EntityId id;
+        private int id;
     }
 }
