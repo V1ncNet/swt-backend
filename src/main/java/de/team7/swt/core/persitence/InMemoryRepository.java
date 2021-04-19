@@ -45,9 +45,10 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("unchecked")
     public <S extends T> S save(S entity) {
         Assert.notNull(entity, ENTITY_MUST_NOT_BE_NULL);
-        ID id = getId(entity);
+        ID id = (ID) getId(entity);
         if (null == id) {
             id = nextIdSupplier.get();
             setId(entity, id);
@@ -136,10 +137,11 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void delete(T entity) {
         Assert.notNull(entity, ENTITY_MUST_NOT_BE_NULL);
 
-        ID id = getId(entity);
+        ID id = (ID) getId(entity);
         if (null == id) {
             return;
         }

@@ -26,22 +26,20 @@ public final class IdUtils {
      * Returns the ID of the given entity which must contain an accessor annotated with {@link Id}.
      *
      * @param entity must not be {@literal null}
-     * @param <ID>   the type of the identifier
      * @return the entity's ID
      * @throws IllegalArgumentException in case the entity doesn't contain an applicable id accessor
      */
     @Nullable
-    @SuppressWarnings("unchecked")
-    public static <ID> ID getId(@NonNull Object entity) {
+    public static Object getId(@NonNull Object entity) {
         try {
             Field idField = getIdField(entity);
             if (null != idField) {
-                return (ID) idField.get(entity);
+                return idField.get(entity);
             }
 
             Method idGetter = getIdGetter(entity);
             if (null != idGetter) {
-                return (ID) idGetter.invoke(entity);
+                return idGetter.invoke(entity);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(
@@ -54,7 +52,7 @@ public final class IdUtils {
         ));
     }
 
-    static <ID> void setId(@NonNull Object entity, @NonNull ID id) {
+    static void setId(@NonNull Object entity, @NonNull Object id) {
         try {
             Field idField = getIdField(entity);
             if (null != idField) {
@@ -118,7 +116,7 @@ public final class IdUtils {
         return null;
     }
 
-    private static <ID> Method getIdSetter(Object entity, ID id) throws NoSuchMethodException {
+    private static Method getIdSetter(Object entity, Object id) throws NoSuchMethodException {
         Method idGetter = getIdGetter(entity);
         String setterName = idGetter.getName().replaceFirst("^get", "set");
         Method setter = entity.getClass().getMethod(setterName, id.getClass());
