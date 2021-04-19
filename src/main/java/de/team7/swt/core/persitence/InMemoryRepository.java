@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -39,7 +39,9 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
     protected final Map<ID, T> store = new HashMap<>();
 
     @NonNull
-    private final Supplier<ID> nextIdSupplier;
+    private final UnaryOperator<ID> nextId;
+
+    private ID previousId;
 
     /**
      * {@inheritDoc}
@@ -50,11 +52,12 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
         Assert.notNull(entity, ENTITY_MUST_NOT_BE_NULL);
         ID id = (ID) getId(entity);
         if (null == id) {
-            id = nextIdSupplier.get();
+            id = nextId.apply(previousId);
             setId(entity, id);
         }
 
         store.put(id, entity);
+        previousId = id;
         return entity;
     }
 

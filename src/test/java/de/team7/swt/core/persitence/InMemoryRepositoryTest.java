@@ -40,7 +40,7 @@ class InMemoryRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repository = new InMemoryRepository<>(EntityId::next);
+        repository = new InMemoryRepository<>(previous -> EntityId.next());
     }
 
     @Test
@@ -70,7 +70,8 @@ class InMemoryRepositoryTest {
 
     @Test
     void saveNullIdViaMethodAccessor_shouldStoreEntity() {
-        InMemoryRepository<EntityIdGetterAccessor, EntityId> repository = new InMemoryRepository<>(EntityId::next);
+        InMemoryRepository<EntityIdGetterAccessor, EntityId> repository =
+            new InMemoryRepository<>(previous -> EntityId.next());
         EntityIdGetterAccessor entity = new EntityIdGetterAccessor();
 
         EntityIdGetterAccessor saved = repository.save(entity);
@@ -81,7 +82,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void missingIdAccessor_shouldThrowException() {
-        InMemoryRepository<Object, EntityId> repository = new InMemoryRepository<>(EntityId::next);
+        InMemoryRepository<Object, EntityId> repository = new InMemoryRepository<>(previous -> EntityId.next());
         Object entity = new Object();
 
         assertThrows(IllegalArgumentException.class, () -> repository.save(entity));
@@ -269,7 +270,8 @@ class InMemoryRepositoryTest {
 
     @Test
     void deleteNewEntity_shouldDoNothing() {
-        InMemoryRepository<EntityIdGetterAccessor, EntityId> repository = new InMemoryRepository<>(EntityId::next);
+        InMemoryRepository<EntityIdGetterAccessor, EntityId> repository =
+            new InMemoryRepository<>(previous -> EntityId.next());
         EntityIdGetterAccessor entity = new EntityIdGetterAccessor();
 
         repository.delete(entity);
