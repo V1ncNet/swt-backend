@@ -1,4 +1,4 @@
-package de.team7.swt.core.persitence;
+package de.team7.swt.core.persistence;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,8 +8,8 @@ import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
-import static de.team7.swt.core.persitence.IdUtils.getId;
-import static de.team7.swt.core.persitence.IdUtils.setId;
+import static de.team7.swt.core.persistence.IdUtils.getId;
+import static de.team7.swt.core.persistence.IdUtils.setId;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

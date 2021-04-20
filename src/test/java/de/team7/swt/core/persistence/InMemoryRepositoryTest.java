@@ -1,4 +1,4 @@
-package de.team7.swt.core.persitence;
+package de.team7.swt.core.persistence;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

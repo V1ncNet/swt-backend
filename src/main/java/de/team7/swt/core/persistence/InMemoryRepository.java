@@ -1,4 +1,4 @@
-package de.team7.swt.core.persitence;
+package de.team7.swt.core.persistence;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static de.team7.swt.core.persitence.IdUtils.getAccessorDeep;
-import static de.team7.swt.core.persitence.IdUtils.getId;
-import static de.team7.swt.core.persitence.IdUtils.setId;
+import static de.team7.swt.core.persistence.IdUtils.getAccessorDeep;
+import static de.team7.swt.core.persistence.IdUtils.getId;
+import static de.team7.swt.core.persistence.IdUtils.setId;
 
 /**
  * An in-memory implementation of Spring's {@literal CrudRepository} which stores entities in a {@literal HashMap}.
