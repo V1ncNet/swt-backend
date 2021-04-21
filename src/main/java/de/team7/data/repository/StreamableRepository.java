@@ -1,4 +1,4 @@
-package de.team7.swt.core.persistence;
+package de.team7.data.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;

@@ -1,5 +1,8 @@
-package de.team7.swt.core.persistence;
+package de.team7.data.inmemory.repository.support;
 
+import de.team7.data.repository.NoResultException;
+import de.team7.data.repository.NonUniqueResultException;
+import de.team7.data.repository.StreamableRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Streamable;
@@ -15,9 +18,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-import static de.team7.swt.core.persistence.IdUtils.getAccessorDeep;
-import static de.team7.swt.core.persistence.IdUtils.getId;
-import static de.team7.swt.core.persistence.IdUtils.setId;
+import static de.team7.data.inmemory.repository.support.IdUtils.getAccessorDeep;
+import static de.team7.data.inmemory.repository.support.IdUtils.getId;
+import static de.team7.data.inmemory.repository.support.IdUtils.setId;
 
 /**
  * An in-memory implementation of Spring's {@literal CrudRepository} which stores entities in a {@literal HashMap}.

@@ -1,5 +1,7 @@
-package de.team7.swt.core.persistence;
+package de.team7.data.inmemory.repository.support;
 
+import de.team7.data.repository.NoResultException;
+import de.team7.data.repository.NonUniqueResultException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

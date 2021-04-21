@@ -1,4 +1,4 @@
-package de.team7.swt.core.domain;
+package de.team7.data.domain;
 
 import lombok.AccessLevel;
 import lombok.NonNull;

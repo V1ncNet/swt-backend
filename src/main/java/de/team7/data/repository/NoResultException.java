@@ -1,4 +1,4 @@
-package de.team7.swt.core.persistence;
+package de.team7.data.repository;
 
 import lombok.NoArgsConstructor;
 
