@@ -46,17 +46,21 @@ public @interface EnableInMemoryRepositories {
     Class<?>[] basePackageClasses() default {};
 
     /**
-     * @return which types are eligible for component scanning
+     * Specifies which types are eligible for component scanning. Further narrows the set of candidate components from
+     * everything in {@link #basePackages()} to everything in the base packages that matches the given filter or
+     * filters.
      */
     Filter[] includeFilters() default {};
 
     /**
-     * @return which types are not eligible for component scanning
+     * Specifies which types are not eligible for component scanning.
      */
     Filter[] excludeFilters() default {};
 
     /**
-     * @return postfix to be used when looking up custom repository implementations.
+     * Returns the postfix to be used when looking up custom repository implementations. Defaults to {@literal Impl}. So
+     * for a repository named {@code PersonRepository} the corresponding implementation class will be looked up scanning
+     * for {@code PersonRepositoryImpl}.
      */
     String repositoryImplementationPostfix() default "Impl";
 
@@ -68,7 +72,7 @@ public @interface EnableInMemoryRepositories {
     String namedQueriesLocation() default "";
 
     /**
-     * @return the {@link FactoryBean} class to be used for each repository instance. Defaults to
+     * Returns the {@link FactoryBean} class to be used for each repository instance. Defaults to
      * {@link InMemoryRepositoryFactoryBean}.
      */
     Class<?> repositoryFactoryBeanClass() default InMemoryRepositoryFactoryBean.class;

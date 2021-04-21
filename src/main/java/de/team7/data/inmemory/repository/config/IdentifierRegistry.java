@@ -27,7 +27,7 @@ public class IdentifierRegistry implements Supplier<IdentifierMapping> {
     }
 
     /**
-     * @return a mapping of all registrations
+     * Returns a mapping of all registrations.
      */
     @Override
     public IdentifierMapping get() {

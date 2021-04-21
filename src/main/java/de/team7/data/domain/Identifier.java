@@ -34,8 +34,14 @@ public abstract class Identifier implements Comparable<Identifier>, Serializable
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Identifier that = (Identifier) o;
         return Objects.equals(this.id, that.id);
     }
