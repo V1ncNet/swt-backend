@@ -62,10 +62,11 @@ public class InMemoryRepository<T, ID> implements StreamableRepository<T, ID> {
      * {@inheritDoc}
      */
     @Override
-    public <S extends T> Streamable<S> saveAll(Iterable<S> entities) {
+    public <S extends T> List<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, ENTITIES_MUST_NOT_BE_NULL);
         return Streamable.of(entities)
-            .map(this::save);
+            .map(this::save)
+            .toList();
     }
 
     /**

@@ -17,12 +17,6 @@ public interface StreamableRepository<T, ID> extends CrudRepository<T, ID> {
      * {@inheritDoc}
      */
     @Override
-    <S extends T> Streamable<S> saveAll(Iterable<S> entities);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     Streamable<T> findAll();
 
     /**
