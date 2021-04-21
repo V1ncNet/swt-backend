@@ -12,7 +12,6 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 import org.springframework.data.util.ReflectionUtils;
 import org.springframework.util.Assert;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -31,20 +30,14 @@ public class InMemoryRepositoryFactory extends RepositoryFactorySupport {
 
     @Override
     protected InMemoryRepository<?, ?> getTargetRepository(RepositoryInformation metadata) {
-        try {
-            Class<?> domainType = metadata.getDomainType();
-            DefaultConstructorIdentifierGenerator<Identifier> generator =
-                new DefaultConstructorIdentifierGenerator<>(domainType);
+        Class<?> domainType = metadata.getDomainType();
+        DefaultConstructorIdentifierGenerator<Identifier> generator =
+            new DefaultConstructorIdentifierGenerator<>(domainType);
 
-            Object repository = getTargetRepositoryViaReflection(metadata, generator);
-            Assert.isInstanceOf(InMemoryRepository.class, repository);
+        Object repository = getTargetRepositoryViaReflection(metadata, generator);
+        Assert.isInstanceOf(InMemoryRepository.class, repository);
 
-            return (InMemoryRepository<?, ?>) repository;
-        } catch (NoSuchElementException e) {
-            throw new IllegalStateException(
-                "No suitable constructor found to instantiate a new identifier generator", e
-            );
-        }
+        return (InMemoryRepository<?, ?>) repository;
     }
 
     @Override
@@ -60,7 +53,10 @@ public class InMemoryRepositoryFactory extends RepositoryFactorySupport {
         @Override
         public ID createIdentifier() {
             EntityInformation<?, ID> entityInformation = getEntityInformation(domainEntity);
-            return getEntityIdentifierViaReflection(entityInformation.getIdType()).get();
+            return getEntityIdentifierViaReflection(entityInformation.getIdType())
+                .orElseThrow(() -> new IllegalStateException(
+                    "No suitable constructor found to instantiate a new identifier generator"
+                ));
         }
 
         @SuppressWarnings("unchecked")
