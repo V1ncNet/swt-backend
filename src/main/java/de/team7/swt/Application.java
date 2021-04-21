@@ -1,6 +1,5 @@
 package de.team7.swt;
 
-import de.team7.data.inmemory.repository.config.EnableInMemoryRepositories;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Vincent Nadoll
  */
 @SpringBootApplication
-@EnableInMemoryRepositories
 public class Application {
 
     public static void main(String[] args) {
