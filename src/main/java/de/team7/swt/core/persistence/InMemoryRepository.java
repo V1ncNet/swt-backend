@@ -197,7 +197,7 @@ public class InMemoryRepository<T, ID> implements StreamableRepository<T, ID> {
     }
 
     private <F> boolean has(String property, F value, T entity) throws NoSuchFieldException, IllegalAccessException {
-        Field field = getAccessorDeep(entity, Class::getDeclaredFields, contains(property));
+        Field field = getAccessorDeep(entity.getClass(), Class::getDeclaredFields, contains(property));
         if (null == field) {
             throw new NoSuchFieldException(
                 String.format("Entity [%s] has no property [%s]", entity.getClass().getCanonicalName(), property)

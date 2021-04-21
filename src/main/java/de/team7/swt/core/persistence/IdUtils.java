@@ -32,12 +32,14 @@ public final class IdUtils {
     @Nullable
     public static Object getId(@NonNull Object entity) {
         try {
-            Field idField = getIdField(entity);
+            Class<?> entityClass = entity.getClass();
+
+            Field idField = getIdField(entityClass);
             if (null != idField) {
                 return idField.get(entity);
             }
 
-            Method idGetter = getIdGetter(entity);
+            Method idGetter = getIdGetter(entityClass);
             if (null != idGetter) {
                 return idGetter.invoke(entity);
             }
@@ -54,15 +56,17 @@ public final class IdUtils {
 
     static void setId(@NonNull Object entity, @NonNull Object id) {
         try {
-            Field idField = getIdField(entity);
+            Class<?> entityClass = entity.getClass();
+
+            Field idField = getIdField(entityClass);
             if (null != idField) {
                 idField.set(entity, id);
                 return;
             }
 
-            Method idGetter = getIdGetter(entity);
+            Method idGetter = getIdGetter(entityClass);
             if (null != idGetter) {
-                Method idSetter = getIdSetter(entity, id);
+                Method idSetter = getIdSetter(entityClass, id);
                 idSetter.invoke(entity, id);
             }
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
@@ -72,17 +76,17 @@ public final class IdUtils {
         }
     }
 
-    private static Field getIdField(Object entity) {
+    static Field getIdField(Class<?> domainClass) {
         return getAccessorDeep(
-            entity,
+            domainClass,
             Class::getDeclaredFields,
             IdUtils::hasIdAnnotation
         );
     }
 
-    private static Method getIdGetter(Object entity) {
+    static Method getIdGetter(Class<?> domainClass) {
         return getAccessorDeep(
-            entity,
+            domainClass,
             Class::getDeclaredMethods,
             IdUtils::hasIdAnnotation
         );
@@ -92,9 +96,9 @@ public final class IdUtils {
         return Objects.nonNull(accessible.getAnnotation(Id.class));
     }
 
-    static <M extends AccessibleObject> M getAccessorDeep(Object entity, Function<Class<?>, M[]> accessor,
+    static <M extends AccessibleObject> M getAccessorDeep(Class<?> domainClass, Function<Class<?>, M[]> accessor,
                                                           Predicate<M> accessorMatcher) {
-        for (Class<?> entityClass = entity.getClass(); null != entityClass; entityClass = entityClass.getSuperclass()) {
+        for (Class<?> entityClass = domainClass; null != entityClass; entityClass = entityClass.getSuperclass()) {
             M member = getAccessor(entityClass, accessor, accessorMatcher);
             if (null != member) {
                 return member;
@@ -116,10 +120,10 @@ public final class IdUtils {
         return null;
     }
 
-    private static Method getIdSetter(Object entity, Object id) throws NoSuchMethodException {
-        Method idGetter = getIdGetter(entity);
+    private static Method getIdSetter(Class<?> domainClass, Object id) throws NoSuchMethodException {
+        Method idGetter = getIdGetter(domainClass);
         String setterName = idGetter.getName().replaceFirst("^get", "set");
-        Method setter = entity.getClass().getMethod(setterName, id.getClass());
+        Method setter = domainClass.getMethod(setterName, id.getClass());
         setter.setAccessible(true);
         return setter;
     }
