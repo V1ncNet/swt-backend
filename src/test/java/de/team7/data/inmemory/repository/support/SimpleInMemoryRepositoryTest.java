@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Vincent Nadoll
  */
-class InMemoryRepositoryTest {
+class SimpleInMemoryRepositoryTest {
 
     private static final int ID = 42;
     private static final UnaryOperator<Integer> incrementer = previous -> {
@@ -43,11 +43,11 @@ class InMemoryRepositoryTest {
         return ++previous;
     };
 
-    InMemoryRepository<Entity, Integer> repository;
+    SimpleInMemoryRepository<Entity, Integer> repository;
 
     @BeforeEach
     void setUp() {
-        repository = new InMemoryRepository<>(incrementer);
+        repository = new SimpleInMemoryRepository<>(incrementer);
     }
 
     @Test
@@ -77,8 +77,8 @@ class InMemoryRepositoryTest {
 
     @Test
     void saveNullIdViaMethodAccessor_shouldStoreEntity() {
-        InMemoryRepository<EntityIdGetterAccessor, Integer> repository =
-            new InMemoryRepository<>(incrementer);
+        SimpleInMemoryRepository<EntityIdGetterAccessor, Integer> repository =
+            new SimpleInMemoryRepository<>(incrementer);
         EntityIdGetterAccessor entity = new EntityIdGetterAccessor();
 
         EntityIdGetterAccessor saved = repository.save(entity);
@@ -89,7 +89,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void missingIdAccessor_shouldThrowException() {
-        InMemoryRepository<Object, Integer> repository = new InMemoryRepository<>(incrementer);
+        SimpleInMemoryRepository<Object, Integer> repository = new SimpleInMemoryRepository<>(incrementer);
         Object entity = new Object();
 
         assertThrows(IllegalArgumentException.class, () -> repository.save(entity));
@@ -277,8 +277,8 @@ class InMemoryRepositoryTest {
 
     @Test
     void deleteNewEntity_shouldDoNothing() {
-        InMemoryRepository<EntityIdGetterAccessor, Integer> repository =
-            new InMemoryRepository<>(incrementer);
+        SimpleInMemoryRepository<EntityIdGetterAccessor, Integer> repository =
+            new SimpleInMemoryRepository<>(incrementer);
         EntityIdGetterAccessor entity = new EntityIdGetterAccessor();
 
         repository.delete(entity);

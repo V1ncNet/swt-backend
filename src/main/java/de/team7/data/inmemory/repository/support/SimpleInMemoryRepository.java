@@ -1,11 +1,12 @@
 package de.team7.data.inmemory.repository.support;
 
+import de.team7.data.inmemory.repository.InMemoryRepository;
 import de.team7.data.repository.NoResultException;
 import de.team7.data.repository.NonUniqueResultException;
-import de.team7.data.repository.StreamableRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Streamable;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
@@ -29,8 +30,9 @@ import static de.team7.data.inmemory.repository.support.IdUtils.setId;
  * @param <ID> the type of the entity's identifier
  * @author Vincent Nadoll
  */
+@Repository
 @RequiredArgsConstructor
-public class InMemoryRepository<T, ID> implements StreamableRepository<T, ID> {
+public class SimpleInMemoryRepository<T, ID> implements InMemoryRepository<T, ID> {
 
     public static final String ENTITY_MUST_NOT_BE_NULL = "Entity must not be null";
     public static final String ENTITIES_MUST_NOT_BE_NULL = "Entities must not be null";
