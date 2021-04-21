@@ -1,5 +1,6 @@
 package de.team7.data.inmemory.repository.support;
 
+import de.team7.data.domain.PrimaryKeyGenerator;
 import de.team7.data.repository.NoResultException;
 import de.team7.data.repository.NonUniqueResultException;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SimpleInMemoryRepositoryTest {
 
     private static final int ID = 42;
-    private static final UnaryOperator<Integer> incrementer = previous -> {
+    private static final PrimaryKeyGenerator<Integer> incrementer = previous -> {
         if (null == previous) {
             return 1;
         }

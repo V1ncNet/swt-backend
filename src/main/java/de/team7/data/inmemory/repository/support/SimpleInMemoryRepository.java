@@ -1,5 +1,6 @@
 package de.team7.data.inmemory.repository.support;
 
+import de.team7.data.domain.PrimaryKeyGenerator;
 import de.team7.data.inmemory.repository.InMemoryRepository;
 import de.team7.data.repository.NoResultException;
 import de.team7.data.repository.NonUniqueResultException;
@@ -17,7 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
 
 import static de.team7.data.inmemory.repository.support.IdUtils.getAccessorDeep;
 import static de.team7.data.inmemory.repository.support.IdUtils.getId;
@@ -41,7 +41,7 @@ public class SimpleInMemoryRepository<T, ID> implements InMemoryRepository<T, ID
     protected final Map<ID, T> store = new HashMap<>();
 
     @NonNull
-    private final UnaryOperator<ID> nextId;
+    private final PrimaryKeyGenerator<ID> primaryKeyGenerator;
 
     private ID previousId;
 
@@ -54,7 +54,7 @@ public class SimpleInMemoryRepository<T, ID> implements InMemoryRepository<T, ID
         Assert.notNull(entity, ENTITY_MUST_NOT_BE_NULL);
         ID id = (ID) getId(entity);
         if (null == id) {
-            id = nextId.apply(previousId);
+            id = primaryKeyGenerator.next(previousId);
             setId(entity, id);
         }
 
