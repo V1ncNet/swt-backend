@@ -2,7 +2,9 @@ package de.team7.data.inmemory.repository.support;
 
 import de.team7.data.domain.Identifier;
 import de.team7.data.domain.IdentifierGenerator;
+import de.team7.data.domain.PrimaryKeyGenerator;
 import de.team7.data.inmemory.repository.InMemoryRepository;
+import de.team7.data.inmemory.repository.config.IdentifierMapping;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.repository.core.EntityInformation;
@@ -22,6 +24,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InMemoryRepositoryFactory extends RepositoryFactorySupport {
 
+    private final IdentifierMapping identifierMapping;
+
     @Override
     @SuppressWarnings("unchecked")
     public <T, ID> EntityInformation<T, ID> getEntityInformation(Class<T> domainClass) {
@@ -31,8 +35,13 @@ public class InMemoryRepositoryFactory extends RepositoryFactorySupport {
     @Override
     protected InMemoryRepository<?, ?> getTargetRepository(RepositoryInformation metadata) {
         Class<?> domainType = metadata.getDomainType();
-        DefaultConstructorIdentifierGenerator<Identifier> generator =
-            new DefaultConstructorIdentifierGenerator<>(domainType);
+
+        PrimaryKeyGenerator<?> generator;
+        if (null != identifierMapping) {
+            generator = identifierMapping.get().get(domainType);
+        } else {
+            generator = new DefaultConstructorIdentifierGenerator<>(domainType);
+        }
 
         Object repository = getTargetRepositoryViaReflection(metadata, generator);
         Assert.isInstanceOf(InMemoryRepository.class, repository);
