@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -34,13 +35,15 @@ public final class IdUtils {
         try {
             Class<?> entityClass = entity.getClass();
 
-            Field idField = getIdField(entityClass);
-            if (null != idField) {
+            Optional<Field> field = getIdField(entityClass);
+            if (field.isPresent()) {
+                Field idField = field.get();
                 return idField.get(entity);
             }
 
-            Method idGetter = getIdGetter(entityClass);
-            if (null != idGetter) {
+            Optional<Method> method = getIdGetter(entityClass);
+            if (method.isPresent()) {
+                Method idGetter = method.get();
                 return idGetter.invoke(entity);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -58,25 +61,26 @@ public final class IdUtils {
         try {
             Class<?> entityClass = entity.getClass();
 
-            Field idField = getIdField(entityClass);
-            if (null != idField) {
+            Optional<Field> field = getIdField(entityClass);
+            if (field.isPresent()) {
+                Field idField = field.get();
                 idField.set(entity, id);
                 return;
             }
 
-            Method idGetter = getIdGetter(entityClass);
-            if (null != idGetter) {
+            Optional<Method> idGetter = getIdGetter(entityClass);
+            if (idGetter.isPresent()) {
                 Method idSetter = getIdSetter(entityClass, id);
                 idSetter.invoke(entity, id);
             }
-        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | NoSuchFieldException e) {
             throw new IllegalArgumentException(
                 String.format("Couldn't set id in entity [%s]", entity.getClass().getCanonicalName()), e
             );
         }
     }
 
-    static Field getIdField(Class<?> domainClass) {
+    static Optional<Field> getIdField(Class<?> domainClass) {
         return getAccessorDeep(
             domainClass,
             Class::getDeclaredFields,
@@ -84,7 +88,7 @@ public final class IdUtils {
         );
     }
 
-    static Method getIdGetter(Class<?> domainClass) {
+    static Optional<Method> getIdGetter(Class<?> domainClass) {
         return getAccessorDeep(
             domainClass,
             Class::getDeclaredMethods,
@@ -96,32 +100,34 @@ public final class IdUtils {
         return Objects.nonNull(accessible.getAnnotation(Id.class));
     }
 
-    static <M extends AccessibleObject> M getAccessorDeep(Class<?> domainClass, Function<Class<?>, M[]> accessor,
-                                                          Predicate<M> accessorMatcher) {
+    static <M extends AccessibleObject> Optional<M> getAccessorDeep(Class<?> domainClass,
+                                                                    Function<Class<?>, M[]> accessor,
+                                                                    Predicate<M> accessorMatcher) {
         for (Class<?> entityClass = domainClass; null != entityClass; entityClass = entityClass.getSuperclass()) {
-            M member = getAccessor(entityClass, accessor, accessorMatcher);
-            if (null != member) {
+            Optional<M> member = getAccessor(entityClass, accessor, accessorMatcher);
+            if (member.isPresent()) {
                 return member;
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
-    static <M extends AccessibleObject> M getAccessor(Class<?> entityClass, Function<Class<?>, M[]> accessors,
-                                                      Predicate<M> accessorMatcher) {
+    static <M extends AccessibleObject> Optional<M> getAccessor(Class<?> entityClass, Function<Class<?>, M[]> accessors,
+                                                                Predicate<M> accessorMatcher) {
         for (M member : accessors.apply(entityClass)) {
             if (accessorMatcher.test(member)) {
                 member.setAccessible(true);
-                return member;
+                return Optional.of(member);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
-    private static Method getIdSetter(Class<?> domainClass, Object id) throws NoSuchMethodException {
-        Method idGetter = getIdGetter(domainClass);
+    private static Method getIdSetter(Class<?> domainClass, Object id)
+        throws NoSuchFieldException, NoSuchMethodException {
+        Method idGetter = getIdGetter(domainClass).orElseThrow(NoSuchFieldException::new);
         String setterName = idGetter.getName().replaceFirst("^get", "set");
         Method setter = domainClass.getMethod(setterName, id.getClass());
         setter.setAccessible(true);
