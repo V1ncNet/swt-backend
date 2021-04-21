@@ -115,7 +115,7 @@ class InMemoryRepositoryTest {
     void saveAll_shouldStoreEntities() {
         List<Entity> entities = Arrays.asList(new Entity(ID), new Entity());
 
-        List<Entity> saved = repository.saveAll(entities);
+        List<Entity> saved = repository.saveAll(entities).toList();
 
         assertNotNull(saved);
         assertEquals(2, saved.size());
@@ -182,7 +182,7 @@ class InMemoryRepositoryTest {
 
     @Test
     void emptyRepository_shouldReturnEmptyList() {
-        List<Entity> list = repository.findAll();
+        List<Entity> list = repository.findAll().toList();
 
         assertNotNull(list);
         assertEquals(0, list.size());
@@ -193,7 +193,7 @@ class InMemoryRepositoryTest {
         Entity entity = new Entity();
 
         repository.save(entity);
-        List<Entity> list = repository.findAll();
+        List<Entity> list = repository.findAll().toList();
 
         assertNotNull(list);
         assertEquals(1, list.size());
@@ -208,16 +208,16 @@ class InMemoryRepositoryTest {
     void emptyRepositoryThenListById_shouldThrowException() {
         List<Integer> ids = Collections.singletonList(ID);
 
-        assertThrows(NoResultException.class, () -> repository.findAllById(ids));
+        assertThrows(NoResultException.class, () -> repository.findAllById(ids).toSet());
     }
 
     @Test
     void saveMultipleThenListOtherIds_shouldThrowException() {
         List<Entity> entities = Arrays.asList(new Entity(ID), new Entity());
 
-        repository.saveAll(entities);
+        repository.saveAll(entities).toSet();
 
-        assertThrows(NoResultException.class, () -> repository.findAllById(Arrays.asList(ID, 1337)));
+        assertThrows(NoResultException.class, () -> repository.findAllById(Arrays.asList(ID, 1337)).toSet());
     }
 
     @Test
@@ -225,8 +225,8 @@ class InMemoryRepositoryTest {
         int ID1 = 1337;
         List<Entity> entities = Arrays.asList(new Entity(ID), new Entity(ID1));
 
-        repository.saveAll(entities);
-        List<Entity> retrieved = repository.findAllById(Arrays.asList(ID, ID1));
+        repository.saveAll(entities).toSet();
+        List<Entity> retrieved = repository.findAllById(Arrays.asList(ID, ID1)).toList();
 
         assertNotNull(retrieved);
         assertEquals(2, retrieved.size());
@@ -320,7 +320,7 @@ class InMemoryRepositoryTest {
         Entity e2 = new Entity(1337);
         Entity e3 = new Entity(420);
 
-        repository.saveAll(Arrays.asList(e1, e2, e3));
+        repository.saveAll(Arrays.asList(e1, e2, e3)).toSet();
         repository.deleteAll(Arrays.asList(e1, e2));
 
         assertEquals(1, repository.count());
@@ -331,7 +331,7 @@ class InMemoryRepositoryTest {
     void saveMultipleThenDeleteAll_shouldClearRepository() {
         List<Entity> entities = Arrays.asList(new Entity(1337), new Entity(420));
 
-        repository.saveAll(entities);
+        repository.saveAll(entities).toSet();
         repository.deleteAll();
 
         assertEquals(0, repository.count());
@@ -347,12 +347,12 @@ class InMemoryRepositoryTest {
         Entity entity = new Entity();
 
         repository.save(entity);
-        assertThrows(RuntimeException.class, () -> repository.findAllBy("foo", null).collect(Collectors.toList()));
+        assertThrows(RuntimeException.class, () -> repository.findAllBy("foo", null).toSet());
     }
 
     @Test
     void findAllInEmptyRepository_shouldRetrieveEmptyResult() {
-        Stream<Entity> resultStream = repository.findAllBy("foo", null);
+        Stream<Entity> resultStream = repository.findAllBy("foo", null).stream();
 
         assertNotNull(resultStream);
         assertEquals(0, resultStream.count());
@@ -366,8 +366,8 @@ class InMemoryRepositoryTest {
             new Entity(null, "bar")
         );
 
-        repository.saveAll(entities);
-        List<Entity> resultStream = repository.findAllBy("name", "foo").collect(Collectors.toList());
+        repository.saveAll(entities).toSet();
+        List<Entity> resultStream = repository.findAllBy("name", "foo").toList();
 
         assertEquals(3, repository.count());
         assertEquals(2, resultStream.size());
@@ -382,7 +382,7 @@ class InMemoryRepositoryTest {
     void saveDuplicateThenRetrieveUnique_shouldThrowException() {
         List<Entity> entities = Arrays.asList(new Entity(420, "foo"), new Entity(1337, "foo"));
 
-        repository.saveAll(entities);
+        repository.saveAll(entities).toSet();
 
         assertThrows(NonUniqueResultException.class, () -> repository.findUniqueBy("name", "foo"));
     }
@@ -426,7 +426,7 @@ class InMemoryRepositoryTest {
     void saveMultipleNullIds_shouldAutoIncrementId() {
         List<Entity> entities = Arrays.asList(new Entity(), new Entity(), new Entity());
 
-        repository.saveAll(entities);
+        repository.saveAll(entities).toSet();
         List<Integer> savedIds = repository.findAll()
             .stream()
             .map(Entity::getId)

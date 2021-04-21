@@ -2,10 +2,10 @@ package de.team7.swt.core.persistence;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +14,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static de.team7.swt.core.persistence.IdUtils.getAccessorDeep;
 import static de.team7.swt.core.persistence.IdUtils.getId;
@@ -30,7 +27,7 @@ import static de.team7.swt.core.persistence.IdUtils.setId;
  * @author Vincent Nadoll
  */
 @RequiredArgsConstructor
-public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T, ID> {
+public class InMemoryRepository<T, ID> implements StreamableRepository<T, ID> {
 
     public static final String ENTITY_MUST_NOT_BE_NULL = "Entity must not be null";
     public static final String ENTITIES_MUST_NOT_BE_NULL = "Entities must not be null";
@@ -65,15 +62,10 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
      * {@inheritDoc}
      */
     @Override
-    public <S extends T> List<S> saveAll(Iterable<S> entities) {
+    public <S extends T> Streamable<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, ENTITIES_MUST_NOT_BE_NULL);
-        return stream(entities)
-            .map(this::save)
-            .collect(Collectors.toList());
-    }
-
-    private static <T> Stream<T> stream(Iterable<T> iterable) {
-        return StreamSupport.stream(iterable.spliterator(), false);
+        return Streamable.of(entities)
+            .map(this::save);
     }
 
     /**
@@ -98,19 +90,18 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
      * {@inheritDoc}
      */
     @Override
-    public List<T> findAll() {
-        return new ArrayList<>(store.values());
+    public Streamable<T> findAll() {
+        return Streamable.of(store.values());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<T> findAllById(Iterable<ID> ids) {
+    public Streamable<T> findAllById(Iterable<ID> ids) {
         Assert.notNull(ids, "IDs must not be null");
-        return stream(ids)
-            .map(findOrThrow(id -> new NoResultException(String.format("No entity w/ id [%s] exists", id))))
-            .collect(Collectors.toList());
+        return Streamable.of(ids)
+            .map(findOrThrow(id -> new NoResultException(String.format("No entity w/ id [%s] exists", id))));
     }
 
     private Function<ID, T> findOrThrow(Function<ID, RuntimeException> exception) {
@@ -163,7 +154,7 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
     @Override
     public void deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, ENTITIES_MUST_NOT_BE_NULL);
-        stream(entities).forEach(this::delete);
+        Streamable.of(entities).forEach(this::delete);
     }
 
     /**
@@ -182,9 +173,9 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
      * @param <F>          the type of the property's value
      * @return a subset of all entities matching the provided property name and its value
      */
-    protected <F> Stream<T> findAllBy(String propertyName, F value) {
+    protected <F> Streamable<T> findAllBy(String propertyName, F value) {
         Assert.notNull(propertyName, "Property name must not be null");
-        return store.values().stream()
+        return Streamable.of(store.values())
             .filter(by(propertyName, value));
     }
 
@@ -230,7 +221,7 @@ public class InMemoryRepository<T, ID> implements ListSupportingCrudRepository<T
      *                                  query
      */
     protected <F> Optional<T> findUniqueBy(String propertyName, F value) throws NonUniqueResultException {
-        List<T> resultList = findAllBy(propertyName, value).collect(Collectors.toList());
+        List<T> resultList = findAllBy(propertyName, value).toList();
 
         switch (resultList.size()) {
             case 0:
