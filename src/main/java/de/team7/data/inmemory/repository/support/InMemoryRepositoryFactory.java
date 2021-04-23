@@ -28,8 +28,8 @@ public class InMemoryRepositoryFactory extends RepositoryFactorySupport {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T, ID> EntityInformation<T, ID> getEntityInformation(Class<T> domainClass) {
-        return (EntityInformation<T, ID>) InMemoryEntityInformation.getEntityInformation(domainClass);
+    public <T, ID> InMemoryEntityInformation<T, ID> getEntityInformation(Class<T> domainClass) {
+        return (InMemoryEntityInformation<T, ID>) InMemoryEntityInformation.getEntityInformation(domainClass);
     }
 
     @Override
