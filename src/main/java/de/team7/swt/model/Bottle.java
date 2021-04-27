@@ -3,6 +3,7 @@ package de.team7.swt.model;
 import de.vinado.spring.data.inmemory.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 
@@ -19,6 +20,7 @@ public class Bottle {
     @Id
     private int Id;
 
+    @NonNull
     private URI image;
 
     //@Enumerated(EnumType.STRING) // TODO JPA?
@@ -27,5 +29,5 @@ public class Bottle {
     private BottleColor color;
 
     //@OneToMany (mappedBy = "bottle") // TODO in JPA
-    private List<Product> productList;
+    private List<Bottle> bottleList;
 }
