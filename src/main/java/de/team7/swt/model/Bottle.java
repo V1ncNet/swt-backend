@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.net.URI;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import java.net.URI;
 
 /**
  * An entity which encapsulates enumerable derivates of a beer bottle and its image location.
