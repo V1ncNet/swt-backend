@@ -21,7 +21,7 @@ import java.util.List;
 public class BeerType {
 
     @Id
-    private int Id;
+    private int id;
 
     @NonNull
     private String type;

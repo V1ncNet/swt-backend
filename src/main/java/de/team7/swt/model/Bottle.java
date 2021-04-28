@@ -23,7 +23,7 @@ import java.util.List;
 public class Bottle {
 
     @Id
-    private int Id;
+    private int id;
 
     @NonNull
     private URI image;
