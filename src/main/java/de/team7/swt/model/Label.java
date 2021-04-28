@@ -10,6 +10,11 @@ import org.springframework.data.annotation.Id;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * An entity which represents an identifiable label location.
+ *
+ * @author Julian Albrecht
+ */
 @Entity
 @Data
 @RequiredArgsConstructor

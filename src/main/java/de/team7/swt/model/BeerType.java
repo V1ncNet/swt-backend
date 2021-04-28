@@ -9,6 +9,11 @@ import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
+/**
+ * Entity class representing a generic type of beer.
+ *
+ * @author Julian Albrecht
+ */
 @Entity
 @Data
 @RequiredArgsConstructor

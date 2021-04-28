@@ -10,6 +10,11 @@ import org.springframework.data.annotation.Id;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * An entity which encapsulates enumerable derivates of a beer bottle and its image location.
+ *
+ * @author Julian Albrecht
+ */
 @Entity
 @Data
 @RequiredArgsConstructor
