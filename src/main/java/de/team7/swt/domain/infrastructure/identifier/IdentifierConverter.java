@@ -9,6 +9,7 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.data.util.Streamable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.Set;
@@ -48,12 +49,17 @@ public class IdentifierConverter implements ConditionalGenericConverter {
             return null;
         }
 
-        Class<?> targetClass = targetType.getType();
+        return convertNonNull(source, sourceType, targetType);
+    }
+
+    protected Identifier convertNonNull(Object source, TypeDescriptor sourceType, TypeDescriptor targetType)
+        throws ConversionFailedException {
         try {
-            Constructor<?> constructor = targetClass.getDeclaredConstructor(UUID.class);
-            UUID uuid = from(source, sourceType);
-            return (Identifier) BeanUtils.instantiateClass(constructor, uuid);
+            Class<?> targetClass = targetType.getType();
+            Constructor<?> constructor = ReflectionUtils.accessibleConstructor(targetClass, UUID.class);
+            return (Identifier) BeanUtils.instantiateClass(constructor, from(source, sourceType));
         } catch (NoSuchMethodException | SecurityException | IllegalArgumentException | BeanInstantiationException e) {
+            Class<?> targetClass = targetType.getType();
             throw new ConversionFailedException(
                 TypeDescriptor.forObject(source), TypeDescriptor.valueOf(targetClass),
                 source, e
