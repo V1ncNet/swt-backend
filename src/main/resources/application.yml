@@ -5,3 +5,5 @@ spring:
   data.jpa.repositories.bootstrap-mode: DEFERRED
   jpa:
     open-in-view: true
+    properties:
+      hibernate.ejb.identifier_generator_strategy_provider: de.team7.swt.domain.infrastructure.GlobalIdentifierGeneratorStrategyProvider
