@@ -10,6 +10,7 @@ import java.util.Objects;
  *
  * @author Vincent Nadoll
  */
+@FunctionalInterface
 public interface Identifiable<ID extends Identifier> extends Persistable<ID> {
 
     @Override
