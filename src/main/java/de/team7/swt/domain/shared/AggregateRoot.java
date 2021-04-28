@@ -8,6 +8,8 @@ import org.springframework.data.domain.DomainEvents;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  * Base class for Aggregate Root entities as they are described in DDD. It exposes a {@link #register(ApplicationEvent)}
@@ -18,6 +20,7 @@ import java.util.Collections;
  * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#core.domain-events">Publishing
  * Events from Aggregate Roots</a>
  */
+@MappedSuperclass
 public abstract class AggregateRoot<ID extends Identifier> extends Entity<ID> {
 
     private final transient Collection<ApplicationEvent> events = new ArrayList<>();
@@ -27,6 +30,7 @@ public abstract class AggregateRoot<ID extends Identifier> extends Entity<ID> {
         return event;
     }
 
+    @Transient
     @DomainEvents
     @SuppressWarnings("unused")
     Collection<ApplicationEvent> getEvents() {
