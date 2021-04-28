@@ -45,6 +45,8 @@ class IdentifierTest {
         assertEquals(a, other);
         assertNotEquals(b, other);
         assertNotEquals(a, new Object());
+        assertNotEquals(a, null);
+        assertNotEquals(null, a);
     }
 
     @Test
