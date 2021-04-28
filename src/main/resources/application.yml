@@ -1,3 +1,7 @@
 spring:
   main:
     banner-mode: OFF
+
+  data.jpa.repositories.bootstrap-mode: DEFERRED
+  jpa:
+    open-in-view: true
