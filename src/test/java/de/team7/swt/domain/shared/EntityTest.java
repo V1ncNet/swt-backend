@@ -34,8 +34,10 @@ class EntityTest {
     void equals_shouldCompareIds() {
         Entity<Id> other = new Customer(A_CUSTOMER_ID);
 
+        assertEquals(a, a);
         assertEquals(a, other);
         assertNotEquals(b, other);
+        assertNotEquals(a, new Object());
     }
 
     @Test

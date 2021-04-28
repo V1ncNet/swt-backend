@@ -41,8 +41,10 @@ class IdentifierTest {
     void equals_shouldCompareValue() {
         Id other = new Id(A_VALUE);
 
+        assertEquals(a, a);
         assertEquals(a, other);
         assertNotEquals(b, other);
+        assertNotEquals(a, new Object());
     }
 
     @Test
