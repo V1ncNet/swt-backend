@@ -20,7 +20,7 @@ import java.util.Collections;
  */
 public abstract class AggregateRoot<ID extends Identifier> extends Entity<ID> {
 
-    private transient final Collection<ApplicationEvent> events = new ArrayList<>();
+    private final transient Collection<ApplicationEvent> events = new ArrayList<>();
 
     protected final <T extends ApplicationEvent> T register(@NonNull T event) {
         events.add(event);
