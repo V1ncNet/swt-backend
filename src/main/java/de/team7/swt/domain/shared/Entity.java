@@ -13,14 +13,14 @@ import java.util.Objects;
 public abstract class Entity<ID extends Identifier> implements Identifiable<ID> {
 
     @Override
-    public final boolean equals(Object obj) {
-        if (this == obj) {
+    public final boolean equals(Object o) {
+        if (this == o) {
             return true;
-        } else if (null != obj && this.getClass() == obj.getClass()) {
-            Entity<?> that = (Entity<?>) obj;
-            return Objects.equals(this.getId(), that.getId());
-        } else {
+        } else if (!(o instanceof Entity)) {
             return false;
+        } else {
+            Entity<?> that = (Entity<?>) o;
+            return Objects.equals(this.getId(), that.getId());
         }
     }
 
