@@ -18,16 +18,14 @@ import javax.persistence.MappedSuperclass;
  * functions by providing less options.
  *
  * @author Vincent Nadoll
- * @implNote Make sure to annotate the JPA entity's ID field with {@link javax.persistence.EmbeddedId} instead of
- * {@link javax.persistence.Id}.
- * <p>
- * The JPA entity's ID accessor must be annotated with {@literal @GeneratedValue(generator = "<some descriptive name>")}
- * <p>
- * The JPA entity's ID accessor must be annotated with
- * {@literal @GenericGenerator(name = "<same as the GeneratedValue-generator value>", strategy = "dyob-id")}
- * <p>
- * Besides the default constructor an one-arg constructor must be provided which takes an {@link UUID}
- * argument to ensure Hibernate can generate new unique IDs.
+ * @implNote <p>Make sure to annotate the JPA entity's ID field with {@link javax.persistence.EmbeddedId} instead of
+ *     {@link javax.persistence.Id}.</p>
+ *     <p>The JPA entity's ID accessor must be annotated with
+ *     {@literal @GeneratedValue(generator = "<some descriptive name>")}</p>
+ *     <p>The JPA entity's ID accessor must be annotated with
+ *     {@literal @GenericGenerator(name = "<same as the GeneratedValue-generator value>", strategy = "dyob-id")}</p>
+ *     <p>Besides the default constructor an one-arg constructor must be provided which takes an {@link UUID} argument
+ *     to ensure Hibernate can generate new unique IDs.</p>
  * @see de.team7.swt.domain.infrastructure.identifier.IdentifierGenerator
  * @see javax.persistence.GeneratedValue
  * @see org.hibernate.annotations.GenericGenerator
