@@ -1,13 +1,12 @@
 package de.team7.swt.model;
 
-import de.vinado.spring.data.inmemory.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Entity class representing a generic type of beer.
@@ -25,8 +24,4 @@ public class BeerType {
 
     @NonNull
     private String type;
-
-    //@OneToMany (mappedBy = "beerType") // TODO in JPA
-    private List<BeerType> beerTypeList;
-
 }

@@ -1,14 +1,15 @@
 package de.team7.swt.model;
 
-import de.vinado.spring.data.inmemory.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import java.net.URI;
-import java.util.List;
 
 /**
  * An entity which encapsulates enumerable derivates of a beer bottle and its image location.
@@ -28,11 +29,9 @@ public class Bottle {
     @NonNull
     private URI image;
 
-    //@Enumerated(EnumType.STRING) // TODO JPA?
+    @Enumerated(EnumType.STRING)
     private BottleSize size;
-    // @Enumerated(EnumType.STRING) // TODO JPA?
-    private BottleColor color;
 
-    //@OneToMany (mappedBy = "bottle") // TODO in JPA
-    private List<Bottle> bottleList;
+    @Enumerated(EnumType.STRING)
+    private BottleColor color;
 }
