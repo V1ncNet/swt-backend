@@ -1,6 +1,7 @@
 package de.team7.swt.domain.shared;
 
 import java.util.Objects;
+import javax.persistence.MappedSuperclass;
 
 /**
  * Base class for entities as the are defined in DDD by Eric Evans. Thus entities are equal if their identifiers are the
@@ -10,6 +11,7 @@ import java.util.Objects;
  * @author Vincent Nadoll
  * @implNote Subclasses must not override {@link #equals(Object)} and {{@link #hashCode()}}
  */
+@MappedSuperclass
 public abstract class Entity<ID extends Identifier> implements Identifiable<ID> {
 
     @Override
