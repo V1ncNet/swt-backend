@@ -15,10 +15,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * {@link Formatter} singleton to parse and print {@link Quantity} instances. The formatter is capable of parsing common
- * localized and signed quantity strings with typical measurement unit (abbreviations). It doesn't matter if the metric
- * is separated by the quantity's amount or not. In addition, the number 0 in front of the decimal/comma point can be
- * omitted.
+ * A Spring dedicated {@link Formatter} to parse and print {@link Quantity} instances. The formatter is capable of
+ * parsing common localized and signed quantity strings with typical measurement unit (abbreviations). It doesn't matter
+ * if the metric is separated by the quantity's amount or not. In addition, the number 0 in front of the decimal/comma
+ * point can be omitted.
  *
  * @author Vincent Nadoll
  * @see NumberStyleFormatter
