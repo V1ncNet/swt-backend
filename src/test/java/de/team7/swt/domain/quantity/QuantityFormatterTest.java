@@ -1,6 +1,7 @@
 package de.team7.swt.domain.quantity;
 
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -16,7 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 class QuantityFormatterTest {
 
-    private static final QuantityFormatter formatter = QuantityFormatter.getInstance();
+    private QuantityFormatter formatter;
+
+    @BeforeEach
+    void setUp() {
+        formatter = new QuantityFormatter();
+    }
 
     @Test
     void singleton_shouldNotBeNull() {

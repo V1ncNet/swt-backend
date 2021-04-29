@@ -2,6 +2,7 @@ package de.team7.swt.domain.infrastructure.quantity;
 
 import de.team7.swt.domain.quantity.Quantity;
 import de.team7.swt.domain.quantity.QuantityFormatter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
@@ -19,15 +20,16 @@ import java.util.Locale;
  * @see QuantityFormatter
  */
 @Component
+@RequiredArgsConstructor
 @ConfigurationPropertiesBinding
 public class StringToQuantityConverter implements Converter<String, Quantity> {
 
-    private static final QuantityFormatter FORMATTER = QuantityFormatter.getInstance();
+    private final QuantityFormatter quantityFormatter;
 
     @Override
     public Quantity convert(String source) {
         try {
-            return FORMATTER.parse(source, Locale.US);
+            return quantityFormatter.parse(source, Locale.US);
         } catch (ParseException e) {
             TypeDescriptor sourceType = TypeDescriptor.valueOf(String.class);
             TypeDescriptor targetType = TypeDescriptor.valueOf(Quantity.class);

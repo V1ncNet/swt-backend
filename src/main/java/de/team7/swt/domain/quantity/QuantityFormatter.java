@@ -1,10 +1,9 @@
 package de.team7.swt.domain.quantity;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.format.Formatter;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -22,7 +21,7 @@ import java.util.regex.Pattern;
  * @author Vincent Nadoll
  * @see NumberStyleFormatter
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
 public class QuantityFormatter implements Formatter<Quantity> {
 
     private static final Pattern QUANTITY_PATTERN = Pattern.compile("([+-]?\\d*[.,]?\\d*)(\\s*\\w*)");
@@ -60,13 +59,5 @@ public class QuantityFormatter implements Formatter<Quantity> {
         return String.format("%s%s",
             NUMBER_FORMATTER.print(quantity.getAmount(), locale),
             quantity.getMetric().getAbbreviation());
-    }
-
-    public static QuantityFormatter getInstance() {
-        return Holder.INSTANCE;
-    }
-
-    private static class Holder {
-        static final QuantityFormatter INSTANCE = new QuantityFormatter();
     }
 }
