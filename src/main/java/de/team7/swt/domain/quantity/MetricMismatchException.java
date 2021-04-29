@@ -3,7 +3,7 @@ package de.team7.swt.domain.quantity;
 import lombok.NoArgsConstructor;
 
 /**
- * This exception is thrown in case a measurable expects a certain {@link Metric} but got an is incompatible.
+ * This exception is thrown in case a measurable expects a certain {@link Metric} but got an incompatible.
  *
  * @author Vincent Nadoll
  */
