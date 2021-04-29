@@ -197,8 +197,8 @@ class QuantityTest {
         Quantity zero = Quantity.of(0);
         Quantity one = Quantity.of(1);
 
-        assertEquals(zero, one.zero());
-        assertNotEquals(one, one.zero());
+        assertEquals(zero, one.toZero());
+        assertNotEquals(one, one.toZero());
     }
 
     @Test

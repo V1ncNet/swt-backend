@@ -239,7 +239,7 @@ public class Quantity implements Comparable<Quantity> {
      */
     @Transient
     public boolean isZeroOrNegative() {
-        return !isGreaterThan(zero());
+        return !isGreaterThan(toZero());
     }
 
     /**
@@ -247,7 +247,7 @@ public class Quantity implements Comparable<Quantity> {
      *
      * @return a new quantity instance
      */
-    public Quantity zero() {
+    public Quantity toZero() {
         return Quantity.of(0, metric);
     }
 
