@@ -2,9 +2,8 @@ package de.team7.swt.domain.infrastructure.quantity;
 
 import de.team7.swt.domain.quantity.Metric;
 import de.team7.swt.domain.quantity.Quantity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionFailedException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,11 +12,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * @author Vincent Nadoll
  */
-@SpringBootTest
 class StringToQuantityConverterTest {
 
-    @Autowired
     private StringToQuantityConverter converter;
+
+    @BeforeEach
+    void setUp() {
+        QuantityFormatter formatter = new QuantityFormatter();
+        converter = new StringToQuantityConverter(formatter);
+    }
 
     @Test
     void unparsableSource_shouldThrowException() {
