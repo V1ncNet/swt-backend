@@ -1,5 +1,7 @@
-package de.team7.swt.domain.quantity;
+package de.team7.swt.domain.infrastructure.quantity;
 
+import de.team7.swt.domain.quantity.Metric;
+import de.team7.swt.domain.quantity.Quantity;
 import org.springframework.format.Formatter;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.lang.Nullable;

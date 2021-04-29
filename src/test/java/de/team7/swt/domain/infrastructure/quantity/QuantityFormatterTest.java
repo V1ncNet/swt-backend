@@ -1,5 +1,7 @@
-package de.team7.swt.domain.quantity;
+package de.team7.swt.domain.infrastructure.quantity;
 
+import de.team7.swt.domain.quantity.Metric;
+import de.team7.swt.domain.quantity.Quantity;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

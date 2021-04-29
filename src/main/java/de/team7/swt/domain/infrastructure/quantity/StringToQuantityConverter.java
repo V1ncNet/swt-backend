@@ -1,7 +1,6 @@
 package de.team7.swt.domain.infrastructure.quantity;
 
 import de.team7.swt.domain.quantity.Quantity;
-import de.team7.swt.domain.quantity.QuantityFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.core.convert.ConversionFailedException;
