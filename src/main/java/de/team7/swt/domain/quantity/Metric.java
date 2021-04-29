@@ -24,6 +24,13 @@ public enum Metric {
 
     private final String abbreviation;
 
+    /**
+     * Performs a lookup on available metrics and returns a matching for the given abbreviation.
+     *
+     * @param abbreviation must not be {@literal null}
+     * @return a matching metric for the given abbreviation.
+     * @throws IllegalArgumentException in case this enum doesn't provide a metric for the given enumeration
+     */
     public static Metric from(String abbreviation) {
         Assert.notNull(abbreviation, "Abbreviation must not be null");
         String trimmed = abbreviation.trim();

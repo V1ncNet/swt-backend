@@ -14,10 +14,16 @@ public class MetricMismatchException extends RuntimeException {
         super(message);
     }
 
+    /**
+     * Convenience constructor to achieve consistent error messages.
+     */
     public MetricMismatchException(Metric expected, Metric actual) {
         this("", expected, actual);
     }
 
+    /**
+     * Convenience constructor to achieve consistent error messages.
+     */
     public MetricMismatchException(String message, Metric expected, Metric actual) {
         super(String.format(
             "%s\nExpected metric [%s] but got [%s]",
