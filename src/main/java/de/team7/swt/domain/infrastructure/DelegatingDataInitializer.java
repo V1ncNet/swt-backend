@@ -17,7 +17,7 @@ import java.util.Collection;
  * @author Vincent Nadoll
  */
 @Component
-public class DataInitializerRunner implements ApplicationRunner, Ordered {
+public class DelegatingDataInitializer implements ApplicationRunner, Ordered {
 
     public static final int ORDER = HIGHEST_PRECEDENCE + 100;
 

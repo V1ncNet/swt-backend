@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Callback interface to set up initial data on application startup.
  *
  * @author Vincent Nadoll
- * @see DataInitializerRunner
+ * @see DelegatingDataInitializer
  */
 @FunctionalInterface
 public interface DataInitializer extends Ordered {

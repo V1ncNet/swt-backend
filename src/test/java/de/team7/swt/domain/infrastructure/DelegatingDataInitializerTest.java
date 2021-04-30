@@ -17,20 +17,20 @@ import static org.mockito.Mockito.times;
 /**
  * @author Vincent Nadoll
  */
-class DataInitializerRunnerTest {
+class DelegatingDataInitializerTest {
 
     private ApplicationArguments args;
-    private DataInitializerRunner runner;
+    private DelegatingDataInitializer runner;
 
     @BeforeEach
     void setUp() {
         args = new DefaultApplicationArguments();
-        runner = new DataInitializerRunner();
+        runner = new DelegatingDataInitializer();
     }
 
     @Test
     void defaultOrder_shouldMatchOrderConstant() {
-        assertEquals(DataInitializerRunner.ORDER, runner.getOrder());
+        assertEquals(DelegatingDataInitializer.ORDER, runner.getOrder());
     }
 
     @Test
