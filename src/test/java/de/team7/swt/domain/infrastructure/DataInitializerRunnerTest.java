@@ -36,7 +36,7 @@ class DataInitializerRunnerTest {
 
     @Test
     void initializeNullArguments_shouldNotTrowException() {
-        assertDoesNotThrow(() -> runner.setDataInitializers(null));
+        assertDoesNotThrow(() -> runner.addInitializers(null));
     }
 
     @Test
@@ -54,7 +54,7 @@ class DataInitializerRunnerTest {
         });
         InOrder inOrder = Mockito.inOrder(noopInitializer, orderedInitializer);
 
-        runner.setDataInitializers(Streamable.of(noopInitializer, orderedInitializer).toSet());
+        runner.addInitializers(Streamable.of(noopInitializer, orderedInitializer).toSet());
         runner.run(args);
 
         inOrder.verify(noopInitializer, times(1)).initialize();
