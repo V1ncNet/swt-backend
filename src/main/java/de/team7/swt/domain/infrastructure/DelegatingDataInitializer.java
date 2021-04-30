@@ -25,6 +25,9 @@ public class DelegatingDataInitializer implements ApplicationRunner, Ordered {
 
     private boolean executed = false;
 
+    /**
+     * Adds {@link DataInitializer} beans to the underlying composite.
+     */
     @Autowired(required = false)
     public void addInitializers(Collection<DataInitializer> initializers) {
         if (!CollectionUtils.isEmpty(initializers)) {
