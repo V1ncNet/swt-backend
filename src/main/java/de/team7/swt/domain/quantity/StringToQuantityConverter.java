@@ -1,6 +1,5 @@
-package de.team7.swt.domain.infrastructure.quantity;
+package de.team7.swt.domain.quantity;
 
-import de.team7.swt.domain.quantity.Quantity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.core.convert.ConversionFailedException;
