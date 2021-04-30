@@ -18,10 +18,24 @@ import javax.money.MonetaryAmount;
  */
 public class Jsr354Converters {
 
+    /**
+     * {@link Converter} for converting money compatible strings to a new {@link MonetaryAmount} instance.
+     *
+     * @author Vincent Nadoll
+     * @see MonetaryAmountFormatter
+     */
     @ReadingConverter
     public enum StringToMonetaryAmountConverter implements Converter<String, MonetaryAmount> {
         INSTANCE;
 
+        /**
+         * Converts the given US-localized string to a new {@link MonetaryAmount} instance.
+         *
+         * @param source must not be {@literal null}
+         * @return the converted object; never {@literal null}
+         * @throws IllegalArgumentException                  in case the argument is {@literal null}
+         * @throws javax.money.format.MonetaryParseException in case the argument could not be parsed
+         */
         @NonNull
         @Override
         public MonetaryAmount convert(String source) {
@@ -31,10 +45,23 @@ public class Jsr354Converters {
         }
     }
 
+    /**
+     * {@link Converter} for converting a {@link MonetaryAmount} instance to a string.
+     *
+     * @author Vincent Nadoll
+     * @see MonetaryAmountFormatter
+     */
     @WritingConverter
     public enum MonetaryAmountToStringConverter implements Converter<MonetaryAmount, String> {
         INSTANCE;
 
+        /**
+         * Converts the given {@link MonetaryAmount} to a US-localized string.
+         *
+         * @param source must not be {@literal null}
+         * @return the converted object; never {@literal null}
+         * @throws IllegalArgumentException in case the argument is {@literal null}
+         */
         @NonNull
         @Override
         public String convert(MonetaryAmount source) {
