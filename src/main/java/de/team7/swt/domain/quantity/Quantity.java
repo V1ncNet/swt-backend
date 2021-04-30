@@ -286,6 +286,10 @@ public class Quantity implements Comparable<Quantity> {
         return Objects.hash(amount, metric);
     }
 
+    /**
+     * Pretty-prints the current quantity. Use {@link QuantityFormatter#print(Quantity, java.util.Locale)} to print a
+     * localized quantity string.
+     */
     @Override
     public String toString() {
         DecimalFormat format = new DecimalFormat();
