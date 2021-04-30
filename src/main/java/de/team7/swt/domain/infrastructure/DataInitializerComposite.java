@@ -2,7 +2,6 @@ package de.team7.swt.domain.infrastructure;
 
 import org.springframework.util.CollectionUtils;
 
-import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -24,7 +23,6 @@ class DataInitializerComposite implements DataInitializer {
     }
 
     @Override
-    @Transactional
     public void initialize() {
         delegates.stream()
             .sorted(Comparator.comparing(DataInitializer::getOrder))
