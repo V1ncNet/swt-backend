@@ -25,7 +25,7 @@ public class DataInitializerRunner implements ApplicationRunner, Ordered {
 
     private boolean executed = false;
 
-    @Autowired
+    @Autowired(required = false)
     public void addInitializers(Collection<DataInitializer> initializers) {
         if (!CollectionUtils.isEmpty(initializers)) {
             this.initializers.addDataInitializers(initializers);
@@ -50,18 +50,5 @@ public class DataInitializerRunner implements ApplicationRunner, Ordered {
     @Override
     public int getOrder() {
         return ORDER;
-    }
-
-    /**
-     * Noop implementation to make sure there is always at least one {@link DataInitializer} implementation to
-     * {@link Autowired autowire}. Without, startup would fail with Spring complaining about missing candidates.
-     *
-     * @author Vincent Nadoll
-     */
-    @Component
-    static class NoopDataInitializer implements DataInitializer {
-        @Override
-        public void initialize() {
-        }
     }
 }

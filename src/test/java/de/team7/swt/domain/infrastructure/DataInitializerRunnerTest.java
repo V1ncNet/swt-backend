@@ -1,6 +1,5 @@
 package de.team7.swt.domain.infrastructure;
 
-import de.team7.swt.domain.infrastructure.DataInitializerRunner.NoopDataInitializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
@@ -66,5 +65,11 @@ class DataInitializerRunnerTest {
     void runTwice_shouldThrowException() {
         assertDoesNotThrow(() -> runner.run(args));
         assertThrows(UnsupportedOperationException.class, () -> runner.run(args));
+    }
+
+    static class NoopDataInitializer implements DataInitializer {
+        @Override
+        public void initialize() {
+        }
     }
 }
