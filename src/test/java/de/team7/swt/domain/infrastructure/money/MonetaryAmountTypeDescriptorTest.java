@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.util.StringUtils;
 
 import javax.money.MonetaryAmount;
-import javax.money.format.MonetaryParseException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -54,7 +53,7 @@ class MonetaryAmountTypeDescriptorTest {
 
     @Test
     void invalidString_shouldThrowException() {
-        assertThrows(MonetaryParseException.class, () -> descriptor.fromString("foo"));
+        assertThrows(IllegalArgumentException.class, () -> descriptor.fromString("foo"));
     }
 
     @Test

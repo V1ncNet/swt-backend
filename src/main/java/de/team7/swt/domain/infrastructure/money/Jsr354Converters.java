@@ -5,10 +5,13 @@ import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.format.number.money.MonetaryAmountFormatter;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.util.Locale;
 import javax.money.MonetaryAmount;
+import javax.money.format.MonetaryParseException;
 
 /**
  * Collection of JSR-354 converters to be used by the JPA and Hibernate ORM implementation.
@@ -32,16 +35,23 @@ public class Jsr354Converters {
          * Converts the given US-localized string to a new {@link MonetaryAmount} instance.
          *
          * @param source must not be {@literal null}
-         * @return the converted object; never {@literal null}
-         * @throws IllegalArgumentException                  in case the argument is {@literal null}
-         * @throws javax.money.format.MonetaryParseException in case the argument could not be parsed
+         * @return the converted object or {@literal null} in case the argument is an empty string
+         * @throws IllegalArgumentException in case the argument could not be parsed
          */
-        @NonNull
         @Override
+        @Nullable
         public MonetaryAmount convert(String source) {
-            Assert.hasText(source, "Source must not be empty");
-            MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
-            return formatter.parse(source, Locale.US);
+            Assert.notNull(source, "Source must not be null");
+            return (StringUtils.hasText(source) ? convertNonNull(source.trim()) : null);
+        }
+
+        private MonetaryAmount convertNonNull(String source) {
+            try {
+                MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
+                return formatter.parse(source, Locale.US);
+            } catch (UnsupportedOperationException | MonetaryParseException e) {
+                throw new IllegalArgumentException(e);
+            }
         }
     }
 
@@ -61,13 +71,18 @@ public class Jsr354Converters {
          * @param source must not be {@literal null}
          * @return the converted object; never {@literal null}
          * @throws IllegalArgumentException in case the argument is {@literal null}
+         * @throws IllegalArgumentException in case the argument could not be printed
          */
         @NonNull
         @Override
         public String convert(MonetaryAmount source) {
-            Assert.notNull(source, "Source must not be empty");
-            MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
-            return formatter.print(source, Locale.US);
+            try {
+                Assert.notNull(source, "Source must not be empty");
+                MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
+                return formatter.print(source, Locale.US);
+            } catch (UnsupportedOperationException | IllegalStateException e) {
+                throw new IllegalArgumentException(e);
+            }
         }
     }
 }

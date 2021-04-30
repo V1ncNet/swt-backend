@@ -5,9 +5,8 @@ import de.team7.swt.domain.infrastructure.money.Jsr354Converters.StringToMonetar
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 
-import javax.money.format.MonetaryParseException;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -21,8 +20,12 @@ class Jsr354ConvertersTest {
     @Test
     void convertingNullArguments_shouldThrowException() {
         assertThrows(IllegalArgumentException.class, () -> toMonetaryAmountConverter.convert(null));
-        assertThrows(IllegalArgumentException.class, () -> toMonetaryAmountConverter.convert(""));
         assertThrows(IllegalArgumentException.class, () -> toStringConverter.convert(null));
+    }
+
+    @Test
+    void convertingEmptyString_shouldReturnNull() {
+        assertNull(toMonetaryAmountConverter.convert(""));
     }
 
     @Test
@@ -33,6 +36,6 @@ class Jsr354ConvertersTest {
 
     @Test
     void invalidStringConversion_shouldThrowException() {
-        assertThrows(MonetaryParseException.class, () -> toMonetaryAmountConverter.convert("foo"));
+        assertThrows(IllegalArgumentException.class, () -> toMonetaryAmountConverter.convert("foo"));
     }
 }

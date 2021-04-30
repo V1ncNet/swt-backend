@@ -4,8 +4,8 @@ import de.team7.swt.domain.infrastructure.money.Jsr354Converters.MonetaryAmountT
 import de.team7.swt.domain.infrastructure.money.Jsr354Converters.StringToMonetaryAmountConverter;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.AbstractTypeDescriptor;
-import org.springframework.util.StringUtils;
 
+import java.util.Objects;
 import javax.money.MonetaryAmount;
 
 /**
@@ -23,7 +23,7 @@ public class MonetaryAmountTypeDescriptor extends AbstractTypeDescriptor<Monetar
 
     @Override
     public MonetaryAmount fromString(String string) {
-        return StringUtils.hasText(string) ? StringToMonetaryAmountConverter.INSTANCE.convert(string) : null;
+        return Objects.nonNull(string) ? StringToMonetaryAmountConverter.INSTANCE.convert(string) : null;
     }
 
     @Override

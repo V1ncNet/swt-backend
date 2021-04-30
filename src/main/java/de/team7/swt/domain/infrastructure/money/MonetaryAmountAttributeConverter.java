@@ -2,8 +2,8 @@ package de.team7.swt.domain.infrastructure.money;
 
 import de.team7.swt.domain.infrastructure.money.Jsr354Converters.MonetaryAmountToStringConverter;
 import de.team7.swt.domain.infrastructure.money.Jsr354Converters.StringToMonetaryAmountConverter;
-import org.springframework.util.StringUtils;
 
+import java.util.Objects;
 import javax.money.MonetaryAmount;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -26,6 +26,6 @@ public class MonetaryAmountAttributeConverter implements AttributeConverter<Mone
 
     @Override
     public MonetaryAmount convertToEntityAttribute(String source) {
-        return StringUtils.hasText(source) ? StringToMonetaryAmountConverter.INSTANCE.convert(source) : null;
+        return Objects.nonNull(source) ? StringToMonetaryAmountConverter.INSTANCE.convert(source) : null;
     }
 }
