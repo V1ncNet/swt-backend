@@ -5,7 +5,11 @@ import de.team7.swt.domain.infrastructure.money.Jsr354Converters.StringToMonetar
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import java.math.BigDecimal;
+import javax.money.MonetaryAmount;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -29,13 +33,24 @@ class Jsr354ConvertersTest {
     }
 
     @Test
-    void convertingValidArguments_shouldNotThrowException() {
-        assertDoesNotThrow(() -> toMonetaryAmountConverter.convert("EUR1.00"));
-        assertDoesNotThrow(() -> toStringConverter.convert(Money.of(1, "EUR")));
+    void invalidStringConversion_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> toMonetaryAmountConverter.convert("foo"));
     }
 
     @Test
-    void invalidStringConversion_shouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> toMonetaryAmountConverter.convert("foo"));
+    void string_shouldConvertToString() {
+        MonetaryAmount value = toMonetaryAmountConverter.convert("EUR1.00");
+
+        assertNotNull(value);
+        assertEquals(BigDecimal.valueOf(1), value.getNumber().numberValue(BigDecimal.class));
+        assertEquals("EUR", value.getCurrency().getCurrencyCode());
+    }
+
+    @Test
+    void monetaryAmount_shouldConvertToString() {
+        String value = toStringConverter.convert(Money.of(2.99, "EUR"));
+
+        assertNotNull(value);
+        assertEquals("EUR2.99", value);
     }
 }
