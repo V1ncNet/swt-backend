@@ -9,6 +9,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Locale;
 import javax.money.MonetaryAmount;
 import javax.money.format.MonetaryParseException;
@@ -83,6 +85,33 @@ public class Jsr354Converters {
             } catch (UnsupportedOperationException | IllegalStateException e) {
                 throw new IllegalArgumentException(e);
             }
+        }
+    }
+
+    /**
+     * {@link Converter} for converting a {@link MonetaryAmount} instance to a {@link BigDecimal} instance.
+     *
+     * @author Vincent Nadoll
+     */
+    @WritingConverter
+    public enum MonetaryAmountToBigDecimalConverter implements Converter<MonetaryAmount, BigDecimal> {
+        INSTANCE;
+
+        /**
+         * Extracts the decimal amount of the given argument.
+         *
+         * @param source must not be {@literal null}
+         * @return the extracted number; never {@literal null}
+         * @throws IllegalArgumentException in case the argument is {@literal null}
+         */
+        @NonNull
+        @Override
+        public BigDecimal convert(MonetaryAmount source) {
+            Assert.notNull(source, "Source must not be null");
+            BigDecimal decimal = source.getNumber().numberValueExact(BigDecimal.class);
+            int defaultFractionDigits = source.getCurrency().getDefaultFractionDigits();
+            int scale = Math.max(decimal.scale(), defaultFractionDigits);
+            return decimal.setScale(scale, RoundingMode.UNNECESSARY);
         }
     }
 }

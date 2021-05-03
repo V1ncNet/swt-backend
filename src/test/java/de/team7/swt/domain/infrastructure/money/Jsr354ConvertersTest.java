@@ -1,5 +1,6 @@
 package de.team7.swt.domain.infrastructure.money;
 
+import de.team7.swt.domain.infrastructure.money.Jsr354Converters.MonetaryAmountToBigDecimalConverter;
 import de.team7.swt.domain.infrastructure.money.Jsr354Converters.MonetaryAmountToStringConverter;
 import de.team7.swt.domain.infrastructure.money.Jsr354Converters.StringToMonetaryAmountConverter;
 import org.javamoney.moneta.Money;
@@ -20,11 +21,13 @@ class Jsr354ConvertersTest {
 
     StringToMonetaryAmountConverter toMonetaryAmountConverter = StringToMonetaryAmountConverter.INSTANCE;
     MonetaryAmountToStringConverter toStringConverter = MonetaryAmountToStringConverter.INSTANCE;
+    MonetaryAmountToBigDecimalConverter toBigDecimalConverter = MonetaryAmountToBigDecimalConverter.INSTANCE;
 
     @Test
     void convertingNullArguments_shouldThrowException() {
         assertThrows(IllegalArgumentException.class, () -> toMonetaryAmountConverter.convert(null));
         assertThrows(IllegalArgumentException.class, () -> toStringConverter.convert(null));
+        assertThrows(IllegalArgumentException.class, () -> toBigDecimalConverter.convert(null));
     }
 
     @Test
@@ -52,5 +55,13 @@ class Jsr354ConvertersTest {
 
         assertNotNull(value);
         assertEquals("EUR2.99", value);
+    }
+
+    @Test
+    void monetaryAmount_shouldConvertToBigDecimal() {
+        BigDecimal value = toBigDecimalConverter.convert(Money.of(2.99, "EUR"));
+
+        assertNotNull(value);
+        assertEquals(BigDecimal.valueOf(2.99), value);
     }
 }
