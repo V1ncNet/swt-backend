@@ -1,6 +1,8 @@
 package de.team7.swt.domain.shared;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class Identifier implements Comparable<Identifier>, Serializable {
 
     @NonNull
+    @Getter(value = AccessLevel.PROTECTED, onMethod_ = @JsonGetter)
     private final UUID id;
 
     @Override

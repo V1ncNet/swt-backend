@@ -1,5 +1,6 @@
 package de.team7.swt.domain.shared;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.domain.Persistable;
 
 import java.util.Objects;
@@ -23,6 +24,7 @@ public interface Identifiable<ID extends Identifier> extends Persistable<ID> {
      * property</a>
      */
     @Transient
+    @JsonIgnore
     @Override
     default boolean isNew() {
         return Objects.isNull(getId());
