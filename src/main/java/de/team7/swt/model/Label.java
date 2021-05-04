@@ -1,13 +1,14 @@
 package de.team7.swt.model;
 
-import lombok.Data;
+
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
+import lombok.Setter;
 import java.net.URL;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+
 
 /**
  * An entity which represents an identifiable label location.
@@ -15,13 +16,11 @@ import javax.persistence.Id;
  * @author Julian Albrecht
  */
 @Entity
-@Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class Label {
-
-    @Id
-    private int id;
+@Getter
+@Setter
+public class Label extends Product {
 
     @NonNull
     private URL image;
