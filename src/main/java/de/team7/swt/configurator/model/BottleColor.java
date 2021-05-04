@@ -1,4 +1,4 @@
-package de.team7.swt.model;
+package de.team7.swt.configurator.model;
 
 /**
  * A collection of common beer bottle colors.

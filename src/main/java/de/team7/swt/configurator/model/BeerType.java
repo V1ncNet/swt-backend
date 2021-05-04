@@ -1,5 +1,6 @@
-package de.team7.swt.model;
+package de.team7.swt.configurator.model;
 
+import de.team7.swt.domain.catalog.Product;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;

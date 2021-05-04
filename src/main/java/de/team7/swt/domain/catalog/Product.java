@@ -1,4 +1,4 @@
-package de.team7.swt.model;
+package de.team7.swt.domain.catalog;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
