@@ -26,6 +26,8 @@ import static de.team7.swt.domain.infrastructure.money.FieldNames.FORMATTED;
  */
 public class MonetaryAmountSerializer extends StdSerializer<MonetaryAmount> {
 
+    private final MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
+
     protected MonetaryAmountSerializer() {
         super(MonetaryAmount.class);
     }
@@ -56,13 +58,11 @@ public class MonetaryAmountSerializer extends StdSerializer<MonetaryAmount> {
     @Override
     public void serialize(MonetaryAmount value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         CurrencyUnit currency = value.getCurrency();
-        MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
-        String formatted = formatter.print(value, provider.getLocale());
 
         gen.writeStartObject();
         gen.writeObjectField(AMOUNT, Jsr354Converters.MonetaryAmountToBigDecimalConverter.INSTANCE.convert(value));
         provider.defaultSerializeField(CURRENCY, currency, gen);
-        gen.writeStringField(FORMATTED, formatted);
+        gen.writeStringField(FORMATTED, formatter.print(value, provider.getLocale()));
         gen.writeEndObject();
     }
 }
