@@ -13,8 +13,8 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Ingredients extends Product {
 
     @NonNull
     private String name;
+public class Ingredient extends Product {
 }
