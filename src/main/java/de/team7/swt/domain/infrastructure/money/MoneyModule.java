@@ -42,18 +42,35 @@ public class MoneyModule extends SimpleModule {
 
     private Serializers setupSerializers() {
         SimpleSerializers serializers = new SimpleSerializers();
-        serializers.addSerializer(CurrencyUnit.class, new CurrencyUnitSerializer());
-        serializers.addSerializer(MonetaryAmount.class, new MonetaryAmountSerializer());
+
+        CurrencyUnitSerializer cuSerializer = new CurrencyUnitSerializer();
+        serializers.addSerializer(CurrencyUnit.class, cuSerializer);
+
+        MonetaryAmountSerializer maSerializer = new MonetaryAmountSerializer();
+        serializers.addSerializer(MonetaryAmount.class, maSerializer);
+
         return serializers;
     }
 
     private Deserializers setupDeserializers() {
         SimpleDeserializers deserializers = new SimpleDeserializers();
-        deserializers.addDeserializer(CurrencyUnit.class, new CurrencyUnitDeserializer());
-        deserializers.addDeserializer(MonetaryAmount.class, new MonetaryAmountDeserializer<>(new MoneyAmountFactory()));
-        deserializers.addDeserializer(Money.class, new MonetaryAmountDeserializer<>(new MoneyAmountFactory()));
-        deserializers.addDeserializer(FastMoney.class, new MonetaryAmountDeserializer<>(new FastMoneyAmountFactory()));
-        deserializers.addDeserializer(RoundedMoney.class, new MonetaryAmountDeserializer<>(new RoundedMoneyAmountFactory()));
+
+        CurrencyUnitDeserializer cuDeserializer = new CurrencyUnitDeserializer();
+        deserializers.addDeserializer(CurrencyUnit.class, cuDeserializer);
+
+        MoneyAmountFactory maFactory = new MoneyAmountFactory();
+        MonetaryAmountDeserializer<Money> maDeserializer = new MonetaryAmountDeserializer<>(maFactory);
+        deserializers.addDeserializer(MonetaryAmount.class, maDeserializer);
+        deserializers.addDeserializer(Money.class, maDeserializer);
+
+        FastMoneyAmountFactory fmFactory = new FastMoneyAmountFactory();
+        MonetaryAmountDeserializer<FastMoney> fmDeserializer = new MonetaryAmountDeserializer<>(fmFactory);
+        deserializers.addDeserializer(FastMoney.class, fmDeserializer);
+
+        RoundedMoneyAmountFactory rmFactory = new RoundedMoneyAmountFactory();
+        MonetaryAmountDeserializer<RoundedMoney> rmDeserializer = new MonetaryAmountDeserializer<>(rmFactory);
+        deserializers.addDeserializer(RoundedMoney.class, rmDeserializer);
+
         return deserializers;
     }
 }
