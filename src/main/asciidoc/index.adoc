@@ -1,0 +1,83 @@
+= SWT DyoB-Backend API Handbuch
+Vincent Nadoll <s3003870@ba-sachsen.de>;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[[overview]]
+= Einleitung
+
+Willkommen zur API-Dokumentation des SWT DyoB-Backends von Team7.
+
+Mit der API können Katalogdaten und Bestellprozesse auf einfache und programmatische Weise mithilfe herkömmlicher
+HTTP-Anfragen verwaltet werden. Die Endpoints sind intuitiv und leistungsstark, sodass problemlos Requests gemacht
+werden können, um Informationen abzurufen oder Aktionen auszuführen.
+
+Die API-Dokumentation beginnt mit einem allgemeinen Überblick über das implementierte Design und die implementierte
+Technologie, gefolgt von Referenzinformationen zu bestimmten Endpunkten.
+
+[[requests]]
+== Anfragen
+
+Jedes Tool, das HTTP beherrscht, kann mit der API kommunizieren, indem es einfach den richtigen URI anfordert. Anfragen
+sollten unter Verwendung des HTTPS-Protokolls gestellt werden, damit der Verkehr verschlüsselt wird. Die Schnittstelle
+reagiert je nach erforderlicher Aktion auf unterschiedliche Methoden.
+
+Dieser Dienst versucht, bei der Verwendung von HTTP-Verben die Standard-HTTP- und REST-Konventionen so genau wie möglich
+einzuhalten.
+
+|===
+| Verb | Verwendung
+
+| `GET`
+| Wird zum Abrufen einer Ressource verwendet. Die angeforderten Informationen werden als JSON-Objekt zurückgegeben.
+
+Die vom JSON-Objekt definierten Attribute können verwendet werden, um zusätzliche Anforderungen zu bilden. Jede
+Anfrage, die die `GET`-Methode verwendet, ist schreibgeschützt und wirkt sich nicht auf die abgefragten Objekte aus.
+|===
+
+[[http-statuses]]
+== HTTP Status
+
+Neben den HTTP-Methoden, auf welche die API reagiert, werden auch Standard-HTTP-Status einschließlich Fehlercodes
+zurückgegeben. Im Falle eines Problems enthält der Status den Fehlercode, während der Hauptteil der Antwort
+normalerweise zusätzliche Informationen zu dem aufgetretenen Problem enthält. Wird ein Status im 500er-Bereich
+zurückgesendet, weist dies im Allgemeinen auf ein serverseitiges Problem hin. Dies bedeutet, dass der Dienst ein Problem
+hat und die Anfrage derzeit nicht erfüllen kann.
+
+Dieser Dienst versucht, die Standardkonventionen für HTTP und REST bei der Verwendung des HTTP-Statuscodes so genau wie
+möglich einzuhalten.
+
+|===
+| Status Code | Bedeutung
+
+| `200 OK`
+| Der Request war erfolgreich.
+
+| `400 Bad Request`
+| Der Request (-Body) war fehlerhaft. Der Response Body enthält einen Fehler, der weitere Informationen bereitstellt.
+
+| `404 Not Found`
+| Die angeforderte Ressource existiert nicht.
+|===
+
+[[resources]]
+= Ressourcen
+
+[[resources-catalog]]
+== Produkt
+
+Die Produktressource bietet eine Übersicht über alle Produkte, die aktuell im Katalog verfügbar sind.
+
+Da der Katalog über die UI des Dienstes verwaltet wird, werden lediglich Anfragen zur Informationssammlung angeboten.
+
+[[resources-product-index]]
+=== Katalogindex
+
+Um einen Index über alle Produkttypen zu bekommen, wird ein `GET`-Request an `/api/v1/catalog` gesendet.
+
+Die Response ist ein JSON-Objekt mit einer Zuordnung zwischen Produkttypen und Links, mit dem die Sammlung des
+entsprechenden Typs angefordert werden kann.
