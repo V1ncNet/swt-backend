@@ -1,5 +1,6 @@
 package de.team7.swt.domain.catalog;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.team7.swt.domain.quantity.Metric;
@@ -15,17 +16,23 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import javax.money.MonetaryAmount;
 import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.PrePersist;
 
@@ -60,6 +67,9 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     @JsonProperty
     @Enumerated(EnumType.STRING)
     private final Metric metric;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private final Set<String> categories = new HashSet<>();
 
     /**
      * Creates a new product with given ID, name and price.
@@ -110,6 +120,38 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
         this.name = name;
         this.price = price;
         this.metric = metric;
+    }
+
+    /**
+     * Returns the categories this product is assigned to.
+     *
+     * @return all categories; never {@literal null}
+     */
+    @JsonIgnore
+    public Streamable<String> getCategories() {
+        return Streamable.of(Collections.unmodifiableSet(categories));
+    }
+
+    /**
+     * Adds this product to the given category.
+     *
+     * @param category must not be {@literal null} nor empty
+     * @return {@literal true} if this product is not already assigned to the category; {@literal false} otherwise
+     */
+    public final boolean add(String category) {
+        Assert.hasText(category, "Category must not be null");
+        return categories.add(category);
+    }
+
+    /**
+     * Removes this product form the given category.
+     *
+     * @param category must not be {@literal null} nor empty
+     * @return {@literal true} if this product where assigned to the category; {@literal false} otherwise
+     */
+    public final boolean remove(String category) {
+        Assert.hasText(category, "Category must not be null");
+        return categories.remove(category);
     }
 
     /**
@@ -169,6 +211,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
             .append("id", id)
             .append("name", name)
             .append("price", price)
+            .append("categories", categories)
             .append("metric", metric)
             .toString();
     }
