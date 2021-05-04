@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 
+/**
+ * Entity class representing a beer ingredient.
+ *
+ * @author Julina Albrecht
+ */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Ingredient extends Product {
