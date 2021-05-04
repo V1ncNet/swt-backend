@@ -8,18 +8,13 @@ import lombok.Setter;
 import javax.persistence.Entity;
 
 
-/**
- * Entity class representing a generic type of beer.
- *
- * @author Julian Albrecht
- */
 @Entity
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class BeerType extends Product{
+public class Ingredients extends Product {
 
     @NonNull
-    private String type;
+    private String name;
 }
