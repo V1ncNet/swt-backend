@@ -6,10 +6,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.money.MonetaryAmount;
+import java.util.UUID;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.UUID;
-
 
 @Data
 @RequiredArgsConstructor

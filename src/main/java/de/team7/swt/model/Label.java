@@ -1,14 +1,12 @@
 package de.team7.swt.model;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
 import java.net.URL;
 import javax.persistence.Entity;
-
 
 /**
  * An entity which represents an identifiable label location.
@@ -16,7 +14,6 @@ import javax.persistence.Entity;
  * @author Julian Albrecht
  */
 @Entity
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter

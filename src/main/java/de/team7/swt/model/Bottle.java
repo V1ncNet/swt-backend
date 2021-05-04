@@ -1,11 +1,10 @@
 package de.team7.swt.model;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
 import java.net.URI;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,9 +15,7 @@ import javax.persistence.Enumerated;
  *
  * @author Julian Albrecht
  */
-
 @Entity
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
