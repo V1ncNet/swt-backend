@@ -81,3 +81,17 @@ Um einen Index über alle Produkttypen zu bekommen, wird ein `GET`-Request an `/
 
 Die Response ist ein JSON-Objekt mit einer Zuordnung zwischen Produkttypen und Links, mit dem die Sammlung des
 entsprechenden Typs angefordert werden kann.
+
+include::{snippets}/catalog/index/response-fields.adoc[]
+
+==== cURL Beispiel
+
+include::{snippets}/catalog/index/curl-request.adoc[]
+
+==== Response Header
+
+include::{snippets}/catalog/index/response-headers.adoc[]
+
+==== Response Body
+
+include::{snippets}/catalog/index/response-body.adoc[]
