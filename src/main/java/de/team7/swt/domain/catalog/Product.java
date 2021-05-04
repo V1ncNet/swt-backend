@@ -1,5 +1,6 @@
 package de.team7.swt.domain.catalog;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.team7.swt.domain.quantity.Metric;
 import de.team7.swt.domain.quantity.MetricMismatchException;
@@ -54,6 +55,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     @Type(type = "de.team7.swt.domain.infrastructure.money.MonetaryAmountType")
     private MonetaryAmount price;
 
+    @JsonProperty
     private final Metric metric;
 
     /**
