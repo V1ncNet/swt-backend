@@ -145,3 +145,24 @@ include::{snippets}/catalog/list/response-headers.adoc[]
 ==== Response Body
 
 include::{snippets}/catalog/list/response-body.adoc[]
+
+[[resource-product-retrieve]]
+=== Abruf eines existierenden Produkts
+
+Um eine bestimmte Person abzurufen, wird ein `GET`-Request an `/api/v1/catalog/$PRODUCT_ID` gestellt.
+
+Die Antwort ist ein JSON-Objekt, dessen Felder *mindestens* die folgenden Attribute enthält:
+
+include::{snippets}/catalog/retrieve/response-fields.adoc[]
+
+==== cURL Beispiel
+
+include::{snippets}/catalog/retrieve/curl-request.adoc[]
+
+==== Response Headers
+
+include::{snippets}/catalog/retrieve/response-headers.adoc[]
+
+==== Response Body
+
+include::{snippets}/catalog/retrieve/response-body.adoc[]

@@ -29,9 +29,13 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
+import static de.team7.swt.configurator.model.Types.TYPE_LAGER_ID;
+import static de.team7.swt.configurator.model.Types.createLager;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -157,6 +161,41 @@ class CatalogRestControllerTest<T extends Product> {
             ));
     }
 
+    @Test
+    void retrieve404() throws Exception {
+        when(catalog.findById(TYPE_LAGER_ID)).thenReturn(Optional.empty());
+
+        URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
+            .path("/{id}")
+            .buildAndExpand(TYPE_LAGER_ID)
+            .toUri();
+
+        mockMvc.perform(get(endpoint))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void retrieve200() throws Exception {
+        when(catalog.findById(TYPE_LAGER_ID)).thenReturn(Optional.of(createLager()));
+
+        URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
+            .path("/{id}")
+            .buildAndExpand(TYPE_LAGER_ID)
+            .toUri();
+
+        mockMvc.perform(get(endpoint))
+            .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document(
+                "catalog/retrieve",
+                responseHeaders(
+                    headerWithName(CONTENT_TYPE).description(APPLICATION_JSON),
+                    headerWithName(STATUS).description(OK).optional()
+                ),
+                responseFields(forProduct("product"))
+            ));
+    }
+
     static Streamable<Arguments> categories() {
         return Streamable.of(
             Arguments.of("product", products, forProductCollection("product")),
@@ -171,6 +210,12 @@ class CatalogRestControllerTest<T extends Product> {
     static ResponseFieldsSnippet forProductCollection(String type) {
         return responseFields(
             fieldWithPath("_embedded[]").description("foo")).andWithPrefix("_embedded[].",
+            forProduct(type)
+        );
+    }
+
+    static FieldDescriptor[] forProduct(String type) {
+        return new FieldDescriptor[]{
             fieldWithPath("id").description(String.format("The %s's identifier", type)),
             fieldWithPath("name").description(String.format("The %s's name", type)),
             fieldWithPath("metric").description(String.format("The %s's unit of measurement", type)),
@@ -181,7 +226,7 @@ class CatalogRestControllerTest<T extends Product> {
             fieldWithPath("image").ignored().optional(),
             fieldWithPath("size").ignored().optional(),
             fieldWithPath("color").ignored().optional()
-        );
+        };
     }
 
     static FieldDescriptor[] forBottle() {

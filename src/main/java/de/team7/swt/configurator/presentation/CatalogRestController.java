@@ -5,6 +5,7 @@ import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.web.CollectionModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,5 +69,18 @@ public class CatalogRestController {
     public ResponseEntity<CollectionModel<Product>> listBy(@RequestParam String category) {
         List<Product> products = catalog.streamAllByEntityName(category).collect(Collectors.toList());
         return ResponseEntity.ok(CollectionModel.of(products));
+    }
+
+    /**
+     * Retrieves a single product for the given ID.
+     *
+     * @param id must not be {@literal null}
+     * @return 200 - the product; 404 - if the product could not be found
+     */
+    @RequestMapping("/{id}")
+    public ResponseEntity<Product> retrieve(@PathVariable Product.Id id) {
+        return catalog.findById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 }
