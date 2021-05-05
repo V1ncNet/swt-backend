@@ -21,8 +21,8 @@ import javax.persistence.Entity;
 @Setter
 public class Label extends PicturedProduct {
 
-    public Label(String name, MonetaryAmount price) {
-        this(null, name, price, null);
+    public Label(String name, MonetaryAmount price, URI imageLocation) {
+        this(null, name, price, imageLocation);
     }
 
     protected Label(Id id, String name, MonetaryAmount price, URI imageLocation) {
