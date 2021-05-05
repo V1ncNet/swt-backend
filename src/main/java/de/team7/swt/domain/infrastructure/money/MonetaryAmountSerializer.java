@@ -57,11 +57,9 @@ public class MonetaryAmountSerializer extends StdSerializer<MonetaryAmount> {
 
     @Override
     public void serialize(MonetaryAmount value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        CurrencyUnit currency = value.getCurrency();
-
         gen.writeStartObject();
         gen.writeObjectField(AMOUNT, Jsr354Converters.MonetaryAmountToBigDecimalConverter.INSTANCE.convert(value));
-        provider.defaultSerializeField(CURRENCY, currency, gen);
+        provider.defaultSerializeField(CURRENCY, value.getCurrency(), gen);
         gen.writeStringField(FORMATTED, formatter.print(value, provider.getLocale()));
         gen.writeEndObject();
     }
