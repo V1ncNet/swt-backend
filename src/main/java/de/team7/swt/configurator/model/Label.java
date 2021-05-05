@@ -1,13 +1,12 @@
 package de.team7.swt.configurator.model;
 
-import de.team7.swt.domain.catalog.Product;
+import de.team7.swt.domain.catalog.PicturedProduct;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
-import java.net.URL;
+import java.net.URI;
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 
@@ -20,17 +19,13 @@ import javax.persistence.Entity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-public class Label extends Product {
+public class Label extends PicturedProduct {
 
-    @NonNull
-    private URL image;
-
-    protected Label(Id id, String name, MonetaryAmount price, @NonNull URL image) {
-        super(id, name, price);
-        this.image = image;
+    protected Label(Id id, String name, MonetaryAmount price, URI image) {
+        super(id, name, price, image);
     }
 
     public Label(String name, MonetaryAmount price) {
-        super(name, price);
+        super(name, price, null);
     }
 }

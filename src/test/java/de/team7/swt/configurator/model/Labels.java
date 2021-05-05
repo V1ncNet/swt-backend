@@ -22,17 +22,17 @@ public class Labels implements Streamable<Label> {
 
     @SneakyThrows
     public static Label createBlack() {
-        return new Label(LABEL_BLACK_ID, "Black", ZERO_EURO, URI.create("http://localhost:8080/red.png").toURL());
+        return new Label(LABEL_BLACK_ID, "Black", ZERO_EURO, URI.create("http://localhost:8080/red.png"));
     }
 
     @SneakyThrows
     public static Label createBlue() {
-        return new Label(LABEL_BLUE_ID, "Blue", ZERO_EURO, URI.create("http://localhost:8080/red.png").toURL());
+        return new Label(LABEL_BLUE_ID, "Blue", ZERO_EURO, URI.create("http://localhost:8080/red.png"));
     }
 
     @SneakyThrows
     public static Label createRed() {
-        return new Label(LABEL_RED_ID, "Red", ZERO_EURO, URI.create("http://localhost:8080/red.png").toURL());
+        return new Label(LABEL_RED_ID, "Red", ZERO_EURO, URI.create("http://localhost:8080/red.png"));
     }
 
     @Override

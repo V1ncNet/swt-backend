@@ -1,6 +1,6 @@
 package de.team7.swt.configurator.model;
 
-import de.team7.swt.domain.catalog.Product;
+import de.team7.swt.domain.catalog.PicturedProduct;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +21,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Getter
 @Setter
-public class Bottle extends Product {
-
-    private URI image;
+public class Bottle extends PicturedProduct {
 
     @Enumerated(EnumType.STRING)
     private BottleSize size;
@@ -31,14 +29,13 @@ public class Bottle extends Product {
     @Enumerated(EnumType.STRING)
     private BottleColor color;
 
-    public Bottle(Id id, String name, MonetaryAmount price, URI image, BottleSize size, BottleColor color) {
-        super(id, name, price);
-        this.image = image;
+    protected Bottle(Id id, String name, MonetaryAmount price, URI image, BottleSize size, BottleColor color) {
+        super(id, name, price, image);
         this.size = size;
         this.color = color;
     }
 
     public Bottle(String name, MonetaryAmount price) {
-        super(name, price);
+        super(name, price, null);
     }
 }
