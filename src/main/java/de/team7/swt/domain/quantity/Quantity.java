@@ -16,6 +16,8 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 
 /**
@@ -36,6 +38,7 @@ public class Quantity implements Comparable<Quantity> {
     private BigDecimal amount;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     @Getter(onMethod_ = @Column(name = "quantity_metric"))
     private Metric metric;
 

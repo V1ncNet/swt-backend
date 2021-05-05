@@ -24,6 +24,8 @@ import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.PrePersist;
 
@@ -56,6 +58,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     private MonetaryAmount price;
 
     @JsonProperty
+    @Enumerated(EnumType.STRING)
     private final Metric metric;
 
     /**
