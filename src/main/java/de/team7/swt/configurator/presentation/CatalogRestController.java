@@ -2,7 +2,7 @@ package de.team7.swt.configurator.presentation;
 
 import de.team7.swt.configurator.infrastructure.ProductCatalog;
 import de.team7.swt.domain.catalog.Product;
-import de.team7.swt.domain.presentation.CollectionResponse;
+import de.team7.swt.domain.web.CollectionModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,9 +53,9 @@ public class CatalogRestController {
      * @return an embedded product list
      */
     @RequestMapping(params = "type")
-    public ResponseEntity<CollectionResponse> list(@RequestParam String type) {
+    public ResponseEntity<CollectionModel> list(@RequestParam String type) {
         List<Product> products = catalog.streamAllByEntityName(type).collect(Collectors.toList());
-        CollectionResponse body = new CollectionResponse(products);
+        CollectionModel body = new CollectionModel(products);
         return ResponseEntity.ok(body);
     }
 }
