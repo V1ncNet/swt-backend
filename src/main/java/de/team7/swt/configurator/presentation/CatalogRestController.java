@@ -42,19 +42,19 @@ public class CatalogRestController {
 
     private URI createLinkTo(String entityName) {
         return ServletUriComponentsBuilder.fromCurrentRequestUri()
-            .queryParam("type", entityName)
+            .queryParam("category", entityName)
             .build().toUri();
     }
 
     /**
-     * Retrieves all products of the given type.
+     * Retrieves all products of the given category.
      *
-     * @param type must not be {@literal null}
+     * @param category must not be {@literal null}
      * @return an embedded product list
      */
-    @RequestMapping(params = "type")
-    public ResponseEntity<CollectionModel<Product>> list(@RequestParam String type) {
-        List<Product> products = catalog.streamAllByEntityName(type).collect(Collectors.toList());
+    @RequestMapping(params = "category")
+    public ResponseEntity<CollectionModel<Product>> listBy(@RequestParam String category) {
+        List<Product> products = catalog.streamAllByEntityName(category).collect(Collectors.toList());
         return ResponseEntity.ok(CollectionModel.of(products));
     }
 }

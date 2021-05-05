@@ -60,7 +60,7 @@ class CatalogRestControllerTest<T extends Product> {
 
     @Test
     void index() throws Exception {
-        when(catalog.streamManagedProducts()).thenAnswer(i -> types().map(Arguments::get).map(objects -> objects[0]).get());
+        when(catalog.streamManagedProducts()).thenAnswer(i -> categories().map(Arguments::get).map(objects -> objects[0]).get());
 
         mockMvc.perform(get(BASE_URI))
             .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
@@ -81,7 +81,7 @@ class CatalogRestControllerTest<T extends Product> {
                 )));
     }
 
-    static Streamable<Arguments> types() {
+    static Streamable<Arguments> categories() {
         return Streamable.of(
             Arguments.of("product"),
             Arguments.of("beertype"),

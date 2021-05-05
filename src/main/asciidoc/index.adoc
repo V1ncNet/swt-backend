@@ -77,10 +77,10 @@ Da der Katalog über die UI des Dienstes verwaltet wird, werden lediglich Anfrag
 [[resources-product-index]]
 === Katalogindex
 
-Um einen Index über alle Produkttypen zu bekommen, wird ein `GET`-Request an `/api/v1/catalog` gesendet.
+Um einen Index über alle Produktkategorien zu bekommen, wird ein `GET`-Request an `/api/v1/catalog` gesendet.
 
-Die Response ist ein JSON-Objekt mit einer Zuordnung zwischen Produkttypen und Links, mit dem die Sammlung des
-entsprechenden Typs angefordert werden kann.
+Die Response ist ein JSON-Objekt mit einer Zuordnung zwischen Produkttypen und Links, mit dem die Sammlung der
+entsprechenden Kategorie angefordert werden kann.
 
 include::{snippets}/catalog/index/response-fields.adoc[]
 
