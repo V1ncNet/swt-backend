@@ -29,13 +29,14 @@ public class Bottle extends PicturedProduct {
     @Enumerated(EnumType.STRING)
     private BottleColor color;
 
+    public Bottle(String name, MonetaryAmount price, BottleSize size, BottleColor color) {
+        this(null, name, price, null, size, color);
+    }
+
     protected Bottle(Id id, String name, MonetaryAmount price, URI imageLocation, BottleSize size, BottleColor color) {
         super(id, name, price, imageLocation);
         this.size = size;
         this.color = color;
-    }
-
-    public Bottle(String name, MonetaryAmount price) {
-        super(name, price, null);
+        add("bottle");
     }
 }

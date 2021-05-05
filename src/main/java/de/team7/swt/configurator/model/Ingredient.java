@@ -16,11 +16,12 @@ import javax.persistence.Entity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Ingredient extends Product {
 
-    protected Ingredient(Id id, String name, MonetaryAmount price) {
-        super(id, name, price);
+    public Ingredient(String name, MonetaryAmount price) {
+        this(null, name, price);
     }
 
-    public Ingredient(String name, MonetaryAmount price) {
-        super(name, price);
+    protected Ingredient(Id id, String name, MonetaryAmount price) {
+        super(id, name, price);
+        add("ingredient");
     }
 }
