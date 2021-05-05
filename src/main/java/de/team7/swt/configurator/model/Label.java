@@ -25,6 +25,11 @@ public class Label extends Product {
     @NonNull
     private URL image;
 
+    protected Label(Id id, String name, MonetaryAmount price, @NonNull URL image) {
+        super(id, name, price);
+        this.image = image;
+    }
+
     public Label(String name, MonetaryAmount price) {
         super(name, price);
     }
