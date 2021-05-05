@@ -1,6 +1,6 @@
 package de.team7.swt.configurator.presentation;
 
-import de.team7.swt.configurator.infrastructure.ProductCatalog;
+import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.web.CollectionModel;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CatalogRestController {
 
-    private final ProductCatalog catalog;
+    private final Catalog<Product> catalog;
 
     /**
      * Retrieves an index of all products and a link to where the actual product catalog is found.
@@ -36,7 +36,7 @@ public class CatalogRestController {
      */
     @RequestMapping("/index")
     public ResponseEntity<Map<String, URI>> index() {
-        Map<String, URI> name = catalog.streamManagedProducts()
+        Map<String, URI> name = catalog.findAllCategories().get()
             .collect(Collectors.toMap(Function.identity(), this::createLinkTo));
         return ResponseEntity.ok(name);
     }
@@ -67,7 +67,7 @@ public class CatalogRestController {
      */
     @RequestMapping(params = "category")
     public ResponseEntity<CollectionModel<Product>> listBy(@RequestParam String category) {
-        List<Product> products = catalog.streamAllByEntityName(category).collect(Collectors.toList());
+        List<Product> products = catalog.findByCategory(category).toList();
         return ResponseEntity.ok(CollectionModel.of(products));
     }
 
