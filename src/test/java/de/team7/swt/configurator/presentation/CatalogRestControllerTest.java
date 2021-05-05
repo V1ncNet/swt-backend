@@ -1,11 +1,11 @@
 package de.team7.swt.configurator.presentation;
 
-import de.team7.swt.configurator.infrastructure.ProductCatalog;
 import de.team7.swt.configurator.model.Bottles;
 import de.team7.swt.configurator.model.Flavours;
 import de.team7.swt.configurator.model.Ingredients;
 import de.team7.swt.configurator.model.Labels;
 import de.team7.swt.configurator.model.Types;
+import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.catalog.Products;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,7 +35,6 @@ import static de.team7.swt.configurator.model.Types.TYPE_LAGER_ID;
 import static de.team7.swt.configurator.model.Types.createLager;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -70,7 +69,7 @@ class CatalogRestControllerTest<T extends Product> {
     private static Flavours flavours;
     private static Ingredients ingredients;
     private static Labels labels;
-    @MockBean private ProductCatalog catalog;
+    @MockBean private Catalog<Product> catalog;
     // @formatter:on
 
     @BeforeAll
@@ -111,7 +110,7 @@ class CatalogRestControllerTest<T extends Product> {
 
     @Test
     void index() throws Exception {
-        when(catalog.streamManagedProducts()).thenAnswer(i -> categories().map(Arguments::get).map(objects -> objects[0]).get());
+        when(catalog.findAllCategories()).thenAnswer(i -> categories().map(Arguments::get).map(objects -> objects[0]));
 
         URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
             .path("/index")
@@ -127,7 +126,7 @@ class CatalogRestControllerTest<T extends Product> {
                     headerWithName(STATUS).description(OK).optional()
                 ),
                 responseFields(
-                    fieldWithPath("product").description("Collection resource location for the entire catalog of products"),
+                    fieldWithPath("product").ignored(),
                     fieldWithPath("beertype").description("Beer type's collection resource location"),
                     fieldWithPath("bottle").description("Bottle's collection resource location"),
                     fieldWithPath("flavour").description("Flavour's collection resource location"),
@@ -139,7 +138,7 @@ class CatalogRestControllerTest<T extends Product> {
     @ParameterizedTest
     @MethodSource("categories")
     void listBy(String category, Streamable<T> testDataProvider, ResponseFieldsSnippet responseFieldsSnippet) throws Exception {
-        when(catalog.streamAllByEntityName(category)).thenAnswer(i -> testDataProvider.get());
+        when(catalog.findByCategory(category)).thenAnswer(i -> testDataProvider);
 
         URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
             .queryParam("category", category)
@@ -223,7 +222,8 @@ class CatalogRestControllerTest<T extends Product> {
             fieldWithPath("price.amount").description(String.format("The amount of the %s's price", type)),
             fieldWithPath("price.currency").description(String.format("The currency of the %s's price", type)),
             fieldWithPath("price.formatted").description(String.format("The localized formatted %s price", type)),
-            fieldWithPath("image").ignored().optional(),
+            fieldWithPath("categories[]").description(String.format("Categories the %s is assigned to", type)),
+            fieldWithPath("imageLocation").ignored().optional(),
             fieldWithPath("size").ignored().optional(),
             fieldWithPath("color").ignored().optional()
         };
@@ -231,7 +231,7 @@ class CatalogRestControllerTest<T extends Product> {
 
     static FieldDescriptor[] forBottle() {
         return new FieldDescriptor[]{
-            fieldWithPath("_embedded[].image").description("The bottle's image location").optional(),
+            fieldWithPath("_embedded[].imageLocation").description("The bottle's image location").optional(),
             fieldWithPath("_embedded[].size").description("The bottle's size"),
             fieldWithPath("_embedded[].color").description("The bottle's color")
         };
@@ -239,7 +239,7 @@ class CatalogRestControllerTest<T extends Product> {
 
     static FieldDescriptor[] forLabel() {
         return new FieldDescriptor[]{
-            fieldWithPath("_embedded[].image").description("The label's image location").optional(),
+            fieldWithPath("_embedded[].imageLocation").description("The label's image location").optional(),
         };
     }
 }

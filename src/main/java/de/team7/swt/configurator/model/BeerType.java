@@ -16,11 +16,12 @@ import javax.persistence.Entity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class BeerType extends Product {
 
-    protected BeerType(Id id, String name, MonetaryAmount price) {
-        super(id, name, price);
+    public BeerType(String name, MonetaryAmount price) {
+        this(null, name, price);
     }
 
-    public BeerType(String name, MonetaryAmount price) {
-        super(name, price);
+    protected BeerType(Id id, String name, MonetaryAmount price) {
+        super(id, name, price);
+        add("beertype");
     }
 }

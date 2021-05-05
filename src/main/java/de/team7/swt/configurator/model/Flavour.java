@@ -16,11 +16,12 @@ import javax.persistence.Entity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Flavour extends Product {
 
-    protected Flavour(Id id, String name, MonetaryAmount price) {
-        super(id, name, price);
+    public Flavour(String name, MonetaryAmount price) {
+        this(null, name, price);
     }
 
-    public Flavour(String name, MonetaryAmount price) {
-        super(name, price);
+    protected Flavour(Id id, String name, MonetaryAmount price) {
+        super(id, name, price);
+        add("flavour");
     }
 }
