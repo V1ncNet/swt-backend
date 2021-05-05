@@ -472,6 +472,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_body_2">Response Body</a></li>
 </ul>
 </li>
+<li><a href="#resource-product-retrieve">Abruf eines existierenden Produkts</a>
+<ul class="sectlevel3">
+<li><a href="#_curl_beispiel_3">cURL Beispiel</a></li>
+<li><a href="#_response_headers">Response Headers</a></li>
+<li><a href="#_response_body_3">Response Body</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -984,12 +991,122 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="resource-product-retrieve"><a class="link" href="#resource-product-retrieve">Abruf eines existierenden Produkts</a></h3>
+<div class="paragraph">
+<p>Um eine bestimmte Person abzurufen, wird ein <code>GET</code>-Request an <code>/api/v1/catalog/$PRODUCT_ID</code> gestellt.</p>
+</div>
+<div class="paragraph">
+<p>Die Antwort ist ein JSON-Objekt, dessen Felder <strong>mindestens</strong> die folgenden Attribute enthält:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The product&#8217;s identifier</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The product&#8217;s name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>metric</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The product&#8217;s unit of measurement</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The product&#8217;s price</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price.amount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The amount of the product&#8217;s price</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price.currency</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currency of the product&#8217;s price</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price.formatted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The localized formatted product price</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="_curl_beispiel_3"><a class="link" href="#_curl_beispiel_3">cURL Beispiel</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/api/v1/catalog/65c8e363-cc41-40de-a1b8-f7529fc2b1f1' -i -X GET</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_headers"><a class="link" href="#_response_headers">Response Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">200 OK</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_response_body_3"><a class="link" href="#_response_body_3">Response Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code>{
+  "id" : "65c8e363-cc41-40de-a1b8-f7529fc2b1f1",
+  "name" : "Lager",
+  "price" : {
+    "amount" : 0.79,
+    "currency" : "EUR",
+    "formatted" : "EUR0.79"
+  },
+  "metric" : "UNIT"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-05 12:21:41 UTC
+Last updated 2021-05-05 13:19:13 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
