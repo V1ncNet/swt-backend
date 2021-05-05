@@ -53,9 +53,8 @@ public class CatalogRestController {
      * @return an embedded product list
      */
     @RequestMapping(params = "type")
-    public ResponseEntity<CollectionModel> list(@RequestParam String type) {
+    public ResponseEntity<CollectionModel<Product>> list(@RequestParam String type) {
         List<Product> products = catalog.streamAllByEntityName(type).collect(Collectors.toList());
-        CollectionModel body = new CollectionModel(products);
-        return ResponseEntity.ok(body);
+        return ResponseEntity.ok(CollectionModel.of(products));
     }
 }
