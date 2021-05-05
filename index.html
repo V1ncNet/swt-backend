@@ -627,6 +627,11 @@ entsprechenden Kategorie angefordert werden kann.</p>
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>product</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Collection resource location for the entire catalog of products</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>beertype</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Beer type&#8217;s collection resource location</p></td>
@@ -805,11 +810,6 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The localized formatted product price</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_embedded[].categories[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Categories the product is assigned to</p></td>
-</tr>
 </tbody>
 </table>
 <div class="sect3">
@@ -858,8 +858,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR1.99"
     },
-    "metric" : "UNIT",
-    "categories" : [ "beertype" ]
+    "metric" : "UNIT"
   }, {
     "id" : "65c8e363-cc41-40de-a1b8-f7529fc2b1f1",
     "name" : "Lager",
@@ -868,8 +867,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR0.79"
     },
-    "metric" : "UNIT",
-    "categories" : [ "beertype" ]
+    "metric" : "UNIT"
   }, {
     "id" : "053fe46e-805a-4958-a3f8-971e8ee4abcd",
     "name" : "Wheat",
@@ -878,8 +876,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR0.99"
     },
-    "metric" : "UNIT",
-    "categories" : [ "beertype" ]
+    "metric" : "UNIT"
   }, {
     "id" : "2936852b-c88e-4e50-8b77-11999f0f1b34",
     "name" : "0.5l - Brown Glass",
@@ -889,8 +886,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "formatted" : "EUR0.70"
     },
     "metric" : "UNIT",
-    "categories" : [ "bottle" ],
-    "imageLocation" : "http://localhost:8080/05-brown.png",
+    "image" : "http://localhost:8080/05-brown.png",
     "size" : "NORMAL",
     "color" : "BROWN"
   }, {
@@ -902,8 +898,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "formatted" : "EUR0.59"
     },
     "metric" : "UNIT",
-    "categories" : [ "bottle" ],
-    "imageLocation" : "http://localhost:8080/033-green.png",
+    "image" : "http://localhost:8080/033-green.png",
     "size" : "SMALL",
     "color" : "GREEN"
   }, {
@@ -914,8 +909,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR1.99"
     },
-    "metric" : "UNIT",
-    "categories" : [ "flavour" ]
+    "metric" : "UNIT"
   }, {
     "id" : "532e0559-e67f-44ca-85d4-2f7f48c89063",
     "name" : "coconut",
@@ -924,8 +918,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR0.79"
     },
-    "metric" : "UNIT",
-    "categories" : [ "flavour" ]
+    "metric" : "UNIT"
   }, {
     "id" : "b2251bc1-4a6b-46e8-9cf8-b1d32e982f71",
     "name" : "cookie",
@@ -934,8 +927,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR0.99"
     },
-    "metric" : "UNIT",
-    "categories" : [ "flavour" ]
+    "metric" : "UNIT"
   }, {
     "id" : "7a2705a3-7cdf-45ee-891d-295d16187c05",
     "name" : "Clove",
@@ -944,8 +936,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR1.99"
     },
-    "metric" : "UNIT",
-    "categories" : [ "ingredient" ]
+    "metric" : "UNIT"
   }, {
     "id" : "1b9cbeb8-7811-4101-ac63-f2a3bfb8a6a7",
     "name" : "Cinnamon",
@@ -954,8 +945,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR0.99"
     },
-    "metric" : "UNIT",
-    "categories" : [ "ingredient" ]
+    "metric" : "UNIT"
   }, {
     "id" : "b1dd6d6c-0b06-4dfc-97f8-23474aa3277b",
     "name" : "Pepper",
@@ -964,8 +954,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "currency" : "EUR",
       "formatted" : "EUR0.79"
     },
-    "metric" : "UNIT",
-    "categories" : [ "ingredient" ]
+    "metric" : "UNIT"
   }, {
     "id" : "a36212dc-3323-4ec2-a227-509e6f1b4d2b",
     "name" : "Black",
@@ -975,8 +964,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "formatted" : "EUR0.00"
     },
     "metric" : "UNIT",
-    "categories" : [ "label" ],
-    "imageLocation" : "http://localhost:8080/red.png"
+    "image" : "http://localhost:8080/red.png"
   }, {
     "id" : "c85f694b-8528-41d2-bdbc-816c2dbc7133",
     "name" : "Blue",
@@ -986,8 +974,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "formatted" : "EUR0.00"
     },
     "metric" : "UNIT",
-    "categories" : [ "label" ],
-    "imageLocation" : "http://localhost:8080/red.png"
+    "image" : "http://localhost:8080/red.png"
   }, {
     "id" : "eedf54a2-8747-47be-8d5a-c36a0cd3e1ab",
     "name" : "Red",
@@ -997,8 +984,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
       "formatted" : "EUR0.00"
     },
     "metric" : "UNIT",
-    "categories" : [ "label" ],
-    "imageLocation" : "http://localhost:8080/red.png"
+    "image" : "http://localhost:8080/red.png"
   } ]
 }</code></pre>
 </div>
@@ -1062,11 +1048,6 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The localized formatted product price</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>categories[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Categories the product is assigned to</p></td>
-</tr>
 </tbody>
 </table>
 <div class="sect3">
@@ -1114,8 +1095,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
     "currency" : "EUR",
     "formatted" : "EUR0.79"
   },
-  "metric" : "UNIT",
-  "categories" : [ "beertype" ]
+  "metric" : "UNIT"
 }</code></pre>
 </div>
 </div>
@@ -1126,7 +1106,7 @@ denen jedes <strong>mindestens</strong> die folgenden Standardattribute eines Pr
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-05 17:17:15 UTC
+Last updated 2021-05-05 17:24:04 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
