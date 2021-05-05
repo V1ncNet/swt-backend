@@ -35,7 +35,6 @@ import static de.team7.swt.configurator.model.Types.TYPE_LAGER_ID;
 import static de.team7.swt.configurator.model.Types.createLager;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
