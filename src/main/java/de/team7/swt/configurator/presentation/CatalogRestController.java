@@ -48,6 +48,17 @@ public class CatalogRestController {
     }
 
     /**
+     * Retrieves all products.
+     *
+     * @return 200 - an embedded product list
+     */
+    @RequestMapping
+    public ResponseEntity<CollectionModel<Product>> listAll() {
+        CollectionModel<Product> body = CollectionModel.of(catalog.findAll());
+        return ResponseEntity.ok(body);
+    }
+
+    /**
      * Retrieves all products of the given category.
      *
      * @param category must not be {@literal null}

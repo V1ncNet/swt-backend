@@ -1,7 +1,14 @@
 package de.team7.swt.configurator.presentation;
 
 import de.team7.swt.configurator.infrastructure.ProductCatalog;
+import de.team7.swt.configurator.model.Bottles;
+import de.team7.swt.configurator.model.Flavours;
+import de.team7.swt.configurator.model.Ingredients;
+import de.team7.swt.configurator.model.Labels;
+import de.team7.swt.configurator.model.Types;
 import de.team7.swt.domain.catalog.Product;
+import de.team7.swt.domain.catalog.Products;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Streamable;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -47,8 +55,14 @@ class CatalogRestControllerTest<T extends Product> {
     private MockMvc mockMvc;
 
     // @formatter:off
+    private static Products products;
     @MockBean private ProductCatalog catalog;
     // @formatter:on
+
+    @BeforeAll
+    static void beforeAll() {
+        products = new Products();
+    }
 
     @BeforeEach
     void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
@@ -57,6 +71,23 @@ class CatalogRestControllerTest<T extends Product> {
                 .withRequestDefaults(prettyPrint())
                 .withResponseDefaults(prettyPrint())
             ).build();
+    }
+
+    @Test
+    void listAll() throws Exception {
+        when(catalog.findAll()).thenReturn(products.toList());
+
+        mockMvc.perform(get(BASE_URI))
+            .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document(
+                "catalog/list",
+                responseHeaders(
+                    headerWithName(CONTENT_TYPE).description(APPLICATION_JSON),
+                    headerWithName(STATUS).description(OK).optional()
+                ),
+                forProductCollection()
+            ));
     }
 
     @Test
@@ -94,6 +125,22 @@ class CatalogRestControllerTest<T extends Product> {
             Arguments.of("flavour"),
             Arguments.of("ingredient"),
             Arguments.of("label")
+        );
+    }
+
+    static ResponseFieldsSnippet forProductCollection() {
+        return responseFields(
+            fieldWithPath("_embedded[]").description("foo")).andWithPrefix("_embedded[].",
+            fieldWithPath("id").description("The product's identifier"),
+            fieldWithPath("name").description("The product's name"),
+            fieldWithPath("metric").description("The product's unit of measurement"),
+            fieldWithPath("price").description("The product's price"),
+            fieldWithPath("price.amount").description("The amount of the product's price"),
+            fieldWithPath("price.currency").description("The currency of the product's price"),
+            fieldWithPath("price.formatted").description("The localized formatted %s price"),
+            fieldWithPath("image").ignored().optional(),
+            fieldWithPath("size").ignored().optional(),
+            fieldWithPath("color").ignored().optional()
         );
     }
 }

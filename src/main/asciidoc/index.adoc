@@ -64,6 +64,15 @@ möglich einzuhalten.
 | Die angeforderte Ressource existiert nicht.
 |===
 
+[[responses]]
+== Antworten
+
+Wenn ein Request erfolgreich ist, wird normalerweise ein Response Body in Form eines JSON-Objekts zurückgesendet.
+Ausnahmen sind die Methoden `POST` und `DELETE`, bei denen der Response Body leer ist.
+
+Handelt es sich bei der angeforderten Ressource um eine Kollektion, wird diese in einem Stammobjekt mit dem Schlüssel
+`_embedded`  eingebettet. Somit ist der JSON Response Body immer valide.
+
 [[resources]]
 = Ressourcen
 
@@ -95,3 +104,26 @@ include::{snippets}/catalog/index/response-headers.adoc[]
 ==== Response Body
 
 include::{snippets}/catalog/index/response-body.adoc[]
+
+[[resources-product-list]]
+=== Auflistung aller Produkte
+
+Alle Produkte können unabhängig ihrer Kategorie aufgelistet werden. Dafür wird ein `GET`-Request and den Endpoint
+`/api/v1/catalog` geschickt.
+
+Die Antwort ist ein JSON-Objekt mit einem Schlüssel `_embedded`. Der Wert hierfür ist ein Array von Produktobjekten, von
+denen jedes *mindestens* die folgenden Standardattribute eines Produkts enthält.
+
+include::{snippets}/catalog/list/response-fields.adoc[]
+
+==== cURL Beispiel
+
+include::{snippets}/catalog/list/curl-request.adoc[]
+
+==== Response Header
+
+include::{snippets}/catalog/list/response-headers.adoc[]
+
+==== Response Body
+
+include::{snippets}/catalog/list/response-body.adoc[]
