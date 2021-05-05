@@ -12,12 +12,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Streamable;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,6 +42,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,12 +61,22 @@ class CatalogRestControllerTest<T extends Product> {
 
     // @formatter:off
     private static Products products;
+    private static Types types;
+    private static Bottles bottles;
+    private static Flavours flavours;
+    private static Ingredients ingredients;
+    private static Labels labels;
     @MockBean private ProductCatalog catalog;
     // @formatter:on
 
     @BeforeAll
     static void beforeAll() {
         products = new Products();
+        types = new Types();
+        bottles = new Bottles();
+        flavours = new Flavours();
+        ingredients = new Ingredients();
+        labels = new Labels();
     }
 
     @BeforeEach
@@ -86,7 +101,7 @@ class CatalogRestControllerTest<T extends Product> {
                     headerWithName(CONTENT_TYPE).description(APPLICATION_JSON),
                     headerWithName(STATUS).description(OK).optional()
                 ),
-                forProductCollection()
+                forProductCollection("product")
             ));
     }
 
@@ -117,30 +132,69 @@ class CatalogRestControllerTest<T extends Product> {
                 )));
     }
 
+    @ParameterizedTest
+    @MethodSource("categories")
+    void listBy(String category, Streamable<T> testDataProvider, ResponseFieldsSnippet responseFieldsSnippet) throws Exception {
+        when(catalog.streamAllByEntityName(category)).thenAnswer(i -> testDataProvider.get());
+
+        URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
+            .queryParam("category", category)
+            .build().toUri();
+
+        mockMvc.perform(get(endpoint))
+            .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document(
+                "catalog/" + category,
+                requestParameters(
+                    parameterWithName("category").description("The category the product is assigned to")
+                ),
+                responseHeaders(
+                    headerWithName(CONTENT_TYPE).description(APPLICATION_JSON),
+                    headerWithName(STATUS).description(OK).optional()
+                ),
+                responseFieldsSnippet
+            ));
+    }
+
     static Streamable<Arguments> categories() {
         return Streamable.of(
-            Arguments.of("product"),
-            Arguments.of("beertype"),
-            Arguments.of("bottle"),
-            Arguments.of("flavour"),
-            Arguments.of("ingredient"),
-            Arguments.of("label")
+            Arguments.of("product", products, forProductCollection("product")),
+            Arguments.of("beertype", types, forProductCollection("beer type")),
+            Arguments.of("bottle", bottles, forProductCollection("bottle").and(forBottle())),
+            Arguments.of("flavour", flavours, forProductCollection("flavour")),
+            Arguments.of("ingredient", ingredients, forProductCollection("ingredient")),
+            Arguments.of("label", labels, forProductCollection("label").and(forLabel()))
         );
     }
 
-    static ResponseFieldsSnippet forProductCollection() {
+    static ResponseFieldsSnippet forProductCollection(String type) {
         return responseFields(
             fieldWithPath("_embedded[]").description("foo")).andWithPrefix("_embedded[].",
-            fieldWithPath("id").description("The product's identifier"),
-            fieldWithPath("name").description("The product's name"),
-            fieldWithPath("metric").description("The product's unit of measurement"),
-            fieldWithPath("price").description("The product's price"),
-            fieldWithPath("price.amount").description("The amount of the product's price"),
-            fieldWithPath("price.currency").description("The currency of the product's price"),
-            fieldWithPath("price.formatted").description("The localized formatted %s price"),
+            fieldWithPath("id").description(String.format("The %s's identifier", type)),
+            fieldWithPath("name").description(String.format("The %s's name", type)),
+            fieldWithPath("metric").description(String.format("The %s's unit of measurement", type)),
+            fieldWithPath("price").description(String.format("The %s's price", type)),
+            fieldWithPath("price.amount").description(String.format("The amount of the %s's price", type)),
+            fieldWithPath("price.currency").description(String.format("The currency of the %s's price", type)),
+            fieldWithPath("price.formatted").description(String.format("The localized formatted %s price", type)),
             fieldWithPath("image").ignored().optional(),
             fieldWithPath("size").ignored().optional(),
             fieldWithPath("color").ignored().optional()
         );
+    }
+
+    static FieldDescriptor[] forBottle() {
+        return new FieldDescriptor[]{
+            fieldWithPath("_embedded[].image").description("The bottle's image location").optional(),
+            fieldWithPath("_embedded[].size").description("The bottle's size"),
+            fieldWithPath("_embedded[].color").description("The bottle's color")
+        };
+    }
+
+    static FieldDescriptor[] forLabel() {
+        return new FieldDescriptor[]{
+            fieldWithPath("_embedded[].image").description("The label's image location").optional(),
+        };
     }
 }

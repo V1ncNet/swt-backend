@@ -105,6 +105,24 @@ include::{snippets}/catalog/index/response-headers.adoc[]
 
 include::{snippets}/catalog/index/response-body.adoc[]
 
+[[resources-product-category]]
+=== Auflistung nach Produktkategorie
+
+Wie in <<resources-product-index,Katalogindex>> erläutert, werden alle Kategorien und deren Endpoint aufgelistet. Wird
+dem entsprechenden Link gefolgt, sendet der Dienst eine nach Kategorie gefilterte Auflistung von Produkten zurück. Dabei
+wird dem Endpoint die jeweilige Kategorie als Request Parameter übergeben.
+
+Der <<resources-product-list,nachfolgende Abschnitt>> erläutert, wie der generelle Response Body aussehen wird.
+Dabei kann der Anzahl der Felder abhängig von der angeforderten Kategorie variieren.
+
+Beispielsweise wird die Kategorie "Label" das zusätzliche Feld `image` enthalten.
+
+Für die Auflistung wird ein `GET`-Request an den `/api/v1/catalog?category=$PRODUCT_CATEGORY`-Endpoint gesendet.
+
+==== Request Parameter
+
+include::{snippets}/catalog/product/request-parameters.adoc[]
+
 [[resources-product-list]]
 === Auflistung aller Produkte
 
