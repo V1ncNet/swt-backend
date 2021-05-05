@@ -68,6 +68,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     @Enumerated(EnumType.STRING)
     private final Metric metric;
 
+    @JsonProperty
     @ElementCollection(fetch = FetchType.EAGER)
     private final Set<String> categories = new HashSet<>();
 
