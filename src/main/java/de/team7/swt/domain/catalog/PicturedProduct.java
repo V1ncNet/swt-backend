@@ -23,25 +23,25 @@ import javax.persistence.Entity;
 public class PicturedProduct extends Product {
 
     @Nullable
-    private URI image;
+    private URI imageLocation;
 
-    protected PicturedProduct(Id id, String name, MonetaryAmount price, URI image) {
+    protected PicturedProduct(Id id, String name, MonetaryAmount price, URI imageLocation) {
         super(id, name, price);
-        this.image = image;
+        this.imageLocation = imageLocation;
     }
 
-    public PicturedProduct(String name, MonetaryAmount price, URI image) {
+    public PicturedProduct(String name, MonetaryAmount price, URI imageLocation) {
         super(name, price);
-        this.image = image;
+        this.imageLocation = imageLocation;
     }
 
-    public PicturedProduct(String name, MonetaryAmount price, Metric metric, URI image) {
+    public PicturedProduct(String name, MonetaryAmount price, Metric metric, URI imageLocation) {
         super(name, price, metric);
-        this.image = image;
+        this.imageLocation = imageLocation;
     }
 
-    protected PicturedProduct(Id id, String name, MonetaryAmount price, Metric metric, URI image) {
+    protected PicturedProduct(Id id, String name, MonetaryAmount price, Metric metric, URI imageLocation) {
         super(id, name, price, metric);
-        this.image = image;
+        this.imageLocation = imageLocation;
     }
 }
