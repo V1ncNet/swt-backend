@@ -110,7 +110,7 @@ class CatalogRestControllerTest<T extends Product> {
 
     @Test
     void index() throws Exception {
-        when(catalog.findAllCategories()).thenAnswer(i -> categories().map(Arguments::get).map(objects -> objects[0]));
+        when(catalog.findAllCategories()).thenAnswer(i -> Streamable.of(() -> categories().stream().skip(1).map(Arguments::get).map(objects -> objects[0])));
 
         URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
             .path("/index")
@@ -126,7 +126,6 @@ class CatalogRestControllerTest<T extends Product> {
                     headerWithName(STATUS).description(OK).optional()
                 ),
                 responseFields(
-                    fieldWithPath("product").ignored(),
                     fieldWithPath("beertype").description("Beer type's collection resource location"),
                     fieldWithPath("bottle").description("Bottle's collection resource location"),
                     fieldWithPath("flavour").description("Flavour's collection resource location"),
