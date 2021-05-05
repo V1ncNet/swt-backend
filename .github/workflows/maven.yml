@@ -34,7 +34,7 @@ jobs:
     - name: Compile
       run: mvn -B compile test-compile
     - name: Test
-      run: mvn -B -fae test
+      run: mvn -B -fae package
 
     - name: Checkstyle Report
       uses: jwgmeligmeyling/checkstyle-github-action@v1.2
