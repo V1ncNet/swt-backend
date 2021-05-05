@@ -25,21 +25,53 @@ public class PicturedProduct extends Product {
     @Nullable
     private URI imageLocation;
 
+    /**
+     * Creates a new pictured product with given ID, name, price and image location.
+     *
+     * @param id            can be {@literal null}
+     * @param name          must not be {@literal null} nor empty
+     * @param price         must not be {@literal null}
+     * @param imageLocation can be {@literal null}
+     */
     protected PicturedProduct(Id id, String name, MonetaryAmount price, URI imageLocation) {
         super(id, name, price);
         this.imageLocation = imageLocation;
     }
 
+    /**
+     * Creates a new pictured product with given name, price and image location.
+     *
+     * @param name          must not be {@literal null} nor empty
+     * @param price         must not be {@literal null}
+     * @param imageLocation can be {@literal null}
+     */
     public PicturedProduct(String name, MonetaryAmount price, URI imageLocation) {
         super(name, price);
         this.imageLocation = imageLocation;
     }
 
+    /**
+     * Creates a new pictured product with given name, price, metric and image location.
+     *
+     * @param name          must not be {@literal null} nor empty
+     * @param price         must not be {@literal null}
+     * @param metric        must not be {@literal null}
+     * @param imageLocation can be {@literal null}
+     */
     public PicturedProduct(String name, MonetaryAmount price, Metric metric, URI imageLocation) {
         super(name, price, metric);
         this.imageLocation = imageLocation;
     }
 
+    /**
+     * Creates a new pictured product with given ID, name, price, metric and image location.
+     *
+     * @param id            can be {@literal null}
+     * @param name          must not be {@literal null} nor empty
+     * @param price         must not be {@literal null}
+     * @param metric        must not be {@literal null}
+     * @param imageLocation can be {@literal null}
+     */
     protected PicturedProduct(Id id, String name, MonetaryAmount price, Metric metric, URI imageLocation) {
         super(id, name, price, metric);
         this.imageLocation = imageLocation;
