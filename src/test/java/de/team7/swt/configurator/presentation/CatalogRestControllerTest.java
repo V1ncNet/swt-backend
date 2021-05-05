@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
@@ -62,7 +63,11 @@ class CatalogRestControllerTest<T extends Product> {
     void index() throws Exception {
         when(catalog.streamManagedProducts()).thenAnswer(i -> categories().map(Arguments::get).map(objects -> objects[0]).get());
 
-        mockMvc.perform(get(BASE_URI))
+        URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
+            .path("/index")
+            .build().toUri();
+
+        mockMvc.perform(get(endpoint))
             .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(document(

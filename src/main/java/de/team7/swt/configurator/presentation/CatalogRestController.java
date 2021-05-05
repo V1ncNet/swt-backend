@@ -33,7 +33,7 @@ public class CatalogRestController {
      *
      * @return 200 - index of all products and their catalog link
      */
-    @RequestMapping
+    @RequestMapping("/index")
     public ResponseEntity<Map<String, URI>> index() {
         Map<String, URI> name = catalog.streamManagedProducts()
             .collect(Collectors.toMap(Function.identity(), this::createLinkTo));
@@ -42,6 +42,7 @@ public class CatalogRestController {
 
     private URI createLinkTo(String entityName) {
         return ServletUriComponentsBuilder.fromCurrentRequestUri()
+            .replacePath("/api/v1/catalog")
             .queryParam("category", entityName)
             .build().toUri();
     }
