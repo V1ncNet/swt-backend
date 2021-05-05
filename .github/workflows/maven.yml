@@ -44,7 +44,7 @@ jobs:
       uses: ScaCap/action-surefire-report@v1.0.9
 
     - name: Deploy Documentation
-      uses: peaceiris/actions-gh-pages@v3
+      uses: JamesIves/github-pages-deploy-action@4.1.1
       with:
-        personal_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./target/generated-docs
+        branch: gh-page
+        folder: target/generated-docs
