@@ -50,7 +50,7 @@ public class Jsr354Converters {
         private MonetaryAmount convertNonNull(String source) {
             try {
                 MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
-                return formatter.parse(source, Locale.US);
+                return formatter.parse(source, Locale.ROOT);
             } catch (UnsupportedOperationException | MonetaryParseException e) {
                 throw new IllegalArgumentException(e);
             }
@@ -81,7 +81,7 @@ public class Jsr354Converters {
             try {
                 Assert.notNull(source, "Source must not be empty");
                 MonetaryAmountFormatter formatter = new MonetaryAmountFormatter();
-                return formatter.print(source, Locale.US);
+                return formatter.print(source, Locale.ROOT);
             } catch (UnsupportedOperationException | IllegalStateException e) {
                 throw new IllegalArgumentException(e);
             }
