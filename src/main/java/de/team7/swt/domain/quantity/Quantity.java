@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -34,6 +35,7 @@ public class Quantity implements Comparable<Quantity> {
     public static final Quantity NONE = Quantity.of(0);
 
     @NonNull
+    @NumberFormat
     @Getter(onMethod_ = @Column(name = "quantity_amount"))
     private BigDecimal amount;
 
@@ -297,6 +299,6 @@ public class Quantity implements Comparable<Quantity> {
     public String toString() {
         DecimalFormat format = new DecimalFormat();
         format.setMinimumFractionDigits(amount.scale());
-        return format.format(amount).concat(metric.getAbbreviation());
+        return String.format("%s %s", amount, metric.getAbbreviation());
     }
 }

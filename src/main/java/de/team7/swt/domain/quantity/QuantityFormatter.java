@@ -56,8 +56,9 @@ public class QuantityFormatter implements Formatter<Quantity> {
     public String print(Quantity quantity, Locale locale) {
         Assert.notNull(quantity, "Quantity must not be null");
         Assert.notNull(locale, "Locale must not be null");
+        String abbrev = quantity.getMetric().getAbbreviation();
         return String.format("%s%s",
             NUMBER_FORMATTER.print(quantity.getAmount(), locale),
-            quantity.getMetric().getAbbreviation());
+            (abbrev.isEmpty() ? "" : " " + abbrev));
     }
 }
