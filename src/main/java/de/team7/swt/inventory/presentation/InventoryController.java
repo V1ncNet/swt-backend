@@ -57,7 +57,7 @@ class InventoryController {
         item.increase(quantity);
         inventory.save(item);
 
-        return "redirect:/stock";
+        return "redirect:/stock#" + formData.itemId;
     }
 
     /**

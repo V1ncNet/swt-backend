@@ -32,7 +32,7 @@
             <tr scope="row" th:if="${inventory.isEmpty()}">
                 <td colspan="4">No Inventory Items available</td>
             </tr>
-            <tr scope="row" th:each="item : ${inventory}">
+            <tr scope="row" th:each="item : ${inventory}" th:id="${item.id}">
                 <td th:text="${item.product.name}">Product Name</td>
                 <td class="text-end" th:text="${{item.product.price}}">Price</td>
                 <td class="text-end" th:text="${{item.quantity}}">Quantity</td>
