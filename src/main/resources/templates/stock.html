@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Inventory Management</title>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="col-lg-8 mx-auto p-3 py-md-5">
+    <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
+        <span class="d-flex align-items-center text-dark text-decoration-none">
+            <span class="fs-4">Team7</span>
+        </span>
+    </header>
+    <main>
+        <h1>Inventory Management</h1>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col" class="text-end">Price</th>
+                <th scope="col" class="text-end">Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr scope="row" th:if="${inventory.isEmpty()}">
+                <td colspan="4">No Inventory Items available</td>
+            </tr>
+            <tr scope="row" th:each="item : ${inventory}">
+                <td th:text="${item.product.name}">Product Name</td>
+                <td class="text-end" th:text="${{item.product.price}}">Price</td>
+                <td class="text-end" th:text="${{item.quantity}}">Quantity</td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
