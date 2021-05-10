@@ -62,6 +62,19 @@ public class InventoryItem extends AggregateRoot<InventoryItem.Id> {
         this.quantity = quantity;
     }
 
+    /**
+     * Increases the amount of products by the given quantity.
+     *
+     * @param quantity must not be {@literal null}
+     * @throws de.team7.swt.domain.quantity.MetricMismatchException in case this item's {@link Product} doesn't support
+     *                                                              the given {@link Quantity}
+     */
+    public void increase(Quantity quantity) {
+        product.verify(quantity);
+
+        this.quantity = this.quantity.add(quantity);
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

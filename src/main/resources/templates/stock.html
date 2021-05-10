@@ -7,6 +7,7 @@
     <title>Inventory Management</title>
 
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
 </head>
 <body>
 <div class="col-lg-8 mx-auto p-3 py-md-5">
@@ -23,6 +24,7 @@
                 <th scope="col">Product Name</th>
                 <th scope="col" class="text-end">Price</th>
                 <th scope="col" class="text-end">Quantity</th>
+                <th scope="col" class="text-center">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -33,12 +35,92 @@
                 <td th:text="${item.product.name}">Product Name</td>
                 <td class="text-end" th:text="${{item.product.price}}">Price</td>
                 <td class="text-end" th:text="${{item.quantity}}">Quantity</td>
+                <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
+                        <button type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#product-modal-edit"
+                                th:data-bs-item-id="${item.id}"
+                                th:data-bs-item-quantity="${item.quantity.amount}"
+                                th:data-bs-product-name="${item.product.name}"
+                                aria-label="Edit Product">
+                            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>
     </main>
 </div>
 
+<div class="modal fade" id="product-modal-edit" tabindex="-1" aria-labelledby="product-modal-label-edit"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="product-modal-label-edit">
+                    Edit Product
+                    <small class="modal-subtitle text-muted"></small>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" th:object="${formData}">
+                    <input id="item-id" type="hidden" th:field="*{itemId}">
+                    <label for="product-quantity" class="form-label">Quantity</label>
+                    <label for="product-quantity-offset" class="form-label d-none">Quantity</label>
+                    <div class="input-group mb-3">
+                        <input id="product-quantity" class="form-control" type="text" disabled>
+                        <span class="input-group-text">+</span>
+                        <input id="product-quantity-offset" class="form-control" type="number" step="any"
+                               placeholder="Quantity"
+                               th:field="*{itemQuantityAmountOffset}">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script>
+    const editProductModal = document.getElementById('product-modal-edit');
+    editProductModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget;
+
+        const itemId = button.getAttribute('data-bs-item-id');
+        const itemQuantityAmount = button.getAttribute('data-bs-item-quantity');
+        const productName = button.getAttribute('data-bs-product-name');
+
+        const modalTitle = editProductModal.querySelector('.modal-subtitle');
+        const form = editProductModal.querySelector('form');
+        const submitButton = editProductModal.querySelector('button[type=submit]');
+        const itemIdInput = editProductModal.querySelector('#item-id');
+        const itemQuantityOffset = editProductModal.querySelector('#product-quantity');
+        const itemQuantityOffsetInput = document.querySelector('#product-quantity-offset');
+
+        form.id = 'product-form-edit-' + itemId;
+
+        const formAttribute = document.createAttribute('form');
+        formAttribute.value = form.id;
+        console.log(formAttribute, form.id);
+        submitButton.setAttributeNode(formAttribute);
+
+        modalTitle.textContent = productName;
+        itemIdInput.value = itemId;
+        itemQuantityOffset.value = itemQuantityAmount;
+        itemQuantityOffsetInput.value = 0;
+
+    });
+    editProductModal.addEventListener('shown.bs.modal', () => {
+        const itemQuantityOffsetInput = editProductModal.querySelector('#product-quantity-offset');
+        itemQuantityOffsetInput.focus();
+        itemQuantityOffsetInput.select();
+    });
+</script>
 </body>
 </html>
