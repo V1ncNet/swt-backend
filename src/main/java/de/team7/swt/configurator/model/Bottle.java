@@ -1,6 +1,6 @@
 package de.team7.swt.configurator.model;
 
-import de.team7.swt.domain.catalog.PicturedProduct;
+import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Metric;
 import de.team7.swt.domain.quantity.Quantity;
 import lombok.AccessLevel;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.net.URI;
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,7 +23,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Getter
 @Setter
-public class Bottle extends PicturedProduct {
+public class Bottle extends Product {
 
     @Enumerated(EnumType.STRING)
     private Size size;
@@ -32,12 +31,12 @@ public class Bottle extends PicturedProduct {
     @Enumerated(EnumType.STRING)
     private Color color;
 
-    public Bottle(String name, MonetaryAmount price, URI imageLocation, Size size, Color color) {
-        this(null, name, price, imageLocation, size, color);
+    public Bottle(String name, MonetaryAmount price, Size size, Color color) {
+        this(null, name, price, size, color);
     }
 
-    protected Bottle(Id id, String name, MonetaryAmount price, URI imageLocation, Size size, Color color) {
-        super(id, name, price, imageLocation);
+    protected Bottle(Id id, String name, MonetaryAmount price, Size size, Color color) {
+        super(id, name, price);
         this.size = size;
         this.color = color;
         add("bottle");

@@ -217,7 +217,6 @@ class CatalogRestControllerTest<T extends Product> {
             fieldWithPath("price.currency").description(String.format("The currency of the %s's price", type)),
             fieldWithPath("price.formatted").description(String.format("The localized formatted %s price", type)),
             fieldWithPath("categories[]").description(String.format("Categories the %s is assigned to", type)),
-            fieldWithPath("imageLocation").ignored().optional(),
             fieldWithPath("size").ignored().optional(),
             fieldWithPath("color").ignored().optional()
         };
@@ -225,7 +224,6 @@ class CatalogRestControllerTest<T extends Product> {
 
     static FieldDescriptor[] forBottle() {
         return new FieldDescriptor[]{
-            fieldWithPath("_embedded[].imageLocation").description("The bottle's image location").optional(),
             fieldWithPath("_embedded[].size").description("The bottle's size"),
             fieldWithPath("_embedded[].color").description("The bottle's color")
         };
