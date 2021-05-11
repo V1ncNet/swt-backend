@@ -1,9 +1,12 @@
 package de.team7.swt.configurator.model;
 
 import de.team7.swt.domain.catalog.PicturedProduct;
+import de.team7.swt.domain.quantity.Metric;
+import de.team7.swt.domain.quantity.Quantity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.net.URI;
@@ -24,19 +27,46 @@ import javax.persistence.Enumerated;
 public class Bottle extends PicturedProduct {
 
     @Enumerated(EnumType.STRING)
-    private BottleSize size;
+    private Size size;
 
     @Enumerated(EnumType.STRING)
-    private BottleColor color;
+    private Color color;
 
-    public Bottle(String name, MonetaryAmount price, URI imageLocation, BottleSize size, BottleColor color) {
+    public Bottle(String name, MonetaryAmount price, URI imageLocation, Size size, Color color) {
         this(null, name, price, imageLocation, size, color);
     }
 
-    protected Bottle(Id id, String name, MonetaryAmount price, URI imageLocation, BottleSize size, BottleColor color) {
+    protected Bottle(Id id, String name, MonetaryAmount price, URI imageLocation, Size size, Color color) {
         super(id, name, price, imageLocation);
         this.size = size;
         this.color = color;
         add("bottle");
+    }
+
+    /**
+     * A collection of common beer bottle colors.
+     *
+     * @author Julian Albrecht
+     */
+    public enum Color {
+        WHITE,
+        BROWN,
+        GREEN,
+        ;
+    }
+
+    /**
+     * A collection of common beer bottle sizes and their associated quantities.
+     *
+     * @author Julian Albrecht
+     */
+    @Getter
+    @RequiredArgsConstructor
+    public enum Size {
+        SMALL(Quantity.of(0.33, Metric.LITER)),
+        NORMAL(Quantity.of(0.5, Metric.LITER)),
+        ;
+
+        private final Quantity quantity;
     }
 }
