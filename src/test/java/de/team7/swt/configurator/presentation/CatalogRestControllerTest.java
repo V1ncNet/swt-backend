@@ -1,10 +1,10 @@
 package de.team7.swt.configurator.presentation;
 
 import de.team7.swt.configurator.model.Bottles;
-import de.team7.swt.configurator.model.Flavours;
-import de.team7.swt.configurator.model.Ingredients;
+import de.team7.swt.domain.catalog.Flavours;
+import de.team7.swt.domain.catalog.Ingredients;
 import de.team7.swt.configurator.model.Labels;
-import de.team7.swt.configurator.model.Types;
+import de.team7.swt.domain.catalog.Types;
 import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.catalog.Products;
@@ -31,8 +31,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.Optional;
 
-import static de.team7.swt.configurator.model.Types.TYPE_LAGER_ID;
-import static de.team7.swt.configurator.model.Types.createLager;
+import static de.team7.swt.domain.catalog.Types.TYPE_LAGER_ID;
+import static de.team7.swt.domain.catalog.Types.createLager;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpStatus.OK;

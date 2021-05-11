@@ -1,4 +1,4 @@
-package de.team7.swt.configurator.model;
+package de.team7.swt.domain.catalog;
 
 import org.javamoney.moneta.Money;
 

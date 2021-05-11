@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.UUID;
 
-import static de.team7.swt.configurator.model.Currencies.ZERO_EURO;
+import static de.team7.swt.domain.catalog.Currencies.ZERO_EURO;
 
 /**
  * @author Vincent Nadoll

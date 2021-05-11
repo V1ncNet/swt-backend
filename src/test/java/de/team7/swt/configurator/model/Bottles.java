@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.UUID;
 
-import static de.team7.swt.configurator.model.Currencies.EURO;
+import static de.team7.swt.domain.catalog.Currencies.EURO;
 
 /**
  * @author Vincent Nadoll

@@ -1,10 +1,7 @@
 package de.team7.swt.domain.catalog;
 
 import de.team7.swt.configurator.model.Bottles;
-import de.team7.swt.configurator.model.Flavours;
-import de.team7.swt.configurator.model.Ingredients;
 import de.team7.swt.configurator.model.Labels;
-import de.team7.swt.configurator.model.Types;
 import org.springframework.data.util.Streamable;
 
 import java.util.Iterator;
