@@ -1,12 +1,12 @@
 package de.team7.swt.configurator.presentation;
 
 import de.team7.swt.configurator.model.Bottles;
+import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Flavours;
 import de.team7.swt.domain.catalog.Ingredients;
-import de.team7.swt.domain.catalog.Types;
-import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.catalog.Products;
+import de.team7.swt.domain.catalog.Types;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
