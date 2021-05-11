@@ -100,13 +100,13 @@ public class ConfiguratorDataInitializer implements DataInitializer {
             .peek(addCategory("Biersorte"))
             .forEach(catalog::save);
 
-        catalog.save(new Bottle("0.5l - White Glass", ZERO_EURO, Size.NORMAL, Color.WHITE));
-        catalog.save(new Bottle("0.5l - Brown Glass", ZERO_EURO, Size.NORMAL, Color.BROWN));
-        catalog.save(new Bottle("0.5l - Green Glass", ZERO_EURO, Size.NORMAL, Color.GREEN));
+        catalog.save(new Bottle("Weißes Glas (0,5 l)", ZERO_EURO, Size.NORMAL, Color.WHITE));
+        catalog.save(new Bottle("Braunes Glas (0,5 l)", ZERO_EURO, Size.NORMAL, Color.BROWN));
+        catalog.save(new Bottle("Grünes Glas (0,5 l)", ZERO_EURO, Size.NORMAL, Color.GREEN));
 
-        catalog.save(new Bottle("0.33l - White Glass", ZERO_EURO, Size.SMALL, Color.WHITE));
-        catalog.save(new Bottle("0.33l - Brown Glass", ZERO_EURO, Size.SMALL, Color.BROWN));
-        catalog.save(new Bottle("0.33l - Green Glass", ZERO_EURO, Size.SMALL, Color.GREEN));
+        catalog.save(new Bottle("Weißes Glas (0,33 l)", ZERO_EURO, Size.SMALL, Color.WHITE));
+        catalog.save(new Bottle("Braunes Glas (0,33 l)", ZERO_EURO, Size.SMALL, Color.BROWN));
+        catalog.save(new Bottle("Grünes Glas (0,33 l)", ZERO_EURO, Size.SMALL, Color.GREEN));
 
         Arrays.stream(flavours)
             .map(name -> new Product(name, ZERO_EURO))
