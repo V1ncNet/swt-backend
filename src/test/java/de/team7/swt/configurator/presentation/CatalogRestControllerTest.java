@@ -3,7 +3,6 @@ package de.team7.swt.configurator.presentation;
 import de.team7.swt.configurator.model.Bottles;
 import de.team7.swt.domain.catalog.Flavours;
 import de.team7.swt.domain.catalog.Ingredients;
-import de.team7.swt.configurator.model.Labels;
 import de.team7.swt.domain.catalog.Types;
 import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Product;
@@ -68,7 +67,6 @@ class CatalogRestControllerTest<T extends Product> {
     private static Bottles bottles;
     private static Flavours flavours;
     private static Ingredients ingredients;
-    private static Labels labels;
     @MockBean private Catalog<Product> catalog;
     // @formatter:on
 
@@ -79,7 +77,6 @@ class CatalogRestControllerTest<T extends Product> {
         bottles = new Bottles();
         flavours = new Flavours();
         ingredients = new Ingredients();
-        labels = new Labels();
     }
 
     @BeforeEach
@@ -129,8 +126,7 @@ class CatalogRestControllerTest<T extends Product> {
                     fieldWithPath("beertype").description("Beer type's collection resource location"),
                     fieldWithPath("bottle").description("Bottle's collection resource location"),
                     fieldWithPath("flavour").description("Flavour's collection resource location"),
-                    fieldWithPath("ingredient").description("Ingredient's collection resource location"),
-                    fieldWithPath("label").description("Label's collection resource location")
+                    fieldWithPath("ingredient").description("Ingredient's collection resource location")
                 )));
     }
 
@@ -200,8 +196,7 @@ class CatalogRestControllerTest<T extends Product> {
             Arguments.of("beertype", types, forProductCollection("beer type")),
             Arguments.of("bottle", bottles, forProductCollection("bottle").and(forBottle())),
             Arguments.of("flavour", flavours, forProductCollection("flavour")),
-            Arguments.of("ingredient", ingredients, forProductCollection("ingredient")),
-            Arguments.of("label", labels, forProductCollection("label").and(forLabel()))
+            Arguments.of("ingredient", ingredients, forProductCollection("ingredient"))
         );
     }
 
@@ -233,12 +228,6 @@ class CatalogRestControllerTest<T extends Product> {
             fieldWithPath("_embedded[].imageLocation").description("The bottle's image location").optional(),
             fieldWithPath("_embedded[].size").description("The bottle's size"),
             fieldWithPath("_embedded[].color").description("The bottle's color")
-        };
-    }
-
-    static FieldDescriptor[] forLabel() {
-        return new FieldDescriptor[]{
-            fieldWithPath("_embedded[].imageLocation").description("The label's image location").optional(),
         };
     }
 }
