@@ -54,7 +54,7 @@ class Jsr354ConvertersTest {
         String value = toStringConverter.convert(Money.of(2.99, "EUR"));
 
         assertNotNull(value);
-        assertEquals("EUR2.99", value);
+        assertEquals("EUR 2.99", value);
     }
 
     @Test

@@ -63,7 +63,7 @@ class QuantityFormatterTest {
     void formatter_shouldPrintQuantities() {
         assertEquals("0", formatter.print(Quantity.NONE, Locale.ROOT));
         assertEquals("1", formatter.print(Quantity.of(1), Locale.ROOT));
-        assertEquals("1l", formatter.print(Quantity.of(1, Metric.LITER), Locale.ROOT));
+        assertEquals("1 l", formatter.print(Quantity.of(1, Metric.LITER), Locale.ROOT));
         assertEquals("1.5", formatter.print(Quantity.of(1.5), Locale.US));
         assertEquals("1,5", formatter.print(Quantity.of(1.5), Locale.GERMANY));
     }

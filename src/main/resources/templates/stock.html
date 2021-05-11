@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title th:text="#{stock.title}">Inventory Management</title>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/style.css}">
+</head>
+<body>
+<div class="col-lg-8 mx-auto p-3 py-md-5">
+    <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
+        <span class="d-flex align-items-center text-dark text-decoration-none">
+            <span class="fs-4">Team7</span>
+        </span>
+    </header>
+    <main>
+        <h1 th:text="#{stock.title}">Inventory Management</h1>
+        <table class="table table-bordered table-actions-sm">
+            <thead>
+            <tr>
+                <th scope="col" th:text="#{product.name}">Product Name</th>
+                <th scope="col" class="text-end" th:text="#{product.price}">Price</th>
+                <th scope="col" class="text-end" th:text="#{product.quantity}">Quantity</th>
+                <th scope="col" class="text-center" th:text="#{form.actions}">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr scope="row" th:if="${inventory.isEmpty()}">
+                <td colspan="4" th:text="#{stock.empty}">No Inventory Items available</td>
+            </tr>
+            <tr scope="row" th:each="item : ${inventory}" th:id="${item.id}">
+                <td th:text="${item.product.name}">Product Name</td>
+                <td class="text-end" th:text="${{item.product.price}}">Price</td>
+                <td class="text-end">
+                    <span th:text="${{item.quantity.amount}}">Quantity</span>
+                    <span th:text="#{'Metric.'+${{item.quantity.metric}}}"></span>
+                </td>
+                <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group"
+                         aria-label="Actions" th:aria-label="#{form.actions}">
+                        <button type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#product-modal-edit"
+                                th:data-bs-item-id="${item.id}"
+                                th:data-bs-item-quantity="${item.quantity.amount}"
+                                th:data-bs-product-name="${item.product.name}"
+                                th:data-bs-product-metric="#{'Metric.'+${{item.quantity.metric}}}"
+                                aria-label="Edit Product" th:aria-label="#{form.product.edit}">
+                            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+
+<div class="modal fade" id="product-modal-edit" tabindex="-1" aria-labelledby="product-modal-label-edit"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="product-modal-label-edit">
+                    <span th:text="#{form.product.edit}">Edit Product</span>
+                    <small class="modal-subtitle text-muted"></small>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close" th:aria-label="#{modal.close}">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" th:object="${formData}">
+                    <input id="item-id" type="hidden" th:field="*{itemId}">
+                    <label for="product-quantity" class="form-label" th:text="#{product.quantity}">Quantity</label>
+                    <label for="product-quantity-offset" class="form-label d-none" th:text="#{product.quantity}">
+                        Quantity
+                    </label>
+                    <div class="input-group mb-3">
+                        <input id="product-quantity" class="form-control" type="text" disabled>
+                        <span class="input-group-text">+</span>
+                        <input id="product-quantity-offset" class="form-control" type="number" step="any"
+                               placeholder="Quantity" th:placeholder="#{product.quantity}"
+                               th:field="*{itemQuantityAmountOffset}">
+                        <span id="product-metric" class="input-group-text"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{modal.close}">
+                    Close
+                </button>
+                <button type="submit" class="btn btn-primary" th:text="#{form.save}">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script>
+    const editProductModal = document.getElementById('product-modal-edit');
+    editProductModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget;
+
+        const itemId = button.getAttribute('data-bs-item-id');
+        const itemQuantityAmount = button.getAttribute('data-bs-item-quantity');
+        const productName = button.getAttribute('data-bs-product-name');
+        const productMetric = button.getAttribute('data-bs-product-metric');
+
+        const modalTitle = editProductModal.querySelector('.modal-subtitle');
+        const form = editProductModal.querySelector('form');
+        const submitButton = editProductModal.querySelector('button[type=submit]');
+        const itemIdInput = editProductModal.querySelector('#item-id');
+        const itemQuantityOffset = editProductModal.querySelector('#product-quantity');
+        const itemQuantityOffsetInput = document.querySelector('#product-quantity-offset');
+        const productMetricElement = editProductModal.querySelector('#product-metric');
+
+        form.id = 'product-form-edit-' + itemId;
+
+        const formAttribute = document.createAttribute('form');
+        formAttribute.value = form.id;
+        console.log(formAttribute, form.id);
+        submitButton.setAttributeNode(formAttribute);
+
+        modalTitle.textContent = productName;
+        itemIdInput.value = itemId;
+        itemQuantityOffset.value = itemQuantityAmount;
+        itemQuantityOffsetInput.value = 0;
+        productMetricElement.textContent = productMetric;
+    });
+    editProductModal.addEventListener('shown.bs.modal', () => {
+        const itemQuantityOffsetInput = editProductModal.querySelector('#product-quantity-offset');
+        itemQuantityOffsetInput.focus();
+        itemQuantityOffsetInput.select();
+    });
+</script>
+</body>
+</html>
