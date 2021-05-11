@@ -149,7 +149,7 @@ include::{snippets}/catalog/list/response-body.adoc[]
 [[resource-product-retrieve]]
 === Abruf eines existierenden Produkts
 
-Um eine bestimmte Person abzurufen, wird ein `GET`-Request an `/api/v1/catalog/$PRODUCT_ID` gestellt.
+Um ein bestimmtes Produkt abzurufen, wird ein `GET`-Request an `/api/v1/catalog/$PRODUCT_ID` gestellt.
 
 Die Antwort ist ein JSON-Objekt, dessen Felder *mindestens* die folgenden Attribute enthält:
 
