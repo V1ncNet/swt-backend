@@ -23,9 +23,7 @@ import javax.money.MonetaryAmount;
  */
 @Component
 @RequiredArgsConstructor
-public class ConfiguratorDataInitializer implements DataInitializer {
-
-    public static final int ORDER = DEFAULT_ORDER;
+class ConfiguratorDataInitializer implements DataInitializer {
 
     private static final CurrencyUnit EURO = Monetary.getCurrency("EUR");
     private static final MonetaryAmount ZERO_EURO = Money.zero(EURO);
@@ -132,10 +130,5 @@ public class ConfiguratorDataInitializer implements DataInitializer {
 
     private static <T extends Product> Consumer<T> addCategory(String category) {
         return product -> product.add(category);
-    }
-
-    @Override
-    public int getOrder() {
-        return ORDER;
     }
 }
