@@ -29,7 +29,7 @@ public class PicturedProduct extends Product {
      * Creates a new pictured product with given ID, name, price and image location.
      *
      * @param id            can be {@literal null}
-     * @param name          must not be {@literal null} nor empty
+     * @param name          must not be {@literal null} or empty
      * @param price         must not be {@literal null}
      * @param imageLocation can be {@literal null}
      */
@@ -41,7 +41,7 @@ public class PicturedProduct extends Product {
     /**
      * Creates a new pictured product with given name, price and image location.
      *
-     * @param name          must not be {@literal null} nor empty
+     * @param name          must not be {@literal null} or empty
      * @param price         must not be {@literal null}
      * @param imageLocation can be {@literal null}
      */
@@ -53,7 +53,7 @@ public class PicturedProduct extends Product {
     /**
      * Creates a new pictured product with given name, price, metric and image location.
      *
-     * @param name          must not be {@literal null} nor empty
+     * @param name          must not be {@literal null} or empty
      * @param price         must not be {@literal null}
      * @param metric        must not be {@literal null}
      * @param imageLocation can be {@literal null}
@@ -67,7 +67,7 @@ public class PicturedProduct extends Product {
      * Creates a new pictured product with given ID, name, price, metric and image location.
      *
      * @param id            can be {@literal null}
-     * @param name          must not be {@literal null} nor empty
+     * @param name          must not be {@literal null} or empty
      * @param price         must not be {@literal null}
      * @param metric        must not be {@literal null}
      * @param imageLocation can be {@literal null}

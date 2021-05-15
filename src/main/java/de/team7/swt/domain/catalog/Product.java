@@ -78,7 +78,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
      * Creates a new product with given ID, name and price.
      *
      * @param id    can be {@literal null}
-     * @param name  must not be {@literal null} nor empty
+     * @param name  must not be {@literal null} or empty
      * @param price must not be {@literal null}
      */
     protected Product(Product.Id id, String name, MonetaryAmount price) {
@@ -88,7 +88,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     /**
      * Creates a new product with given name and price.
      *
-     * @param name  must not be {@literal null} nor empty
+     * @param name  must not be {@literal null} or empty
      * @param price must not be {@literal null}
      */
     public Product(String name, MonetaryAmount price) {
@@ -98,7 +98,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     /**
      * Creates a new product with given name, price and metric.
      *
-     * @param name   must not be {@literal null} nor empty
+     * @param name   must not be {@literal null} or empty
      * @param price  must not be {@literal null}
      * @param metric must not be {@literal null}
      */
@@ -110,7 +110,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
      * Creates a new product with given ID, name, price and metric.
      *
      * @param id     can be {@literal null}
-     * @param name   must not be {@literal null} nor empty
+     * @param name   must not be {@literal null} or empty
      * @param price  must not be {@literal null}
      * @param metric must not be {@literal null}
      */
@@ -138,7 +138,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     /**
      * Adds this product to the given category.
      *
-     * @param category must not be {@literal null} nor empty
+     * @param category must not be {@literal null} or empty
      * @return {@literal true} if this product is not already assigned to the category; {@literal false} otherwise
      */
     public final boolean add(String category) {
@@ -149,7 +149,7 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     /**
      * Removes this product form the given category.
      *
-     * @param category must not be {@literal null} nor empty
+     * @param category must not be {@literal null} or empty
      * @return {@literal true} if this product where assigned to the category; {@literal false} otherwise
      */
     public final boolean remove(String category) {
