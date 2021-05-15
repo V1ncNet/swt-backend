@@ -37,7 +37,7 @@ public class InventoryItem extends AggregateRoot<InventoryItem.Id> {
     private final InventoryItem.Id id;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, updatable = false)
     private Product product;
 
     private Quantity quantity;
