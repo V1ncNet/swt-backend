@@ -1,5 +1,6 @@
 package de.team7.swt.domain.quantity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -233,6 +234,7 @@ public class Quantity implements Comparable<Quantity> {
      * @return {@literal true} if the amount is less than 0; {@literal false} otherwise
      */
     @Transient
+    @JsonIgnore
     public boolean isNegative() {
         return Objects.compare(this.amount, BigDecimal.ZERO, BigDecimal::compareTo) < 0;
     }
@@ -243,6 +245,7 @@ public class Quantity implements Comparable<Quantity> {
      * @return {@literal true} if the amount is negative or 0; {@literal false} otherwise
      */
     @Transient
+    @JsonIgnore
     public boolean isZeroOrNegative() {
         return !isGreaterThan(toZero());
     }
