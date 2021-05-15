@@ -40,6 +40,23 @@ mvn clean spring-boot:run
 Alternatively, start the `Application` class with the IDE of your choice.
 
 
+Usage
+-----
+
+Once the service is running, it exposes several resources on the configured
+port (default 8080).
+
+The product ressource provides functionalities for consuming products from the
+configured catalog in a RESTful approach. This means, no session is required but
+resources should be processed by another service.
+
+Meanwhile, the inventory component is a more administrative one and requires
+authentication to be accessed. Its endpoint `/stock` produces HTML and consumes
+FormData, thus it's much likely be consumed with a browser. Visit
+http://localhost:8080/stock and use the credentials `manager:secret` to manage
+the product inventory.
+
+
 API Guide
 ---------
 
