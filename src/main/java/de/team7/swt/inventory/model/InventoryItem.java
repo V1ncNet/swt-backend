@@ -27,21 +27,19 @@ import javax.persistence.OneToOne;
  * @author Vincent Nadoll
  */
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class InventoryItem extends AggregateRoot<InventoryItem.Id> {
 
-    @Getter
     @EmbeddedId
     @GeneratedValue(generator = "inventoryItem-id")
     @GenericGenerator(name = "inventoryItem-id", strategy = "dyob-id")
     private final InventoryItem.Id id;
 
-    @Getter
     @OneToOne
     @JoinColumn(unique = true)
     private Product product;
 
-    @Getter
     private Quantity quantity;
 
     /**
