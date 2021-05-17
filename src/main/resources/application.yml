@@ -7,3 +7,11 @@ spring:
     open-in-view: true
     properties:
       hibernate.ejb.identifier_generator_strategy_provider: de.team7.swt.domain.infrastructure.GlobalIdentifierGeneratorStrategyProvider
+
+server:
+  error:
+    include-message: ALWAYS
+    include-exception: false
+    include-stacktrace: ON_PARAM
+    include-binding-errors: ON_PARAM
+    whitelabel.enabled: false

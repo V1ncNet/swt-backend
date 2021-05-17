@@ -1,10 +1,12 @@
 package de.team7.swt.checkout.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
 import org.javamoney.moneta.Money;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,6 +21,11 @@ import javax.money.MonetaryAmount;
 public class Cart {
 
     private final Map<Product, CartItem> items = new LinkedHashMap<>();
+
+    @JsonGetter
+    private Collection<CartItem> getItems() {
+        return items.values();
+    }
 
     /**
      * Saves given {@link Product} and {@link Quantity} and creates or updates an existing {@link CartItem}.

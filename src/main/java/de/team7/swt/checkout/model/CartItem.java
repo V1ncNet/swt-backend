@@ -1,10 +1,13 @@
 package de.team7.swt.checkout.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Value;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.util.Assert;
 
 import java.util.UUID;
@@ -19,9 +22,15 @@ import javax.money.MonetaryAmount;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CartItem {
 
+    @JsonIgnore
     UUID id;
+
+    @JsonUnwrapped
     Product product;
+
+    @NumberFormat(pattern = "0.00 ¤")
     MonetaryAmount price;
+
     Quantity quantity;
 
     /**
