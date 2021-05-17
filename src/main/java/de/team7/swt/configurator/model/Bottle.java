@@ -39,7 +39,6 @@ public class Bottle extends Product {
         super(id, name, price);
         this.size = size;
         this.color = color;
-        add("bottle");
     }
 
     /**
