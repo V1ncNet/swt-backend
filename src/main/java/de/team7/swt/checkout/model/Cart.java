@@ -3,29 +3,28 @@ package de.team7.swt.checkout.model;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
-import org.javamoney.moneta.Money;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import javax.money.MonetaryAmount;
 
 /**
  * Abstraction of a shopping cart.
  *
  * @author Vincent Nadoll
  */
-public class Cart {
+public class Cart implements Totalable<CartItem> {
 
     private final Map<Product, CartItem> items = new LinkedHashMap<>();
 
     @JsonGetter
     private Collection<CartItem> getItems() {
-        return items.values();
+        return toList();
     }
 
     /**
@@ -51,7 +50,7 @@ public class Cart {
     public void addItemsTo(Order order) {
         Assert.notNull(order, "Order must not be null");
 
-        items.values().forEach(addTo(order));
+        forEach(addTo(order));
     }
 
     private static Consumer<CartItem> addTo(Order order) {
@@ -62,11 +61,8 @@ public class Cart {
         items.clear();
     }
 
-    public MonetaryAmount getTotal() {
-        return items.values()
-            .stream()
-            .map(CartItem::getPrice)
-            .reduce(MonetaryAmount::add)
-            .orElse(Money.of(0, "EUR"));
+    @Override
+    public Iterator<CartItem> iterator() {
+        return items.values().iterator();
     }
 }

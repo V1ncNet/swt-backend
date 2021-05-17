@@ -23,7 +23,7 @@ import javax.money.MonetaryAmount;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class OrderItem extends de.team7.swt.domain.shared.Entity<OrderItem.Id> {
+public class OrderItem extends de.team7.swt.domain.shared.Entity<OrderItem.Id> implements Priced {
 
     @JsonUnwrapped
     private final OrderItem.Id id;

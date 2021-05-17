@@ -6,12 +6,11 @@ import de.team7.swt.domain.quantity.Quantity;
 import de.team7.swt.domain.shared.AggregateRoot;
 import de.team7.swt.domain.shared.Identifier;
 import lombok.Getter;
-import org.javamoney.moneta.Money;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import javax.money.MonetaryAmount;
 
 /**
  * An {@link AggregateRoot} representing an identifiable collection of items.
@@ -19,7 +18,7 @@ import javax.money.MonetaryAmount;
  * @author Vincent Nadoll
  */
 @Getter
-public class Order extends AggregateRoot<Order.Id> {
+public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderItem> {
 
     @JsonUnwrapped
     private final Order.Id id;
@@ -43,16 +42,9 @@ public class Order extends AggregateRoot<Order.Id> {
         return item;
     }
 
-    /**
-     * Sums up the hole order line.
-     *
-     * @return the total amount of all order items.
-     */
-    public MonetaryAmount getTotal() {
-        return orderLine.stream()
-            .map(OrderItem::getPrice)
-            .reduce(MonetaryAmount::add)
-            .orElse(Money.of(0, "EUR"));
+    @Override
+    public Iterator<OrderItem> iterator() {
+        return orderLine.iterator();
     }
 
     /**

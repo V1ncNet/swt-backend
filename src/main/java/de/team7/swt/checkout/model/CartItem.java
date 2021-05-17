@@ -21,7 +21,7 @@ import javax.money.MonetaryAmount;
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CartItem {
+public class CartItem implements Priced {
 
     @JsonIgnore
     Id id;
