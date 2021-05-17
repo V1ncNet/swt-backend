@@ -17,6 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.function.Predicate.not;
+
 /**
  * Stateful controller which handles requests and responses regarding checkout. Each new HTTP session gets its own
  * {@link Cart} instance which times out after 30 minutes (by default).
@@ -28,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 class CartController {
+
+    public static final String UNIQUE_DESCRIPTOR = "Komponente";
 
     private final Cart cart;
     private final OrderRepository repository;
@@ -50,9 +59,31 @@ class CartController {
      */
     @PostMapping
     ResponseEntity<Cart> addItem(@RequestParam("productId") Product product) {
+        if (!cartContainsCategoriesFrom(product)) {
+            throw new ValidationException(String.format(
+                "Cart already contains product w/ any categories like %s but must be unique",
+                streamCategories(product).collect(Collectors.toSet())
+            ));
+        }
+
         cart.save(product, product.from(1));
 
         return ResponseEntity.ok(unwrapProxy(cart));
+    }
+
+    private boolean cartContainsCategoriesFrom(Product product) {
+        String[] categories = streamCategories(product)
+            .filter(not(categoryEquals(UNIQUE_DESCRIPTOR)))
+            .toArray(String[]::new);
+        return !(product.contains(UNIQUE_DESCRIPTOR) && cart.containsAny(categories));
+    }
+
+    private Stream<String> streamCategories(Product product) {
+        return product.getCategories().stream();
+    }
+
+    private Predicate<String> categoryEquals(String other) {
+        return category -> Objects.equals(category, other);
     }
 
     /*

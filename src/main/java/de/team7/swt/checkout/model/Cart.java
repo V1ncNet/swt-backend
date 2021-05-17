@@ -5,7 +5,9 @@ import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -123,6 +125,22 @@ public class Cart implements Totalable<CartItem> {
 
     private static Consumer<CartItem> addTo(Order order) {
         return item -> order.addItem(item.getProduct(), item.getQuantity());
+    }
+
+    /**
+     * Indicates whether this cart's products are assigned to any of the given categories.
+     *
+     * @param categories must not be {@literal null}
+     * @return {@literal true} if this cart contains products assigned to any given categories; {@literal false}
+     *     otherwise
+     */
+    public boolean containsAny(String... categories) {
+        return items.keySet().stream()
+            .anyMatch(subsetOf(categories));
+    }
+
+    private Predicate<Product> subsetOf(String[] categories) {
+        return product -> !Collections.disjoint(product.getCategories().toSet(), Arrays.asList(categories));
     }
 
     /**
