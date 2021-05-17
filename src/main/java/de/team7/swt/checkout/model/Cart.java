@@ -101,17 +101,6 @@ public class Cart implements Totalable<CartItem> {
         addItemsTo(order);
     }
 
-    private BiConsumer<Product, CartItem> set(int amount) {
-        return (product, cartItem) -> {
-            Quantity quantity = product.from(amount);
-            items.compute(product, saveWith(quantity, override(quantity)));
-        };
-    }
-
-    private static UnaryOperator<CartItem> override(Quantity quantity) {
-        return item -> item.create(quantity);
-    }
-
     /**
      * Places all {@link CartItem}s into the given {@link Order}.
      *
@@ -125,6 +114,17 @@ public class Cart implements Totalable<CartItem> {
 
     private static Consumer<CartItem> addTo(Order order) {
         return item -> order.addItem(item.getProduct(), item.getQuantity());
+    }
+
+    private BiConsumer<Product, CartItem> set(int amount) {
+        return (product, cartItem) -> {
+            Quantity quantity = product.from(amount);
+            items.compute(product, saveWith(quantity, override(quantity)));
+        };
+    }
+
+    private static UnaryOperator<CartItem> override(Quantity quantity) {
+        return item -> item.create(quantity);
     }
 
     /**
