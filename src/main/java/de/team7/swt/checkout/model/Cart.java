@@ -10,8 +10,10 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Abstraction of a shopping cart.
@@ -45,6 +47,35 @@ public class Cart implements Totalable<CartItem> {
         return (product, cartItem) -> Objects.isNull(cartItem)
             ? new CartItem(product, quantity)
             : cartItem.add(quantity);
+    }
+
+    /**
+     * Retrieves a {@link CartItem} for its ID.
+     *
+     * @param id must not be {@literal null}
+     * @return {@link Optional} wrapped {@link CartItem}; {@literal Optional.empty()} if not found
+     */
+    public Optional<CartItem> retrieve(CartItem.Id id) {
+        Assert.notNull(id, "Cart item ID must not be null");
+        return items.values().stream()
+            .filter(idEquals(id))
+            .findFirst();
+    }
+
+    private static Predicate<CartItem> idEquals(CartItem.Id id) {
+        return item -> Objects.equals(item.getId(), id);
+    }
+
+    /**
+     * Deletes a {@link CartItem} by its ID.
+     *
+     * @param id must not be {@literal null}
+     */
+    public void delete(CartItem.Id id) {
+        Assert.notNull(id, "Cart item ID must not be null");
+        retrieve(id)
+            .map(CartItem::getProduct)
+            .ifPresent(items::remove);
     }
 
     /**

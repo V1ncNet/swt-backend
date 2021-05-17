@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,6 +57,16 @@ public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderIte
         OrderItem item = new OrderItem(product, quantity);
         this.orderLine.add(item);
         return item;
+    }
+
+    /**
+     * Removes the given item from this order.
+     *
+     * @param item must not be {@literal null}
+     */
+    public void remove(OrderItem item) {
+        Assert.notNull(item, "Order item must not be null");
+        this.orderLine.remove(item);
     }
 
     /**
