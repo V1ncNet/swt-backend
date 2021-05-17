@@ -31,12 +31,12 @@ import javax.persistence.Table;
  *
  * @author Vincent Nadoll
  */
-@Getter
 @Entity
 @Table(name = "_order") // 'order' is reserved keyword in SQL
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderItem> {
 
+    @Getter
     @EmbeddedId
     @GeneratedValue(generator = "order-id")
     @GenericGenerator(name = "order-id", strategy = "dyob-id")
