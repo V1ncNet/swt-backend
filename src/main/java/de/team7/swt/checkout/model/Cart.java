@@ -41,7 +41,7 @@ public class Cart implements Totalable<CartItem> {
      * @param quantity must not be {@literal null}
      * @return saved {@link CartItem}
      */
-    public CartItem save(Product product, Quantity quantity) {
+    public CartItem add(Product product, Quantity quantity) {
         Assert.notNull(product, "Product must not be null");
         Assert.notNull(quantity, "Quantity must not be null");
 
