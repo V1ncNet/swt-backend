@@ -3,6 +3,7 @@ package de.team7.swt.checkout.application;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team7.swt.checkout.model.Order;
+import de.team7.swt.checkout.model.OrderCompletionFailure;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -85,6 +86,17 @@ public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
 
     private static boolean hasErrors(Streamable<OrderItemCompletion> line) {
         return line.stream().anyMatch(OrderItemCompletion::hasFailed);
+    }
+
+    /**
+     * Verifies this report doesn't contain errors.
+     *
+     * @throws OrderCompletionFailure in case this report contains errors
+     */
+    public void verify() throws OrderCompletionFailure {
+        if (hasErrors()) {
+            throw new OrderCompletionFailure(this);
+        }
     }
 
     @Override

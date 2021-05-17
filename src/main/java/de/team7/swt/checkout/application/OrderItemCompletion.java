@@ -40,6 +40,17 @@ public class OrderItemCompletion {
     }
 
     /**
+     * Creates a new completion indicating a skipped verification of the given order item.
+     *
+     * @param item must not be {@literal null}
+     * @return a new completion
+     */
+    public static OrderItemCompletion skip(OrderItem item) {
+        Assert.notNull(item, "Order item must not be null");
+        return new OrderItemCompletion(item, CompletionStatus.SUCCEEDED, "The order item has been skipped.");
+    }
+
+    /**
      * Creates a new completion indicating a erroneous verification of the given order item.
      *
      * @param item must not be {@literal null}

@@ -73,6 +73,40 @@ public class InventoryItem extends AggregateRoot<InventoryItem.Id> {
         this.quantity = this.quantity.add(quantity);
     }
 
+    /**
+     * Decreases the amount of products by the given quantity.
+     *
+     * @param quantity must not be {@literal null}
+     * @throws IllegalArgumentException                             in case this item's {@link Product} doesn't contain
+     *                                                              sufficient amount
+     * @throws de.team7.swt.domain.quantity.MetricMismatchException in case this item's {@link Product} doesn't support
+     *                                                              the given {@link Quantity}
+     */
+    public void decrease(Quantity quantity) throws InsufficientQuantityException {
+        verifySufficientStock(quantity);
+        product.verify(quantity);
+
+        this.quantity = this.quantity.subtract(quantity);
+    }
+
+    private void verifySufficientStock(Quantity quantity) throws InsufficientQuantityException {
+        if (!hasSufficientStock(quantity)) {
+            throw new InsufficientQuantityException("Insufficient quantity! Make sure there's a sufficient amount of"
+                + "products in stock.", this);
+        }
+    }
+
+    /**
+     * Returns whether this item's product having a sufficient amount in stock.
+     *
+     * @param quantity can be {@literal null}
+     * @return {@literal true} if this item has a sufficient amount of products in stock; {@literal false} otherwise
+     * @throws de.team7.swt.domain.quantity.MetricMismatchException in case the quantities' metrics didn't match
+     */
+    public boolean hasSufficientStock(Quantity quantity) {
+        return !this.quantity.subtract(quantity).isNegative();
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
