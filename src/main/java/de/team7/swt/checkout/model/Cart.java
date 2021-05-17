@@ -117,12 +117,21 @@ public class Cart implements Totalable<CartItem> {
     }
 
     private BiConsumer<Product, CartItem> set(int amount) {
-        return (product, cartItem) -> set(product, amount);
+        return (product, cartItem) -> set(product, product.from(amount));
     }
 
-    private void set(Product product, int amount) {
-        Quantity quantity = product.from(amount);
-        items.compute(product, saveWith(quantity, override(quantity)));
+    /**
+     * Saves given {@link Product} and {@link Quantity} and creates or overrides a {@link CartItem}.
+     *
+     * @param product  must not be {@literal null}
+     * @param quantity must not be {@literal null}
+     * @return overridden {@link CartItem}
+     */
+    public CartItem set(Product product, Quantity quantity) {
+        Assert.notNull(product, "Product must not be null");
+        Assert.notNull(quantity, "Quantity must not be null");
+
+        return items.compute(product, saveWith(quantity, override(quantity)));
     }
 
     private static UnaryOperator<CartItem> override(Quantity quantity) {
