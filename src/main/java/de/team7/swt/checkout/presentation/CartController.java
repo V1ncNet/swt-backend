@@ -43,19 +43,14 @@ class CartController {
     }
 
     /**
-     * Creates or updates a cart item for given {@link Product} ID and amount.
+     * Creates or updates one cart item for given {@link Product} ID.
      *
      * @param product must not be {@literal null}
-     * @param amount  must not be {@literal null}
      * @return 200 - updated cart
      */
     @PostMapping
-    ResponseEntity<Cart> addItem(@RequestParam("productId") Product product, @RequestParam Number amount) {
-        if (amount.doubleValue() <= 0) {
-            throw new ValidationException("Parameter \"amount\" must not be negative or zero");
-        }
-
-        cart.save(product, product.from(amount.doubleValue()));
+    ResponseEntity<Cart> addItem(@RequestParam("productId") Product product) {
+        cart.save(product, product.from(1));
 
         return ResponseEntity.ok(unwrapProxy(cart));
     }
@@ -78,13 +73,17 @@ class CartController {
     /**
      * Creates and completes a new Order and generates a completion report afterwards.
      *
+     * @param amount multiplier for each item in the cart
      * @return 200 - order completion report
      */
     @PostMapping("/checkout")
-    ResponseEntity<OrderCompletionReport> checkout() {
-        Order order = new Order();
+    ResponseEntity<OrderCompletionReport> checkout(@RequestParam int amount) {
+        if (amount <= 0) {
+            throw new ValidationException("Parameter \"amount\" must not be negative or zero");
+        }
 
-        cart.addItemsTo(order);
+        Order order = new Order();
+        cart.addItemsTo(order, amount);
         order.complete();
         repository.save(order);
         cart.clear();

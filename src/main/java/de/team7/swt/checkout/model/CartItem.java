@@ -68,6 +68,17 @@ public class CartItem implements Priced {
     }
 
     /**
+     * Creates a new cart item instance that has the given quantity.
+     *
+     * @param quantity must not be {@literal null}
+     * @return a new cart item instance
+     */
+    final CartItem create(Quantity quantity) {
+        Assert.notNull(quantity, "Quantity must not be null");
+        return new CartItem(this.id, this.product, quantity);
+    }
+
+    /**
      * Creates a new {@link OrderItem} from this item.
      *
      * @return a new order item instance

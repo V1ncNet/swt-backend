@@ -11,9 +11,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 /**
  * Abstraction of a shopping cart.
@@ -41,13 +43,18 @@ public class Cart implements Totalable<CartItem> {
         Assert.notNull(product, "Product must not be null");
         Assert.notNull(quantity, "Quantity must not be null");
 
-        return items.compute(product, saveWith(quantity));
+        return items.compute(product, saveWith(quantity, add(quantity)));
     }
 
-    private static BiFunction<Product, CartItem, CartItem> saveWith(Quantity quantity) {
+    private static BiFunction<Product, CartItem, CartItem> saveWith(Quantity quantity,
+                                                                    UnaryOperator<CartItem> factory) {
         return (product, cartItem) -> Objects.isNull(cartItem)
             ? new CartItem(product, quantity)
-            : cartItem.add(quantity);
+            : factory.apply(cartItem);
+    }
+
+    private static UnaryOperator<CartItem> add(Quantity quantity) {
+        return cartItem -> cartItem.add(quantity);
     }
 
     /**
@@ -77,6 +84,30 @@ public class Cart implements Totalable<CartItem> {
         retrieve(id)
             .map(CartItem::getProduct)
             .ifPresent(items::remove);
+    }
+
+    /**
+     * Places all {@link CartItem}s times the given amount into the given {@link Order}.
+     *
+     * @param order  must not be {@literal null}
+     * @param amount must not be zero or negative
+     */
+    public void addItemsTo(Order order, int amount) {
+        Assert.isTrue(amount > 0, "Amount must not be zero or negative");
+
+        items.forEach(set(amount));
+        addItemsTo(order);
+    }
+
+    private BiConsumer<Product, CartItem> set(int amount) {
+        return (product, cartItem) -> {
+            Quantity quantity = product.from(amount);
+            items.compute(product, saveWith(quantity, override(quantity)));
+        };
+    }
+
+    private UnaryOperator<CartItem> override(Quantity quantity) {
+        return item -> item.create(quantity);
     }
 
     /**
