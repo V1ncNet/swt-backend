@@ -117,10 +117,12 @@ public class Cart implements Totalable<CartItem> {
     }
 
     private BiConsumer<Product, CartItem> set(int amount) {
-        return (product, cartItem) -> {
-            Quantity quantity = product.from(amount);
-            items.compute(product, saveWith(quantity, override(quantity)));
-        };
+        return (product, cartItem) -> set(product, amount);
+    }
+
+    private void set(Product product, int amount) {
+        Quantity quantity = product.from(amount);
+        items.compute(product, saveWith(quantity, override(quantity)));
     }
 
     private static UnaryOperator<CartItem> override(Quantity quantity) {
