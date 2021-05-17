@@ -26,7 +26,7 @@ class HttpExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      caught {@link OrderCompletionFailure}
      * @param request current {@link WebRequest}
-     * @return 419 Conflict - meaningful failed {@link de.team7.swt.checkout.application.OrderCompletionReport}
+     * @return 409 Conflict - meaningful failed {@link de.team7.swt.checkout.application.OrderCompletionReport}
      */
     @ExceptionHandler(OrderCompletionFailure.class)
     protected ResponseEntity<Object> handleFailedOrderCompletion(OrderCompletionFailure ex, WebRequest request) {

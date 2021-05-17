@@ -111,7 +111,7 @@ public class Cart implements Totalable<CartItem> {
     }
 
     /**
-     * Places all {@link CartItem}s times the given amount into the given {@link Order}.
+     * Places all {@link CartItem}s with given amount into the given {@link Order}.
      *
      * @param order  must not be {@literal null}
      * @param amount must not be zero or negative
