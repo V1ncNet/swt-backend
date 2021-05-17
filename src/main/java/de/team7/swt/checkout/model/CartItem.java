@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
+import de.team7.swt.domain.shared.Identifier;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -23,7 +24,7 @@ import javax.money.MonetaryAmount;
 public class CartItem {
 
     @JsonIgnore
-    UUID id;
+    Id id;
 
     @JsonUnwrapped
     Product product;
@@ -40,10 +41,10 @@ public class CartItem {
      * @param quantity must not be {@literal null}
      */
     CartItem(Product product, Quantity quantity) {
-        this(UUID.randomUUID(), product, quantity);
+        this(new Id(), product, quantity);
     }
 
-    private CartItem(UUID id, Product product, Quantity quantity) {
+    private CartItem(Id id, Product product, Quantity quantity) {
         Assert.notNull(product, "Product must not be null");
         Assert.notNull(quantity, "Quantity must not be null");
         product.verify(quantity);
@@ -72,5 +73,16 @@ public class CartItem {
      */
     final OrderItem toOrderItem() {
         return new OrderItem(product, quantity);
+    }
+
+    /**
+     * Value object representing a cart item's primary identifier.
+     *
+     * @author Vincent Nadoll
+     */
+    public static final class Id extends Identifier {
+        public Id() {
+            super(UUID.randomUUID());
+        }
     }
 }
