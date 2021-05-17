@@ -46,6 +46,16 @@ public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
     }
 
     /**
+     * Creates a new report indicating a failed verification of the given order.
+     *
+     * @param order must not be {@literal null}
+     * @return a new report
+     */
+    public static OrderCompletionReport failed(Order order) {
+        return new OrderCompletionReport(order, CompletionStatus.FAILED, Streamable.empty());
+    }
+
+    /**
      * Creates a new report verifying the given order and completions.
      *
      * @param order       must not be {@literal null}
@@ -55,7 +65,26 @@ public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
     public static OrderCompletionReport of(Order order, Streamable<OrderItemCompletion> completions) {
         Assert.notNull(order, "Order must not be null");
         Assert.notNull(completions, "Order item completions must not be null");
-        return new OrderCompletionReport(order, CompletionStatus.SUCCEEDED, completions);
+        return new OrderCompletionReport(order, getStatus(completions), completions);
+    }
+
+    private static CompletionStatus getStatus(Streamable<OrderItemCompletion> completions) {
+        return hasErrors(completions)
+            ? CompletionStatus.FAILED
+            : CompletionStatus.SUCCEEDED;
+    }
+
+    /**
+     * Indicates whether this report contains any errors.
+     *
+     * @return {@literal true} if this report contains errors; {@literal false} otherwise
+     */
+    public boolean hasErrors() {
+        return hasErrors(completions);
+    }
+
+    private static boolean hasErrors(Streamable<OrderItemCompletion> line) {
+        return line.stream().anyMatch(OrderItemCompletion::hasFailed);
     }
 
     @Override
