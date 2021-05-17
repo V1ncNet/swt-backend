@@ -108,7 +108,7 @@ public class Cart implements Totalable<CartItem> {
         };
     }
 
-    private UnaryOperator<CartItem> override(Quantity quantity) {
+    private static UnaryOperator<CartItem> override(Quantity quantity) {
         return item -> item.create(quantity);
     }
 
