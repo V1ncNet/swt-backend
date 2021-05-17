@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @see org.springframework.boot.web.servlet.server.Session
  */
 @Controller
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 class CheckoutController {
 
@@ -37,7 +37,7 @@ class CheckoutController {
      *
      * @return 200 - cart
      */
-    @GetMapping("/cart")
+    @GetMapping
     ResponseEntity<Cart> retrieve() {
         return ResponseEntity.ok(unwrapProxy(cart));
     }
@@ -49,7 +49,7 @@ class CheckoutController {
      * @param amount  must not be {@literal null}
      * @return 200 - updated cart
      */
-    @PostMapping("/cart")
+    @PostMapping
     ResponseEntity<Cart> addItem(@RequestParam("productId") Product product, @RequestParam Number amount) {
         if (amount.doubleValue() <= 0) {
             throw new ValidationException("Parameter \"amount\" must not be negative or zero");
