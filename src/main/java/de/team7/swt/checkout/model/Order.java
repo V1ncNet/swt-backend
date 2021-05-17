@@ -1,6 +1,7 @@
 package de.team7.swt.checkout.model;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.team7.swt.checkout.application.OrderCompleted;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
 import de.team7.swt.domain.shared.AggregateRoot;
@@ -55,6 +56,15 @@ public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderIte
         OrderItem item = new OrderItem(product, quantity);
         this.orderLine.add(item);
         return item;
+    }
+
+    /**
+     * Completes this order.
+     *
+     * @see OrderCompleted
+     */
+    public void complete() {
+        register(OrderCompleted.of(this));
     }
 
     @Override

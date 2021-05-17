@@ -1,6 +1,7 @@
 package de.team7.swt.checkout.presentation;
 
 import de.team7.swt.checkout.application.OrderCompletionReport;
+import de.team7.swt.checkout.infrastructure.OrderRepository;
 import de.team7.swt.checkout.model.Cart;
 import de.team7.swt.checkout.model.Order;
 import de.team7.swt.domain.catalog.Product;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 class CheckoutController {
 
     private final Cart cart;
+    private final OrderRepository repository;
 
     /**
      * Retrieves the session bound cart instance.
@@ -83,6 +85,8 @@ class CheckoutController {
         Order order = new Order();
 
         cart.addItemsTo(order);
+        order.complete();
+        repository.save(order);
         cart.clear();
 
         return ResponseEntity.ok(OrderCompletionReport.success(order));
