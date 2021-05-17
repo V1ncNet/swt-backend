@@ -64,4 +64,13 @@ public class CartItem {
         Assert.notNull(quantity, "Quantity must not be null");
         return new CartItem(this.id, this.product, this.quantity.add(quantity));
     }
+
+    /**
+     * Creates a new {@link OrderItem} from this item.
+     *
+     * @return a new order item instance
+     */
+    final OrderItem toOrderItem() {
+        return new OrderItem(product, quantity);
+    }
 }

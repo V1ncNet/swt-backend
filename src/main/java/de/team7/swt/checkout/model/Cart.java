@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import javax.money.MonetaryAmount;
 
 /**
@@ -45,6 +46,16 @@ public class Cart {
         return (product, cartItem) -> Objects.isNull(cartItem)
             ? new CartItem(product, quantity)
             : cartItem.add(quantity);
+    }
+
+    public void addItemsTo(Order order) {
+        Assert.notNull(order, "Order must not be null");
+
+        items.values().forEach(addTo(order));
+    }
+
+    private static Consumer<CartItem> addTo(Order order) {
+        return item -> order.addItem(item.getProduct(), item.getQuantity());
     }
 
     public void clear() {
