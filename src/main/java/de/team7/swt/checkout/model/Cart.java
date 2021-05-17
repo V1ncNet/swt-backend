@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 /**
  * Abstraction of a shopping cart.
  *
+ * @author Julian Albrecht
  * @author Vincent Nadoll
  */
 public class Cart implements Totalable<CartItem> {

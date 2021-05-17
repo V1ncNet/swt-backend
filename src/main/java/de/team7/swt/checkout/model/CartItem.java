@@ -17,6 +17,7 @@ import javax.money.MonetaryAmount;
 /**
  * Immutable entity encapsulating a {@link Product} and its {@link Quantity}.
  *
+ * @author Julian Albrecht
  * @author Vincent Nadoll
  */
 @Value
