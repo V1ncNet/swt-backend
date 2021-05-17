@@ -48,6 +48,28 @@ public class Cart implements Totalable<CartItem> {
         return items.compute(product, saveWith(quantity, add(quantity)));
     }
 
+    private static UnaryOperator<CartItem> add(Quantity quantity) {
+        return cartItem -> cartItem.add(quantity);
+    }
+
+    /**
+     * Saves given {@link Product} and {@link Quantity} and creates or overrides a {@link CartItem}.
+     *
+     * @param product  must not be {@literal null}
+     * @param quantity must not be {@literal null}
+     * @return overridden {@link CartItem}
+     */
+    public CartItem set(Product product, Quantity quantity) {
+        Assert.notNull(product, "Product must not be null");
+        Assert.notNull(quantity, "Quantity must not be null");
+
+        return items.compute(product, saveWith(quantity, override(quantity)));
+    }
+
+    private BiConsumer<Product, CartItem> set(int amount) {
+        return (product, cartItem) -> set(product, product.from(amount));
+    }
+
     private static BiFunction<Product, CartItem, CartItem> saveWith(Quantity quantity,
                                                                     UnaryOperator<CartItem> factory) {
         return (product, cartItem) -> Objects.isNull(cartItem)
@@ -55,8 +77,8 @@ public class Cart implements Totalable<CartItem> {
             : factory.apply(cartItem);
     }
 
-    private static UnaryOperator<CartItem> add(Quantity quantity) {
-        return cartItem -> cartItem.add(quantity);
+    private static UnaryOperator<CartItem> override(Quantity quantity) {
+        return item -> item.create(quantity);
     }
 
     /**
@@ -114,28 +136,6 @@ public class Cart implements Totalable<CartItem> {
 
     private static Consumer<CartItem> addTo(Order order) {
         return item -> order.addItem(item.getProduct(), item.getQuantity());
-    }
-
-    private BiConsumer<Product, CartItem> set(int amount) {
-        return (product, cartItem) -> set(product, product.from(amount));
-    }
-
-    /**
-     * Saves given {@link Product} and {@link Quantity} and creates or overrides a {@link CartItem}.
-     *
-     * @param product  must not be {@literal null}
-     * @param quantity must not be {@literal null}
-     * @return overridden {@link CartItem}
-     */
-    public CartItem set(Product product, Quantity quantity) {
-        Assert.notNull(product, "Product must not be null");
-        Assert.notNull(quantity, "Quantity must not be null");
-
-        return items.compute(product, saveWith(quantity, override(quantity)));
-    }
-
-    private static UnaryOperator<CartItem> override(Quantity quantity) {
-        return item -> item.create(quantity);
     }
 
     /**
