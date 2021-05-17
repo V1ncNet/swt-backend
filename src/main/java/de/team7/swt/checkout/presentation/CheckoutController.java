@@ -1,6 +1,8 @@
 package de.team7.swt.checkout.presentation;
 
+import de.team7.swt.checkout.application.OrderCompletionReport;
 import de.team7.swt.checkout.model.Cart;
+import de.team7.swt.checkout.model.Order;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.web.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -69,5 +71,20 @@ class CheckoutController {
         } else {
             return cart;
         }
+    }
+
+    /**
+     * Creates and completes a new Order and generates a completion report afterwards.
+     *
+     * @return 200 - order completion report
+     */
+    @PostMapping("/checkout")
+    ResponseEntity<OrderCompletionReport> checkout() {
+        Order order = new Order();
+
+        cart.addItemsTo(order);
+        cart.clear();
+
+        return ResponseEntity.ok(OrderCompletionReport.success(order));
     }
 }
