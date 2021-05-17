@@ -47,6 +47,11 @@ public class Cart implements Totalable<CartItem> {
             : cartItem.add(quantity);
     }
 
+    /**
+     * Places all {@link CartItem}s into the given {@link Order}.
+     *
+     * @param order must not be {@literal null}
+     */
     public void addItemsTo(Order order) {
         Assert.notNull(order, "Order must not be null");
 
@@ -57,6 +62,9 @@ public class Cart implements Totalable<CartItem> {
         return item -> order.addItem(item.getProduct(), item.getQuantity());
     }
 
+    /**
+     * Clears this cart.
+     */
     public void clear() {
         items.clear();
     }

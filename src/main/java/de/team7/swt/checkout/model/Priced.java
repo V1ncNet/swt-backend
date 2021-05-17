@@ -14,6 +14,8 @@ import javax.money.MonetaryAmount;
 interface Priced {
 
     /**
+     * Returns the implementation's price.
+     *
      * @return the price of the item
      */
     MonetaryAmount getPrice();
