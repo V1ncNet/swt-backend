@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
-class CheckoutController {
+class CartController {
 
     private final Cart cart;
     private final OrderRepository repository;
