@@ -59,7 +59,7 @@ class CartController {
      */
     @PostMapping
     ResponseEntity<Cart> addItem(@RequestParam("productId") Product product) {
-        if (!cartContainsCategoriesFrom(product)) {
+        if (cartContainsCategoriesFrom(product)) {
             throw new ValidationException(String.format(
                 "Cart already contains product w/ any categories like %s but must be unique",
                 streamCategories(product).collect(Collectors.toSet())
@@ -75,7 +75,7 @@ class CartController {
         String[] categories = streamCategories(product)
             .filter(not(categoryEquals(UNIQUE_DESCRIPTOR)))
             .toArray(String[]::new);
-        return !(product.contains(UNIQUE_DESCRIPTOR) && cart.containsAny(categories));
+        return product.contains(UNIQUE_DESCRIPTOR) && cart.containsAny(categories);
     }
 
     private Stream<String> streamCategories(Product product) {
