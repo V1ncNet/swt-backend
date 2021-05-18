@@ -66,7 +66,7 @@ class CartController {
             ));
         }
 
-        cart.add(product, product.from(1));
+        cart.set(product, product.from(1));
 
         return ResponseEntity.ok(unwrapProxy(cart));
     }
