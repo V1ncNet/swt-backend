@@ -1,7 +1,6 @@
 package de.team7.swt.checkout.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
@@ -46,9 +45,10 @@ public class OrderItem extends de.team7.swt.domain.shared.Entity<OrderItem.Id> i
 
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "product_id")) // Avoids ambiguous column id
-    @JsonIgnore
+    @JsonUnwrapped(prefix = "product_")
     private Product.Id productId;
 
+    @JsonProperty("product_name")
     private String productName;
 
     @NumberFormat(pattern = "0.00 ¤")
@@ -87,10 +87,6 @@ public class OrderItem extends de.team7.swt.domain.shared.Entity<OrderItem.Id> i
         this.quantity = quantity;
     }
 
-    @JsonGetter("productId")
-    private String getUnwrappedProductId() {
-        return productId.toString();
-    }
 
     @Override
     public String toString() {
