@@ -1,6 +1,5 @@
 package de.team7.swt.checkout.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
@@ -24,10 +23,9 @@ import javax.money.MonetaryAmount;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CartItem implements Priced {
 
-    @JsonIgnore
+    @JsonUnwrapped
     Id id;
 
-    @JsonUnwrapped
     Product product;
 
     @NumberFormat(pattern = "0.00 ¤")
