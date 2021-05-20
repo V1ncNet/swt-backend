@@ -66,6 +66,10 @@ class CartController {
             ));
         }
 
+        if (cart.contains(product)) {
+            throw new ValidationException("Cart already contains this product");
+        }
+
         cart.set(product, product.from(1));
 
         return ResponseEntity.ok(unwrapProxy(cart));

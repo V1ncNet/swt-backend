@@ -139,6 +139,17 @@ public class Cart implements Totalable<CartItem> {
     }
 
     /**
+     * Indicates whether the given {@link Product} is contained by this cart.
+     *
+     * @param product must not be {@literal null}
+     * @return {@literal true} if this cart contains the argument; {@literal false} otherwise
+     */
+    public boolean contains(Product product) {
+        Assert.notNull(product, "Product must not be null");
+        return items.containsKey(product);
+    }
+
+    /**
      * Indicates whether this cart's products are assigned to any of the given categories.
      *
      * @param categories must not be {@literal null}
