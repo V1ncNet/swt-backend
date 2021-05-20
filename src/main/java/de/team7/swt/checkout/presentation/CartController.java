@@ -4,12 +4,14 @@ import de.team7.swt.checkout.application.OrderCompletionReport;
 import de.team7.swt.checkout.infrastructure.OrderRepository;
 import de.team7.swt.checkout.model.Cart;
 import de.team7.swt.checkout.model.Order;
+import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.web.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,6 +44,7 @@ class CartController {
 
     private final Cart cart;
     private final OrderRepository repository;
+    private final Catalog<Product> productCatalog;
 
     /**
      * Retrieves the session bound cart instance.
@@ -114,6 +118,8 @@ class CartController {
      */
     @PostMapping("/checkout")
     ResponseEntity<OrderCompletionReport> checkout(@RequestParam int amount) {
+        verify(cart);
+
         Order order = new Order();
         transferItems(cart, order, amount);
         order.complete();
@@ -121,6 +127,20 @@ class CartController {
         cart.clear();
 
         return ResponseEntity.ok(OrderCompletionReport.success(order));
+    }
+
+    private void verify(Cart cart) {
+        Set<String> categories = getMandatoryCategories();
+        if (!cart.containsAll(categories.toArray(String[]::new))) {
+            throw new ValidationException(String.format("Cart must contain products of all categories %s", categories));
+        }
+    }
+
+    private Set<String> getMandatoryCategories() {
+        return productCatalog.findByCategory(UNIQUE_DESCRIPTOR)
+            .map(Product::getCategories)
+            .flatMap(Streamable::stream)
+            .toSet();
     }
 
     private void transferItems(Cart cart, Order order, int amount) {

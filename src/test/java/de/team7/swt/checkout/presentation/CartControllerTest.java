@@ -2,6 +2,7 @@ package de.team7.swt.checkout.presentation;
 
 import de.team7.swt.checkout.model.Cart;
 import de.team7.swt.configurator.model.Bottle;
+import de.team7.swt.domain.catalog.Catalog;
 import de.team7.swt.domain.catalog.Product;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.web.format.WebConversionService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.data.util.Streamable;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -34,6 +36,7 @@ import static de.team7.swt.domain.catalog.Flavours.createChocolate;
 import static de.team7.swt.domain.catalog.Flavours.createCookie;
 import static de.team7.swt.domain.catalog.Ingredients.INGREDIENT_CLOVE_ID;
 import static de.team7.swt.domain.catalog.Ingredients.createClove;
+import static de.team7.swt.domain.catalog.Types.createLager;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -77,6 +80,7 @@ class CartControllerTest {
     // @formatter:off
     @Autowired private Cart cart;
     @MockBean(name = "mvcConversionService") private WebConversionService webConversionService;
+    @MockBean private Catalog<Product> catalog;
     // @formatter:on
 
     @BeforeEach
@@ -193,12 +197,19 @@ class CartControllerTest {
 
     @Test
     void checkout_shouldCreateCompletionReport() throws Exception {
+        Product kind = createLager();
+        cart.add(kind, kind.from(1));
+
+        Product flavour = createCookie();
+        cart.add(flavour, flavour.from(1));
+
         Bottle bottle = create05Brown();
         cart.add(bottle, bottle.from(1));
 
         int amount = 10;
 
         when(webConversionService.convert(eq(String.valueOf(amount)), any(TypeDescriptor.class), any(TypeDescriptor.class))).thenReturn(amount);
+        when(catalog.findByCategory(any(String.class))).thenReturn(Streamable.of(flavour, bottle, kind));
 
         URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
             .path("/checkout")

@@ -3,6 +3,7 @@ package de.team7.swt.checkout.model;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import de.team7.swt.domain.catalog.Product;
 import de.team7.swt.domain.quantity.Quantity;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * Abstraction of a shopping cart.
@@ -163,6 +166,22 @@ public class Cart implements Totalable<CartItem> {
 
     private Predicate<Product> subsetOf(String[] categories) {
         return product -> !Collections.disjoint(product.getCategories().toSet(), Arrays.asList(categories));
+    }
+
+    /**
+     * Indicates whether this cart's products are assigned to all of the given categories.
+     *
+     * @param categories must not be {@literal null};
+     * @return {@literal true} if this cart all products assigned to all given categories; {@literal false} otherwise
+     */
+    public boolean containsAll(String... categories) {
+        List<String> categoryList = Arrays.asList(categories);
+        return items.keySet()
+            .stream()
+            .map(Product::getCategories)
+            .flatMap(Streamable::stream)
+            .collect(Collectors.toSet())
+            .containsAll(categoryList);
     }
 
     /**
