@@ -1,4 +1,4 @@
-package de.team7.swt.domain.infrastructure;
+package de.team7.swt.checkout.presentation;
 
 import de.team7.swt.checkout.model.OrderCompletionFailure;
 import org.springframework.core.Ordered;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class HttpExceptionHandler extends ResponseEntityExceptionHandler {
+class CheckoutHttpExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Catches the {@link OrderCompletionFailure} and writes its underlying
