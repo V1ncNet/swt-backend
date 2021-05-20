@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -57,7 +58,7 @@ class CartController {
      * @param product must not be {@literal null}
      * @return 200 - updated cart
      */
-    @PostMapping
+    @PutMapping
     ResponseEntity<Cart> addItem(@RequestParam("product_id") Product product) {
         if (cartContainsCategoriesFrom(product)) {
             throw new ValidationException(String.format(
