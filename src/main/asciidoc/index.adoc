@@ -37,6 +37,15 @@ einzuhalten.
 
 Die vom JSON-Objekt definierten Attribute können verwendet werden, um zusätzliche Anforderungen zu bilden. Jede
 Anfrage, die die `GET`-Methode verwendet, ist schreibgeschützt und wirkt sich nicht auf die abgefragten Objekte aus.
+
+| `POST`
+| Wird verwendet, um eine neue Ressource zu erstellen.
+
+Der `POST`-Request enthält alle Attribute, die zum Erstellen eines neuen Objekts erforderlich sind.
+
+| `PUT`
+| Wird verwendet, um eine vorhandene Ressource zu aktualisieren, wenn sie gefunden wird. Wenn sie nicht gefunden wird,
+gibt die Operation eine Antwort zurück, die angibt, dass das Objekt nicht gefunden wurde.
 |===
 
 [[http-statuses]]
@@ -166,3 +175,103 @@ include::{snippets}/catalog/retrieve/response-headers.adoc[]
 ==== Response Body
 
 include::{snippets}/catalog/retrieve/response-body.adoc[]
+
+[[resources-cart]]
+== Warenkorb
+
+Der Warenkorb ist eine Ressource, welche mittels eines Cookies `JSESSIONID` an eine HTTP Session gebunden wird. Jede
+Aktion auf diese Ressource wird auf den gleichen Warenkorb ausgeführt, solange wie der ausgelieferte Session-Cookie an
+den nächsten Request gehangen wird. Die Session läuft nach 30 Minuten ab.
+
+[[resources-cart-retrieve]]
+=== Aktueller Warenkorb
+
+Der aktuelle Bestand des Warenkorbs kann über einem `GET`-Request an den Endpoint `/api/v1/cart` eingesehen werden.
+Im Folgenden werden Beispiele gezeigt, in denen der Warenkorb bereits Artikel enthält. Diese besitzt initial keine
+Artikel. Die Kollektion `items` ist also leer.
+
+include::{snippets}/cart/retrieve/response-fields.adoc[]
+
+==== cURL Beispiel
+
+include::{snippets}/cart/retrieve/curl-request.adoc[]
+
+==== Response Headers
+
+include::{snippets}/cart/retrieve/response-headers.adoc[]
+
+==== Response Body
+
+include::{snippets}/cart/retrieve/response-body.adoc[]
+
+[[resources-cart-item-add]]
+=== Artikel hinzufügen
+
+Um ein Produkt dem Warenkorb hinzuzufügen, wird ein `POST`-Request an den
+`/api/v1/cart?product_id=$PRODUCT_ID`-Endpoint gestellt. Das mit der Produkt ID assozierte Produkt wird dem Warenkorb
+hinzugefügt. Die Response enthält die folgenden Felder.
+
+include::{snippets}/cart/add/response-fields.adoc[]
+
+==== cURL Beispiel
+
+include::{snippets}/cart/add/curl-request.adoc[]
+
+==== Request Parameters
+
+include::{snippets}/cart/add/request-parameters.adoc[]
+
+==== Request Headers
+
+include::{snippets}/cart/add/request-headers.adoc[]
+
+==== Response Headers
+
+include::{snippets}/cart/add/response-headers.adoc[]
+
+==== Response Body
+
+include::{snippets}/cart/add/response-body.adoc[]
+
+[[resources-cart-checkout]]
+=== Checkout
+
+Die Überführung von Warenkorb in die Bestellung wird mit einem `POST`-Request an `/api/v1/cart/checkout?amount=$AMOUNT`
+eingeleitet und aktuelle auch abgeschlossen. Der Request Parameter gibt dabei an, wie viele Einheiten pro am Warenkorb
+befindlichen Artikel gekauft werden soll. Einen Bezahlprozess gibt es noch nicht.
+
+Ist die Bestellung abgeschlossen, wird ein Report erzeugt, der aufzeigt, welche Artikel erfolgreich bestellt wurde.
+Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.
+
+include::{snippets}/cart/checkout/response-fields.adoc[]
+
+==== cURL Beispiel
+
+include::{snippets}/cart/checkout/curl-request.adoc[]
+
+==== Request Parameters
+
+include::{snippets}/cart/checkout/request-parameters.adoc[]
+
+==== Request Headers
+
+include::{snippets}/cart/checkout/request-headers.adoc[]
+
+==== Response Headers
+
+include::{snippets}/cart/checkout/response-headers.adoc[]
+
+==== Response Body
+
+include::{snippets}/cart/checkout/response-body.adoc[]
+
+
+[[glossary]]
+== Glossar
+
+|===
+| Begriff | Beschreibung
+
+| Artikel
+| Ein Artikel ist ein Produkt welches in irgendeiner Weise mit einer ganz- oder gebrochenzahligen Menge assoziiert ist.
+|===
