@@ -31,7 +31,7 @@ class HttpExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(OrderCompletionFailure.class)
     protected ResponseEntity<Object> handleFailedOrderCompletion(OrderCompletionFailure ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        HttpStatus status = HttpStatus.CONFLICT;
+        HttpStatus status = HttpStatus.OK;
         return handleExceptionInternal(ex, ex.getReport(), headers, status, request);
     }
 }
