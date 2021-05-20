@@ -35,13 +35,13 @@ import javax.persistence.GeneratedValue;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class OrderItem extends de.team7.swt.domain.shared.Entity<OrderItem.Id> implements Priced {
+public class LineItem extends de.team7.swt.domain.shared.Entity<LineItem.Id> implements Priced {
 
     @EmbeddedId
-    @GeneratedValue(generator = "orderItem-id")
-    @GenericGenerator(name = "orderItem-id", strategy = "dyob-id")
+    @GeneratedValue(generator = "lineItem-id")
+    @GenericGenerator(name = "lineItem-id", strategy = "dyob-id")
     @JsonUnwrapped
-    private final OrderItem.Id id;
+    private final LineItem.Id id;
 
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "product_id")) // Avoids ambiguous column id
@@ -59,23 +59,23 @@ public class OrderItem extends de.team7.swt.domain.shared.Entity<OrderItem.Id> i
     private Quantity quantity;
 
     /**
-     * Creates a new order item with given product and quantity.
+     * Creates a new {@link LineItem} with given product and quantity.
      *
      * @param product  must not be {@literal null}
      * @param quantity must not be {@literal null}
      */
-    OrderItem(Product product, Quantity quantity) {
+    LineItem(Product product, Quantity quantity) {
         this(null, product, quantity);
     }
 
     /**
-     * Creates a new order item with given ID, product and quantity.
+     * Creates a new {@link LineItem} with given ID, product and quantity.
      *
      * @param id       can be {@literal null}
      * @param product  must not be {@literal null}
      * @param quantity must not be {@literal null}
      */
-    protected OrderItem(OrderItem.Id id, Product product, Quantity quantity) {
+    protected LineItem(LineItem.Id id, Product product, Quantity quantity) {
         Assert.notNull(product, "Product must not be null");
         Assert.notNull(quantity, "Quantity must not be null");
         product.verify(quantity);
@@ -100,7 +100,7 @@ public class OrderItem extends de.team7.swt.domain.shared.Entity<OrderItem.Id> i
     }
 
     /**
-     * Value object representing an order item's primary identifier.
+     * Value object representing an {@link LineItem}'s primary identifier.
      *
      * @author Vincent Nadoll
      */

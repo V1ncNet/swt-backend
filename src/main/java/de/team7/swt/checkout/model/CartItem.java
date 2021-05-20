@@ -77,12 +77,12 @@ public class CartItem implements Priced {
     }
 
     /**
-     * Creates a new {@link OrderItem} from this item.
+     * Creates a new {@link LineItem} from this item.
      *
-     * @return a new order item instance
+     * @return a new {@link LineItem} instance
      */
-    final OrderItem toOrderItem() {
-        return new OrderItem(product, quantity);
+    final LineItem toLineItem() {
+        return new LineItem(product, quantity);
     }
 
     /**

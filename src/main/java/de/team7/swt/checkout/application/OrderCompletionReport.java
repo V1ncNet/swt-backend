@@ -15,23 +15,23 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Value object accumulating {@link OrderItemCompletion}s to determine an order's completion.
+ * Value object accumulating {@link LineItemCompletion}s to determine an order's completion.
  *
  * @author Vincent Nadoll
  */
 @Value
 @EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
+public class OrderCompletionReport implements Streamable<LineItemCompletion> {
 
     Order order;
     CompletionStatus status;
 
     @JsonIgnore
-    Streamable<OrderItemCompletion> completions;
+    Streamable<LineItemCompletion> completions;
 
     @JsonGetter
-    private List<OrderItemCompletion> getCompletions() {
+    private List<LineItemCompletion> getCompletions() {
         return completions.toList();
     }
 
@@ -43,7 +43,7 @@ public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
      */
     public static OrderCompletionReport success(Order order) {
         Assert.notNull(order, "Order must not be null");
-        return OrderCompletionReport.of(order, order.map(OrderItemCompletion::success));
+        return OrderCompletionReport.of(order, order.map(LineItemCompletion::success));
     }
 
     /**
@@ -63,13 +63,13 @@ public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
      * @param completions must not be {@literal null}
      * @return a new report
      */
-    public static OrderCompletionReport of(Order order, Streamable<OrderItemCompletion> completions) {
+    public static OrderCompletionReport of(Order order, Streamable<LineItemCompletion> completions) {
         Assert.notNull(order, "Order must not be null");
-        Assert.notNull(completions, "Order item completions must not be null");
+        Assert.notNull(completions, "Line item completions must not be null");
         return new OrderCompletionReport(order, getStatus(completions), completions);
     }
 
-    private static CompletionStatus getStatus(Streamable<OrderItemCompletion> completions) {
+    private static CompletionStatus getStatus(Streamable<LineItemCompletion> completions) {
         return hasErrors(completions)
             ? CompletionStatus.FAILED
             : CompletionStatus.SUCCEEDED;
@@ -84,8 +84,8 @@ public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
         return hasErrors(completions);
     }
 
-    private static boolean hasErrors(Streamable<OrderItemCompletion> line) {
-        return line.stream().anyMatch(OrderItemCompletion::hasFailed);
+    private static boolean hasErrors(Streamable<LineItemCompletion> line) {
+        return line.stream().anyMatch(LineItemCompletion::hasFailed);
     }
 
     /**
@@ -100,7 +100,7 @@ public class OrderCompletionReport implements Streamable<OrderItemCompletion> {
     }
 
     @Override
-    public Iterator<OrderItemCompletion> iterator() {
+    public Iterator<LineItemCompletion> iterator() {
         return completions.iterator();
     }
 

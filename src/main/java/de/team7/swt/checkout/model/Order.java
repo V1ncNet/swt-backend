@@ -34,7 +34,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "_order") // 'order' is reserved keyword in SQL
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
-public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderItem> {
+public class Order extends AggregateRoot<Order.Id> implements Totalable<LineItem> {
 
     @Getter
     @EmbeddedId
@@ -44,18 +44,18 @@ public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderIte
     private final Order.Id id;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private final List<OrderItem> orderLine = new ArrayList<>();
+    private final List<LineItem> lineItems = new ArrayList<>();
 
     /**
      * Adds a new item from given {@link Product} and {@link Quantity} to this order.
      *
      * @param product  must not be {@literal null}
      * @param quantity must not be {@literal null}
-     * @return added {@link OrderItem}
+     * @return added {@link LineItem}
      */
-    public OrderItem addItem(Product product, Quantity quantity) {
-        OrderItem item = new OrderItem(product, quantity);
-        this.orderLine.add(item);
+    public LineItem addItem(Product product, Quantity quantity) {
+        LineItem item = new LineItem(product, quantity);
+        this.lineItems.add(item);
         return item;
     }
 
@@ -64,9 +64,9 @@ public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderIte
      *
      * @param item must not be {@literal null}
      */
-    public void remove(OrderItem item) {
-        Assert.notNull(item, "Order item must not be null");
-        this.orderLine.remove(item);
+    public void remove(LineItem item) {
+        Assert.notNull(item, "Line item must not be null");
+        this.lineItems.remove(item);
     }
 
     /**
@@ -79,15 +79,15 @@ public class Order extends AggregateRoot<Order.Id> implements Totalable<OrderIte
     }
 
     @Override
-    public Iterator<OrderItem> iterator() {
-        return orderLine.iterator();
+    public Iterator<LineItem> iterator() {
+        return lineItems.iterator();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
-            .append("orderLine", orderLine)
+            .append("orderLine", lineItems)
             .toString();
     }
 
