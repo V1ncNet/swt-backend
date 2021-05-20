@@ -89,7 +89,7 @@ public class Cart implements Totalable<CartItem> {
      */
     public Optional<CartItem> retrieve(CartItem.Id id) {
         Assert.notNull(id, "Cart item ID must not be null");
-        return items.values().stream()
+        return stream()
             .filter(idEquals(id))
             .findFirst();
     }
