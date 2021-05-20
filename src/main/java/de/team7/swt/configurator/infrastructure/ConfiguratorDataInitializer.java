@@ -96,6 +96,7 @@ class ConfiguratorDataInitializer implements DataInitializer {
         Arrays.stream(kinds)
             .map(name -> new Product(name, ZERO_EURO))
             .peek(addCategory("Biersorte"))
+            .peek(addCategory("Komponente"))
             .forEach(catalog::save);
 
         catalog.save(createBottle("Weißes Glas (0,5 l)", Size.NORMAL, Color.WHITE));
@@ -109,6 +110,7 @@ class ConfiguratorDataInitializer implements DataInitializer {
         Arrays.stream(flavours)
             .map(name -> new Product(name, ZERO_EURO))
             .peek(addCategory("Geschmacksrichtung"))
+            .peek(addCategory("Komponente"))
             .forEach(catalog::save);
 
         Arrays.stream(ingredientsBeverage)
@@ -135,6 +137,7 @@ class ConfiguratorDataInitializer implements DataInitializer {
     private static Bottle createBottle(String name, Size size, Color color) {
         Bottle bottle = new Bottle(name, ZERO_EURO, size, color);
         bottle.add("Flasche");
+        bottle.add("Komponente");
         return bottle;
     }
 }

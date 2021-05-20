@@ -158,6 +158,17 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     }
 
     /**
+     * Indicates whether this product is assigned to the given category.
+     *
+     * @param category must not be {@literal null} or empty
+     * @return {@literal true} if this product is assigned to the given category; {@literal false} otherwise
+     */
+    public final boolean contains(String category) {
+        Assert.hasText(category, "Category must not be null");
+        return categories.contains(category);
+    }
+
+    /**
      * Verifies the given {@link Quantity} to match the one supported by this product.
      *
      * @param quantity must not be {@literal null}

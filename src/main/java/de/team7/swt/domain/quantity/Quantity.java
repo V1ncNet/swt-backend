@@ -251,6 +251,17 @@ public class Quantity implements Comparable<Quantity> {
     }
 
     /**
+     * Returns whether this amount is 0.
+     *
+     * @return {@literal true} if the amount is 0; {@literal false} otherwise
+     */
+    @Transient
+    @JsonIgnore
+    public boolean isZero() {
+        return Objects.compare(this.amount, BigDecimal.ZERO, BigDecimal::compareTo) == 0;
+    }
+
+    /**
      * Constructs a new quantity with the amount of zero but with the same metric as the originating quantity.
      *
      * @return a new quantity instance
