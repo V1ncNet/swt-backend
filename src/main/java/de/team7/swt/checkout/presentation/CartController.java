@@ -58,7 +58,7 @@ class CartController {
      * @return 200 - updated cart
      */
     @PostMapping
-    ResponseEntity<Cart> addItem(@RequestParam("productId") Product product) {
+    ResponseEntity<Cart> addItem(@RequestParam("product_id") Product product) {
         if (cartContainsCategoriesFrom(product)) {
             throw new ValidationException(String.format(
                 "Cart already contains product w/ any categories like %s but must be unique",
