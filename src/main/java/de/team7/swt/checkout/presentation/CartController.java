@@ -113,16 +113,20 @@ class CartController {
      */
     @PostMapping("/checkout")
     ResponseEntity<OrderCompletionReport> checkout(@RequestParam int amount) {
-        if (amount <= 0) {
-            throw new ValidationException("Parameter \"amount\" must not be negative or zero");
-        }
-
         Order order = new Order();
-        cart.addItemsTo(order, amount);
+        transferItems(cart, order, amount);
         order.complete();
         repository.save(order);
         cart.clear();
 
         return ResponseEntity.ok(OrderCompletionReport.success(order));
+    }
+
+    private void transferItems(Cart cart, Order order, int amount) {
+        try {
+            cart.addItemsTo(order, amount);
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("Parameter \"amount\" must not be negative or zero");
+        }
     }
 }
