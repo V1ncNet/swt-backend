@@ -1,7 +1,6 @@
 spring:
   main:
     banner-mode: OFF
-  profiles.active: @spring.profiles.active@
 
   data.jpa.repositories.bootstrap-mode: DEFERRED
   jpa:
