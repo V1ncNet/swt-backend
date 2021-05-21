@@ -28,8 +28,10 @@ jobs:
         run: mvn -B checkstyle:check
       - name: Compile sources
         run: mvn -B compile test-compile
+      - name: Run tests
+        run: mvn -B test
       - name: Package artifact
-        run: mvn -B -fae package
+        run: mvn -B -fae -DskipTests=true package
 
       - name: Report Checkstyle results
         uses: jwgmeligmeyling/checkstyle-github-action@v1.2
