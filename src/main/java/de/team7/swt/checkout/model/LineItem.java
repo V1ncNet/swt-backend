@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.util.Assert;
 
@@ -53,7 +52,6 @@ public class LineItem extends de.team7.swt.domain.shared.Entity<LineItem.Id> imp
 
     @NumberFormat(pattern = "0.00 ¤")
     @Convert(disableConversion = true)
-    @Type(type = "de.team7.swt.domain.infrastructure.money.MonetaryAmountType")
     private MonetaryAmount price;
 
     private Quantity quantity;

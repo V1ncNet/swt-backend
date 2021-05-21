@@ -15,7 +15,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 import org.springframework.data.util.Streamable;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.util.Assert;
@@ -63,7 +62,6 @@ public class Product extends AggregateRoot<Product.Id> implements Comparable<Pro
     @NonNull
     @NumberFormat(pattern = "0.00 ¤")
     @Convert(disableConversion = true)
-    @Type(type = "de.team7.swt.domain.infrastructure.money.MonetaryAmountType")
     private MonetaryAmount price;
 
     @JsonProperty
