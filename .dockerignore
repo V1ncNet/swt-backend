@@ -1,0 +1,16 @@
+### Git ###
+.github/
+.gitignore
+
+### IntelliJ ###
+.idea/
+*.iml
+
+### Maven ###
+target/
+
+### Project ###
+src/test/
+.editorconfig
+checkstyle.xml
+README.md
