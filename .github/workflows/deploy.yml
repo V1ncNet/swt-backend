@@ -1,8 +1,13 @@
-name: Publish Docker Image
+name: Publish Docker Image and Deploy
 
 on:
+  workflow_run:
+    workflows: [ "Java CI with Maven" ]
+    branches: [ main ]
+    types:
+      - completed
   repository_dispatch:
-    types: ["ci_succeeded"]
+    types: [ "ci_succeeded" ]
 
 jobs:
   publish:
