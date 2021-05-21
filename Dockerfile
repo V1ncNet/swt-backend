@@ -11,8 +11,13 @@ RUN git clone $PDFJS_UPSTREAM . \
  && git checkout $PDFJS_REF
 
 RUN npm install --silent
+
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
+
+ARG REACT_APP_API_BASE_URL
+ENV REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
+
 RUN npm run build
 
 FROM maven:3-adoptopenjdk-11 AS service-builder
