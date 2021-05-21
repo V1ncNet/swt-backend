@@ -34,10 +34,16 @@ following will do almost the same steps but will also start the application for
 development purposes:
 
 ```shell
+# With default CORS policy
 mvn clean spring-boot:run
+
+# With wildcard origin CORS policy
+mvn clean spring-boot:run -P development
 ```
 
-Alternatively, start the `Application` class with the IDE of your choice.
+Alternatively, start the `Application` class with the IDE of your choice. To
+allow requests from any origin pass `-Dspring.profiles.active=cors`
+additionally.
 
 
 Usage
