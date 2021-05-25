@@ -1295,7 +1295,7 @@ Artikel. Die Kollektion <code>items</code> ist also leer.</p>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "items" : [ {
-    "id" : "bc2b4dd7-314e-4548-bfe7-aea0fbbf849a",
+    "id" : "22e43f48-8dfd-426c-8442-19408cd0430c",
     "product" : {
       "id" : "cc552e26-6453-4e82-82a4-85c16cc3c4c5",
       "name" : "chocolate",
@@ -1536,7 +1536,7 @@ hinzugefügt. Die Response enthält die folgenden Felder.</p>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "items" : [ {
-    "id" : "fa00636e-4d0c-4a05-a943-e2a741bf8fca",
+    "id" : "69a89570-ce83-45cc-8719-c600ec583ed6",
     "product" : {
       "id" : "cc552e26-6453-4e82-82a4-85c16cc3c4c5",
       "name" : "chocolate",
@@ -1689,7 +1689,7 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
 <h4 id="_curl_beispiel_6"><a class="link" href="#_curl_beispiel_6">cURL Beispiel</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/api/v1/cart/checkout?amount=10' -i -X POST</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/api/v1/cart/checkout?amount=10&amp;crate_size=TWENTY' -i -X POST</code></pre>
 </div>
 </div>
 </div>
@@ -1710,6 +1710,10 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>amount</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">How much of each cart item is put into the order</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>crate_size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The size of the crate. Either SIX, ELEVEN or TWENTY</p></td>
 </tr>
 </tbody>
 </table>
@@ -1770,54 +1774,54 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "order" : {
-    "id" : "db062296-8211-4e40-9aad-96c5554829ed",
+    "id" : "a84cf5fc-3208-46f4-a424-7a39355ef8a0",
     "total" : {
-      "amount" : 24.8,
+      "amount" : 496.0,
       "currency" : "EUR",
-      "formatted" : "EUR24.80"
+      "formatted" : "EUR496.00"
     }
   },
   "status" : "SUCCEEDED",
   "completions" : [ {
-    "id" : "dfe41cdf-1510-4aab-9daf-fe5bb594453c",
+    "id" : "d2c010f7-325e-4efc-9e14-4f59fa7da12c",
     "product_id" : "65c8e363-cc41-40de-a1b8-f7529fc2b1f1",
     "price" : {
-      "amount" : 7.9,
+      "amount" : 158.0,
       "currency" : "EUR",
-      "formatted" : "EUR7.90"
+      "formatted" : "EUR158.00"
     },
     "quantity" : {
-      "amount" : 10,
+      "amount" : 200,
       "metric" : "UNIT"
     },
     "product_name" : "Lager",
     "status" : "SUCCEEDED",
     "message" : null
   }, {
-    "id" : "c0d5d094-e18c-4925-9039-4e272d0f7faf",
+    "id" : "29b5bf5f-ce07-4ff5-adbd-d2dc711186e1",
     "product_id" : "b2251bc1-4a6b-46e8-9cf8-b1d32e982f71",
     "price" : {
-      "amount" : 9.9,
+      "amount" : 198.0,
       "currency" : "EUR",
-      "formatted" : "EUR9.90"
+      "formatted" : "EUR198.00"
     },
     "quantity" : {
-      "amount" : 10,
+      "amount" : 200,
       "metric" : "UNIT"
     },
     "product_name" : "cookie",
     "status" : "SUCCEEDED",
     "message" : null
   }, {
-    "id" : "a0adde50-49e4-473a-a456-83b26e87ebc4",
+    "id" : "f035e9a8-5363-4518-8ce4-6e899f2bc06b",
     "product_id" : "2936852b-c88e-4e50-8b77-11999f0f1b34",
     "price" : {
-      "amount" : 7.0,
+      "amount" : 140.0,
       "currency" : "EUR",
-      "formatted" : "EUR7.00"
+      "formatted" : "EUR140.00"
     },
     "quantity" : {
-      "amount" : 10,
+      "amount" : 200,
       "metric" : "UNIT"
     },
     "product_name" : "0.5l - Brown Glass",
@@ -1857,7 +1861,7 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-21 21:13:34 UTC
+Last updated 2021-05-25 17:18:43 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
