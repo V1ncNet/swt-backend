@@ -24,7 +24,7 @@ class InventoryDataInitializer implements DataInitializer {
     @Override
     public void initialize() {
         catalog.findAll().stream()
-            .map(createInventoryItem(100))
+            .map(createInventoryItem(500))
             .forEach(inventory::save);
     }
 
