@@ -99,13 +99,13 @@ class ConfiguratorDataInitializer implements DataInitializer {
             .peek(addCategory("Komponente"))
             .forEach(catalog::save);
 
-        catalog.save(createBottle("Weißes Glas (0,5 l)", Size.NORMAL, Color.WHITE));
-        catalog.save(createBottle("Braunes Glas (0,5 l)", Size.NORMAL, Color.BROWN));
-        catalog.save(createBottle("Grünes Glas (0,5 l)", Size.NORMAL, Color.GREEN));
+        catalog.save(createBottle("Weißes Glas (0,5 l)", Money.of(1.2, EURO), Size.NORMAL, Color.WHITE));
+        catalog.save(createBottle("Braunes Glas (0,5 l)", Money.of(1.2, EURO), Size.NORMAL, Color.BROWN));
+        catalog.save(createBottle("Grünes Glas (0,5 l)", Money.of(1.2, EURO), Size.NORMAL, Color.GREEN));
 
-        catalog.save(createBottle("Weißes Glas (0,33 l)", Size.SMALL, Color.WHITE));
-        catalog.save(createBottle("Braunes Glas (0,33 l)", Size.SMALL, Color.BROWN));
-        catalog.save(createBottle("Grünes Glas (0,33 l)", Size.SMALL, Color.GREEN));
+        catalog.save(createBottle("Weißes Glas (0,33 l)", Money.of(0.8, EURO), Size.SMALL, Color.WHITE));
+        catalog.save(createBottle("Braunes Glas (0,33 l)", Money.of(0.8, EURO), Size.SMALL, Color.BROWN));
+        catalog.save(createBottle("Grünes Glas (0,33 l)", Money.of(0.8, EURO), Size.SMALL, Color.GREEN));
 
         Arrays.stream(flavours)
             .map(name -> new Product(name, ZERO_EURO))
@@ -134,8 +134,8 @@ class ConfiguratorDataInitializer implements DataInitializer {
         return product -> product.add(category);
     }
 
-    private static Bottle createBottle(String name, Size size, Color color) {
-        Bottle bottle = new Bottle(name, ZERO_EURO, size, color);
+    private static Bottle createBottle(String name, MonetaryAmount monetaryAmount, Size size, Color color) {
+        Bottle bottle = new Bottle(name, monetaryAmount, size, color);
         bottle.add("Flasche");
         bottle.add("Komponente");
         return bottle;
