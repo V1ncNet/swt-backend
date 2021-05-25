@@ -347,12 +347,4 @@ class CartControllerTest {
                 .cookie(jsessionid))
             .andExpect(status().isBadRequest());
     }
-
-//    @TestConfiguration(proxyBeanMethods = false)
-//    static class CartConfiguration {
-//        @Bean
-//        public Cart cart() {
-//            return new Cart();
-//        }
-//    }
 }
