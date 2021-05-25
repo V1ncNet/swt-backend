@@ -117,11 +117,12 @@ class CartController {
      * @return 200 - order completion report
      */
     @PostMapping("/checkout")
-    ResponseEntity<OrderCompletionReport> checkout(@RequestParam int amount) {
+    ResponseEntity<OrderCompletionReport> checkout(@RequestParam int amount,
+                                                   @RequestParam("crate_size") CrateSize crateSize) {
         verify(cart);
 
         Order order = new Order();
-        transferItems(cart, order, amount);
+        transferItems(cart, order, Long.valueOf(crateSize.times(amount)).intValue());
         order.complete();
         repository.save(order);
         cart.clear();

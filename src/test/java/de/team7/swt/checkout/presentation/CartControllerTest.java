@@ -207,13 +207,16 @@ class CartControllerTest {
         cart.add(bottle, bottle.from(1));
 
         int amount = 10;
+        CrateSize twenty = CrateSize.TWENTY;
 
         when(webConversionService.convert(eq(String.valueOf(amount)), any(TypeDescriptor.class), any(TypeDescriptor.class))).thenReturn(amount);
+        when(webConversionService.convert(eq(twenty.name()), any(TypeDescriptor.class), any(TypeDescriptor.class))).thenReturn(twenty);
         when(catalog.findByCategory(any(String.class))).thenReturn(Streamable.of(flavour, bottle, kind));
 
         URI endpoint = UriComponentsBuilder.fromUri(BASE_URI)
             .path("/checkout")
             .queryParam("amount", amount)
+            .queryParam("crate_size", twenty.name())
             .build().toUri();
 
         mockMvc.perform(post(endpoint))
@@ -222,7 +225,8 @@ class CartControllerTest {
             .andDo(document(
                 "cart/checkout",
                 requestParameters(
-                    parameterWithName("amount").description("How much of each cart item is put into the order")
+                    parameterWithName("amount").description("How much of each cart item is put into the order"),
+                    parameterWithName("crate_size").description("The size of the crate. Either SIX, ELEVEN or TWENTY")
                 ),
                 requestHeaders(
                     headerWithName(COOKIE).description(JSESSIONID).optional()
