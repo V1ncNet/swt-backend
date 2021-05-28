@@ -70,7 +70,7 @@ class InventoryController {
         }
         inventory.save(item);
 
-        return "redirect:/stock#" + formData.itemId;
+        return String.format("redirect:/stock?item_id=%s#%s", formData.itemId, formData.itemId);
     }
 
     /**

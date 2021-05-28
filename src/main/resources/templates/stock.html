@@ -36,7 +36,8 @@
             <tr scope="row" th:if="${inventory.isEmpty()}">
                 <td colspan="4" th:text="#{stock.empty}">No Inventory Items available</td>
             </tr>
-            <tr scope="row" th:each="item : ${inventory}" th:id="${item.id}">
+            <tr scope="row" th:each="item : ${inventory}" th:id="${item.id}"
+                th:classappend="${#strings.equals(item.id, param.get('item_id')) ? 'table-primary' : ''}">
                 <td th:text="${item.product.name}">Product Name</td>
                 <td class="text-end" th:text="${{item.product.price}}">Price</td>
                 <td class="text-end">
