@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,19 +61,27 @@ class InventoryController {
      * @return a redirection to {@link #stock(InventoryItem.Id, Model)}
      */
     @PostMapping("/stock")
-    String editItem(@ModelAttribute ItemFormData formData) {
+    View editItem(@ModelAttribute ItemFormData formData) {
         InventoryItem item = inventory.findById(formData.itemId)
             .orElseThrow(IllegalStateException::new);
         Product product = item.getProduct();
 
         Quantity quantity = product.from(formData.itemQuantityAmountOffset);
         item.increase(quantity);
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString("/stock")
+            .queryParam("item_id", formData.itemId);
         if (item.getQuantity().isNegative()) {
-            return "redirect:/stock?insufficient_stock&item_id=" + formData.itemId;
+            String uri = uriBuilder.queryParam("insufficient_stock").toUriString();
+            return new RedirectView(uri);
         }
+
         inventory.save(item);
 
-        return String.format("redirect:/stock?item_id=%s#%s", formData.itemId, formData.itemId);
+        String uri = uriBuilder.fragment(formData.itemId.toString()).toUriString();
+        RedirectView redirect = new RedirectView(uri);
+        redirect.setPropagateQueryParams(false);
+        return redirect;
     }
 
     /**
