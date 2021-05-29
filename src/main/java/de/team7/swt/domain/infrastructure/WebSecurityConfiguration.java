@@ -53,7 +53,12 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .cors()
                 .and()
-            .formLogin();
+            .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login.do")
+                .and()
+            .rememberMe()
+                .useSecureCookie(true);
         // @formatter:on
     }
 
