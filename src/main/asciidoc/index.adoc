@@ -207,7 +207,7 @@ include::{snippets}/cart/retrieve/response-body.adoc[]
 [[resources-cart-item-add]]
 === Artikel hinzufügen
 
-Um ein Produkt dem Warenkorb hinzuzufügen, wird ein `POST`-Request an den
+Um ein Produkt dem Warenkorb hinzuzufügen, wird ein `PUT`-Request an den
 `/api/v1/cart?product_id=$PRODUCT_ID`-Endpoint gestellt. Das mit der Produkt ID assozierte Produkt wird dem Warenkorb
 hinzugefügt. Die Response enthält die folgenden Felder.
 
@@ -236,12 +236,14 @@ include::{snippets}/cart/add/response-body.adoc[]
 [[resources-cart-checkout]]
 === Checkout
 
-Die Überführung von Warenkorb in die Bestellung wird mit einem `POST`-Request an `/api/v1/cart/checkout?amount=$AMOUNT`
-eingeleitet und aktuelle auch abgeschlossen. Der Request Parameter gibt dabei an, wie viele Einheiten pro am Warenkorb
-befindlichen Artikel gekauft werden soll. Einen Bezahlprozess gibt es noch nicht.
+Die Überführung von Warenkorb in die Bestellung wird mit einem `POST`-Request an
+`/api/v1/cart/checkout?amount=$AMOUNT&crate_size=$CRATE_SIZE` eingeleitet und aktuell auch abgeschlossen. Die Request
+Parameter geben an, wie viele Einheiten der im Warenkorb befindlichen Artikel gekauft werden soll. Dabei wird die
+Artikelmenge mit der geforderten Kastengröße *multipliziert*. Einen Bezahlprozess gibt es nicht.
 
 Ist die Bestellung abgeschlossen, wird ein Report erzeugt, der aufzeigt, welche Artikel erfolgreich bestellt wurde.
-Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.
+Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider, nicht aber im HTTP Status Code. Das
+heißt, egal ob die Bestellung erfolgreich war oder nicht, antwortet der Service mit `200 OK`.
 
 include::{snippets}/cart/checkout/response-fields.adoc[]
 
