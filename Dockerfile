@@ -5,10 +5,10 @@ RUN apk --no-cache add \
 
 WORKDIR /usr/src/client
 
-ARG PDFJS_UPSTREAM=https://github.com/MartinKotschmar/swt.git
-ARG PDFJS_REF=HEAD
-RUN git clone $PDFJS_UPSTREAM . \
- && git checkout $PDFJS_REF
+ARG FRONTEND_UPSTREAM=https://github.com/MartinKotschmar/swt.git
+ARG FRONTEND_REF=HEAD
+RUN git clone $FRONTEND_UPSTREAM . \
+ && git checkout $FRONTEND_REF
 
 RUN npm install --silent
 
