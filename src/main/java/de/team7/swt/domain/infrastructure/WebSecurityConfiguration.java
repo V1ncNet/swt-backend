@@ -32,7 +32,7 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth
             .inMemoryAuthentication()
                 .withUser("manager")
-                    .password(passwordEncoder().encode("secret"))
+                    .password(encode("secret"))
                     .roles("MANAGER");
         // @formatter:on
     }
@@ -72,6 +72,10 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
+    }
+
+    private String encode(String plaintext) {
+        return passwordEncoder().encode(plaintext);
     }
 
     @Bean
