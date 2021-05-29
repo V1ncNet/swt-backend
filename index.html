@@ -1295,7 +1295,7 @@ Artikel. Die Kollektion <code>items</code> ist also leer.</p>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "items" : [ {
-    "id" : "69e3aee4-ff7e-4a73-a8a9-d455bf3d7548",
+    "id" : "efb09f1f-e1cc-4620-becb-49e43e0e9757",
     "product" : {
       "id" : "cc552e26-6453-4e82-82a4-85c16cc3c4c5",
       "name" : "chocolate",
@@ -1330,7 +1330,7 @@ Artikel. Die Kollektion <code>items</code> ist also leer.</p>
 <div class="sect2">
 <h3 id="resources-cart-item-add"><a class="link" href="#resources-cart-item-add">Artikel hinzufügen</a></h3>
 <div class="paragraph">
-<p>Um ein Produkt dem Warenkorb hinzuzufügen, wird ein <code>POST</code>-Request an den
+<p>Um ein Produkt dem Warenkorb hinzuzufügen, wird ein <code>PUT</code>-Request an den
 <code>/api/v1/cart?product_id=$PRODUCT_ID</code>-Endpoint gestellt. Das mit der Produkt ID assozierte Produkt wird dem Warenkorb
 hinzugefügt. Die Response enthält die folgenden Felder.</p>
 </div>
@@ -1536,7 +1536,7 @@ hinzugefügt. Die Response enthält die folgenden Felder.</p>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "items" : [ {
-    "id" : "4cf9c410-2f40-4925-b155-01cf6beeaeb4",
+    "id" : "ab3b4360-491b-49fc-851f-79ea9459a9d1",
     "product" : {
       "id" : "cc552e26-6453-4e82-82a4-85c16cc3c4c5",
       "name" : "chocolate",
@@ -1571,13 +1571,15 @@ hinzugefügt. Die Response enthält die folgenden Felder.</p>
 <div class="sect2">
 <h3 id="resources-cart-checkout"><a class="link" href="#resources-cart-checkout">Checkout</a></h3>
 <div class="paragraph">
-<p>Die Überführung von Warenkorb in die Bestellung wird mit einem <code>POST</code>-Request an <code>/api/v1/cart/checkout?amount=$AMOUNT</code>
-eingeleitet und aktuelle auch abgeschlossen. Der Request Parameter gibt dabei an, wie viele Einheiten pro am Warenkorb
-befindlichen Artikel gekauft werden soll. Einen Bezahlprozess gibt es noch nicht.</p>
+<p>Die Überführung von Warenkorb in die Bestellung wird mit einem <code>POST</code>-Request an
+<code>/api/v1/cart/checkout?amount=$AMOUNT&amp;crate_size=$CRATE_SIZE</code> eingeleitet und aktuell auch abgeschlossen. Die Request
+Parameter geben an, wie viele Einheiten der im Warenkorb befindlichen Artikel gekauft werden soll. Dabei wird die
+Artikelmenge mit der geforderten Kastengröße <strong>multipliziert</strong>. Einen Bezahlprozess gibt es nicht.</p>
 </div>
 <div class="paragraph">
 <p>Ist die Bestellung abgeschlossen, wird ein Report erzeugt, der aufzeigt, welche Artikel erfolgreich bestellt wurde.
-Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.</p>
+Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider, nicht aber im HTTP Status Code. Das
+heißt, egal ob die Bestellung erfolgreich war oder nicht, antwortet der Service mit <code>200 OK</code>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1774,7 +1776,7 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "order" : {
-    "id" : "9c224bb1-ae73-4722-bf5d-10c048503609",
+    "id" : "51889ae3-4009-448c-b7c3-fc0e9d60f4a3",
     "total" : {
       "amount" : 496.0,
       "currency" : "EUR",
@@ -1783,7 +1785,7 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
   },
   "status" : "SUCCEEDED",
   "completions" : [ {
-    "id" : "7d88bff9-40c8-450c-a554-2d7a79c7d260",
+    "id" : "31342cb1-af2c-47f1-b0c0-333eaefed7b9",
     "product_id" : "65c8e363-cc41-40de-a1b8-f7529fc2b1f1",
     "price" : {
       "amount" : 158.0,
@@ -1798,7 +1800,7 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
     "status" : "SUCCEEDED",
     "message" : null
   }, {
-    "id" : "85f2c7d0-3402-4171-be8d-5841a15d1867",
+    "id" : "e15047c3-307c-4363-9edf-470c928d7fc2",
     "product_id" : "b2251bc1-4a6b-46e8-9cf8-b1d32e982f71",
     "price" : {
       "amount" : 198.0,
@@ -1813,7 +1815,7 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
     "status" : "SUCCEEDED",
     "message" : null
   }, {
-    "id" : "1bda3408-4fb2-4aa5-a278-5a9eb10fb262",
+    "id" : "c8668e9b-eb58-4ad5-a7d6-138cedca37bd",
     "product_id" : "2936852b-c88e-4e50-8b77-11999f0f1b34",
     "price" : {
       "amount" : 140.0,
@@ -1861,7 +1863,7 @@ Tritt dabei ein Fehler auf, spiegelt sich dieser in dem erzeugten Report wider.<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-28 11:47:22 UTC
+Last updated 2021-05-29 16:47:20 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
