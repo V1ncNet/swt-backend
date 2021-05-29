@@ -22,6 +22,10 @@
              th:if="${#request.getParameterMap().containsKey('insufficient_stock') && selected != null}">
             <span th:text="#{error.quantity.not-negative(${selected.product.name})}"></span>
         </div>
+        <div class="alert alert-success" role="alert"
+             th:if="${#request.getParameterMap().containsKey('success') && selected != null}">
+            <span th:text="#{success.item.update(${selected.product.name})}"></span>
+        </div>
         <h1 th:text="#{stock.title}">Inventory Management</h1>
         <table class="table table-bordered table-actions-sm">
             <thead>

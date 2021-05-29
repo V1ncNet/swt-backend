@@ -78,7 +78,7 @@ class InventoryController {
 
         inventory.save(item);
 
-        String url = uriBuilder.toUriString();
+        String url = uriBuilder.query("success").toUriString();
         RedirectView redirect = new RedirectView(url);
         redirect.setPropagateQueryParams(false);
         return redirect;
