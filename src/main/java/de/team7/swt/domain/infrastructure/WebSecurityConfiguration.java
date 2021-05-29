@@ -49,7 +49,8 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and()
             .csrf()
-                .disable()
+                .ignoringAntMatchers("/api/v1/**")
+                .and()
             .cors()
                 .and()
             .formLogin();

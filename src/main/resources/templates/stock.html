@@ -83,6 +83,7 @@
             </div>
             <div class="modal-body">
                 <form method="POST" th:object="${formData}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                     <input id="item-id" type="hidden" th:field="*{itemId}">
                     <label for="product-quantity" class="form-label" th:text="#{product.quantity}">Quantity</label>
                     <label for="product-quantity-offset" class="form-label d-none" th:text="#{product.quantity}">
