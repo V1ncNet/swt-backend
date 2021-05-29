@@ -78,8 +78,8 @@ class InventoryController {
 
         inventory.save(item);
 
-        String uri = uriBuilder.fragment(formData.itemId.toString()).toUriString();
-        RedirectView redirect = new RedirectView(uri);
+        String url = uriBuilder.toUriString();
+        RedirectView redirect = new RedirectView(url);
         redirect.setPropagateQueryParams(false);
         return redirect;
     }
