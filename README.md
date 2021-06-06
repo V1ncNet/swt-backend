@@ -3,7 +3,7 @@ Backend: Design your own Beer
 
 DyoB-Backend is a RESTful service to display products, manage orders and
 payments. It's part of our fourth-semester-project and the implementation of
-third semester's Bierkonfigurator.
+third semester's KreativBier.
 
 Besides, the service also provides a basic inventory management which is served
 by the service directly.
@@ -42,8 +42,9 @@ mvn clean spring-boot:run -P development
 ```
 
 Alternatively, start the `Application` class with the IDE of your choice. To
-allow requests from any origin pass `-Dspring.profiles.active=cors`
-additionally.
+allow requests from any origin you can either add the environment variable
+`spring_profiles_active=cors` or pass `-Dspring.profiles.active=cors` in your
+run configuration.
 
 
 Usage
@@ -74,11 +75,11 @@ examples. The base documentation is written in AsciiDoc
 (see `src/main/asciidoc/index.adoc`) and includes generated snippet references
 which will be substituted during packaging.
 
-Run `nvm package` to generate snippets and render the documentation into HTML.
-The result will be placed to `target/generated-docs/index.html` and can be
-viewed in any browser. Alternatively, visit
-https://v1ncnet.github.io/swt-backend/ to get an always-up-to-date version of
-`origin/main`.
+If you haven't already, run `nvm package` to generate snippets and render the
+documentation into HTML. The result will be placed to
+`target/generated-docs/index.html` and can be viewed in any browser.
+Alternatively, visit https://v1ncnet.github.io/swt-backend/ to get an
+always-up-to-date version of `origin/main`.
 
 
 Deployment
