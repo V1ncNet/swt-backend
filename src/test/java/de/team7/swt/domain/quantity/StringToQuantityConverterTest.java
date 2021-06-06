@@ -2,7 +2,6 @@ package de.team7.swt.domain.quantity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.convert.ConversionFailedException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,9 +20,9 @@ class StringToQuantityConverterTest {
     }
 
     @Test
-    void unparsableSource_shouldThrowException() {
-        assertThrows(ConversionFailedException.class, () -> converter.convert("foo"));
-        assertThrows(ConversionFailedException.class, () -> converter.convert("1.dl"));
+    void unparseableSource_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> converter.convert("foo"));
+        assertThrows(IllegalArgumentException.class, () -> converter.convert("1.dl"));
     }
 
     @Test
