@@ -2,10 +2,10 @@ package de.team7.swt.domain.quantity;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
-import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.util.Locale;
@@ -31,7 +31,8 @@ public class StringToQuantityConverter implements Converter<String, Quantity> {
         } catch (ParseException e) {
             TypeDescriptor sourceType = TypeDescriptor.valueOf(String.class);
             TypeDescriptor targetType = TypeDescriptor.valueOf(Quantity.class);
-            throw new ConversionFailedException(sourceType, targetType, source, e);
+            throw new IllegalArgumentException(String.format("Failed to convert from type [%s] to type [%s] for value "
+                + "'%s'", sourceType, targetType, ObjectUtils.nullSafeToString(source)), e);
         }
     }
 }
