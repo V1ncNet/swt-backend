@@ -12,7 +12,7 @@
 
     <groupId>de.team7</groupId>
     <artifactId>swt</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <name>swt</name>
     <url>https://github.com/V1ncNet/swt-backend</url>
