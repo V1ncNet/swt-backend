@@ -88,7 +88,7 @@ Deployment
 Since this service doesn't need extra software, a simple `mvn package` is enough
 to perform necessary steps to build an executable JAR artifact.
 
-To run, use `java -jar target/swt-0.1.0.jar` to start the application
+To run, use `java -jar target/swt-0.2.0-SNAPSHOT.jar` to start the application
 on `localhost` and port 8080.
 
 
