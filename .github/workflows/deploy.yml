@@ -28,7 +28,6 @@ jobs:
           context: .
           build-args: |
             REACT_APP_API_BASE_URL=${{ secrets.REACT_APP_API_BASE_URL }}
-            FRONTEND_REF=dev
           push: true
           tags: vinado/team7-dyob:latest
           cache-from: type=registry,ref=vinado/team7-dyob:latest
